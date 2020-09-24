@@ -1,9 +1,10 @@
 import pyautogui
+import random
 
 def AttackEnemies(enemies,window):
     if not len(enemies) == 0:
         enemy = enemies[0]
-        point = enemy[0]
+        point = random.choice(enemy)
         windowX = window[0]
         windowY = window[1]
         pointX = point[0][0]

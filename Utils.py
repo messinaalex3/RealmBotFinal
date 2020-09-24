@@ -23,6 +23,9 @@ enemyColorList = [
     [91,181,214],   #sandDevil
     [255,179,98],    #Sumo Master
     [202,153,255],  #nice bunnies
-    [21,50,217]     #crabs.
+    [21,50,217],     #crabs.
+    [27,77,132],     #Nymphs
+    [79,255,222],    #goblins
+    [54,253,249]    #hobbit mage
 ]
 
