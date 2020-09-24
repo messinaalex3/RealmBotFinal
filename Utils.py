@@ -13,11 +13,16 @@ enemyColorList = [
     [39,206,164],  #snakes, also all elves
     [191,191,191], #pirate sword
     [189,191,191], #piratess sword
-    [0,208,25],    #green cube not working
-    [205,22,141],  #purple cube dont think this is either
-    [88,204,228],   #little scorpion feller
+    [128,255,149],    #green cube not working
+    [234,129,197],  #purple cube dont think this is either
+    [0,0,238],      #red cube
+    [107,223,247],   #little scorpion feller
     [34,19,171],    #big scorpion eyes
     [255,84,175],    #exp
-    [29,196,154]    #left elves, right wasnt working even with same values
+    [29,196,154],    #left elves, right wasnt working even with same values
+    [91,181,214],   #sandDevil
+    [255,179,98],    #Sumo Master
+    [202,153,255],  #nice bunnies
+    [21,50,217]     #crabs.
 ]
 
