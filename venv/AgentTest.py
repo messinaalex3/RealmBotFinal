@@ -1,0 +1,11 @@
+import pyautogui
+
+def AttackEnemies(enemies,window):
+    if not len(enemies) == 0:
+        enemy = enemies[0]
+        point = enemy[0]
+        windowX = window[0]
+        windowY = window[1]
+        pointX = point[0][0]
+        pointY = point[0][1]
+        pyautogui.moveTo(pointX + windowX,pointY + windowY)
