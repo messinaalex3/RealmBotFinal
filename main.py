@@ -6,11 +6,12 @@ import cv2
 from matplotlib import pyplot as plt
 import numpy
 import os
+import pyautogui
 
 
 
 
-
+pyautogui.FAILSAFE = True
 enemyList = os.listdir("Resources\\")
 enemyList = GrabScreen.enemyListToFileList(enemyList)
 print(enemyList)

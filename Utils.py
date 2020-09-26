@@ -7,18 +7,18 @@ def cutGameFrame(frame):
     cutFrame = tempFrame[30:625,10:600]
     return cutFrame
 
-
+#check sword one, has issues with arrrows, may need to change that
 enemyColorList = [
-    [157,157,157], #enemies with swords
+    [107,221,247], #enemies with swords issues with arrows, gotta change this.
     [39,206,164],  #snakes, also all elves
     [191,191,191], #pirate sword
     [189,191,191], #piratess sword
-    [128,255,149],    #green cube not working
-    [234,129,197],  #purple cube dont think this is either
+    [128,255,149],    #green cube
+    [234,129,197],  #purple cube
     [0,0,238],      #red cube
     [107,223,247],   #little scorpion feller
-    [34,19,171],    #big scorpion eyes
-    [255,84,175],    #exp
+    [79,79,79],    #big scorpion tail
+    #[255,84,175],    #exp
     [29,196,154],    #left elves, right wasnt working even with same values
     [91,181,214],   #sandDevil
     [255,179,98],    #Sumo Master
@@ -26,6 +26,21 @@ enemyColorList = [
     [21,50,217],     #crabs.
     [27,77,132],     #Nymphs
     [79,255,222],    #goblins
-    [54,253,249]    #hobbit mage
+    [54,253,249],    #hobbit mage
+    [107,216,247],   #bandit leader yellow face
+    [77,77,77],      #sandsman hat
+    [10,221,38],     #slimes
+    [22,188,234],   #wereleopard
+    [00,92,158],   #werelion
+    [0,68,178],     #warrior bee
+    [50,107,124],   #warg
+    [45,226,205],   #sludget
+    [231,222,124],  #magic sprite
+    [52,140,175],   #earth golem test me!
+    [209,209,209],  #paper golem
+    [127,127,127],  #metal golem
+    [255,110,236],  #pink blob
+
+
 ]
 
