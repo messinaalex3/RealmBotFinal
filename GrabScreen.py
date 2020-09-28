@@ -34,10 +34,9 @@ def findPlayerData(frame):
     healthFrame = cv2.cvtColor(healthFrame,cv2.COLOR_RGB2GRAY)
     health = pytesseract.image_to_string(healthFrame)
     exp = pytesseract.image_to_string(expFrame)
-    print(exp)
     health = health[:-2]
     exp = exp[:-2]
-    return expFrame
+    return (health,exp)
 
 
 def captureScreen(screen):

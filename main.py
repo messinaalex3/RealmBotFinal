@@ -7,6 +7,7 @@ from matplotlib import pyplot as plt
 import numpy
 import os
 import pyautogui
+import time
 
 
 
@@ -34,21 +35,23 @@ params.filterByCircularity = False
 params.filterByConvexity = False
 detector = cv2.SimpleBlobDetector_create(params)
 while True:
+    start_time = time.time()
 
 
     #cv2.imshow("hi",pi)
     frame = GrabScreen.captureScreen(gameWindow)
-    cv2.imshow("dude",GrabScreen.findPlayerData(frame))
+    #cv2.imshow("dude",GrabScreen.findPlayerData(frame))
+    #print(GrabScreen.findPlayerData(frame))
     frame = cv2.cvtColor(frame,cv2.COLOR_RGBA2RGB)
     gameFrame = Utils.cutGameFrame(frame)
-    lowerB = numpy.array([39,206,164])
-    upperB = numpy.array([39,206,164])
+    #lowerB = numpy.array([39,206,164])
+    #upperB = numpy.array([39,206,164])
     #cv2.imshow("hi",GrabScreen.findColorsInFrame(gameFrame,Utils.enemyColorList))
     enemyMask = GrabScreen.findColorsInFrame(gameFrame,Utils.enemyColorList)
 
 
     contours = GrabScreen.findEnemiesFromMask(enemyMask,frame)
-    cv2.imshow("ppp",contours[0])
+    #cv2.imshow("ppp",contours[0])
     AgentTest.AttackEnemies(contours[1],gameWindow)
     miniMap = GrabScreen.getMapExplored(frame)
     print(miniMap)
@@ -56,6 +59,7 @@ while True:
     #cv2.imshow("hi",GrabScreen.findEnemies(frame,enemyList))
     #cv2.imshow("hi",GrabScreen.findEnemiesWithMask(frame,[snake]))
     #print(playerData)
+    print("FPS: ",1.0 / (time.time() - start_time))
 
     if cv2.waitKey(25) & 0xFF == ord("q"):
             cv2.destroyAllWindows()

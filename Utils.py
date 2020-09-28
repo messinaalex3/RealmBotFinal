@@ -9,6 +9,13 @@ def cutGameFrame(frame):
 
 #check sword one, has issues with arrrows, may need to change that
 enemyColorList = [
+    [00, 219, 18] , # healthbar
+    [15,16,56]
+    ]
+
+
+
+"""
     [107,221,247], #enemies with swords issues with arrows, gotta change this.
     [39,206,164],  #snakes, also all elves
     [191,191,191], #pirate sword
@@ -16,8 +23,8 @@ enemyColorList = [
     [128,255,149],    #green cube
     [234,129,197],  #purple cube
     [0,0,238],      #red cube
-    [107,223,247],   #little scorpion feller
-    [79,79,79],    #big scorpion tail
+    [48,135,235],   #little scorpion feller
+    [79,79,79],    #big scorpion tasil
     #[255,84,175],    #exp
     [29,196,154],    #left elves, right wasnt working even with same values
     [91,181,214],   #sandDevil
@@ -40,7 +47,4 @@ enemyColorList = [
     [209,209,209],  #paper golem
     [127,127,127],  #metal golem
     [255,110,236],  #pink blob
-
-
-]
-
+    """
