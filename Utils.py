@@ -12,6 +12,16 @@ enemyColorList = [
     [00, 219, 18] , # healthbar
     [15,16,56]
     ]
+def getPlayerStatsFromBar(barFrame,fillColor):
+    nonStatColorPixels = 0
+    fillColor = numpy.array(fillColor)
+    for pixel in reversed(barFrame):
+        if not numpy.array_equal(pixel,fillColor):
+            nonStatColorPixels += 1
+        else:
+            break
+    healthPercent = (len(barFrame) - nonStatColorPixels) / len(barFrame)
+    return healthPercent * 100
 
 
 

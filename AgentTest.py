@@ -1,7 +1,7 @@
 import pyautogui
 import random
 
-def AttackEnemies(enemies,window):
+def AttackEnemies(enemies,window,health):
     if not len(enemies) == 0:
         enemy = enemies[0]
         point = random.choice(enemy)
@@ -10,3 +10,5 @@ def AttackEnemies(enemies,window):
         pointX = point[0][0]
         pointY = point[0][1]
         pyautogui.moveTo(pointX + windowX,pointY + windowY)
+    if health < 90:
+        pyautogui.press("r")

@@ -5,6 +5,7 @@ import time
 import numpy
 import pytesseract
 import re
+import Utils
 pytesseract.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 enemyList = ['Bandit Enemy','Bandit Leader','Pirate','Piratess','Poison Scorpion','Purple Gelatinous Cube',\
 'Red Gelatinous Cube', 'Scorpion Queen', 'Snake','Green Gelatinous Cube']
@@ -38,6 +39,13 @@ def findPlayerData(frame):
     exp = exp[:-2]
     return (health,exp)
 
+def findPlayerDataFromColors(frame):
+    tempFrame = frame.copy()
+    tempFrame = cv2.cvtColor(tempFrame,cv2.COLOR_RGBA2RGB)
+    cv2.rectangle(tempFrame,(610,250),(805,350),(0,255,0),2)
+    tempFrame = tempFrame[286:287,620:800]
+    health = Utils.getPlayerStatsFromBar(tempFrame[0],[83,77,250])
+    return health
 
 def captureScreen(screen):
     sct = mss.mss()

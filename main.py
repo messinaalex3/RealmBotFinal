@@ -37,28 +37,33 @@ detector = cv2.SimpleBlobDetector_create(params)
 while True:
     start_time = time.time()
 
-
-    #cv2.imshow("hi",pi)
+    #Get window
     frame = GrabScreen.captureScreen(gameWindow)
-    #cv2.imshow("dude",GrabScreen.findPlayerData(frame))
-    #print(GrabScreen.findPlayerData(frame))
+    #Convert window to 3-channel RGB without Alpha
     frame = cv2.cvtColor(frame,cv2.COLOR_RGBA2RGB)
+    #Cut the frame to only include game windows for enemy tracking
     gameFrame = Utils.cutGameFrame(frame)
-    #lowerB = numpy.array([39,206,164])
-    #upperB = numpy.array([39,206,164])
-    #cv2.imshow("hi",GrabScreen.findColorsInFrame(gameFrame,Utils.enemyColorList))
+    #find enemies based on color and create a mask
     enemyMask = GrabScreen.findColorsInFrame(gameFrame,Utils.enemyColorList)
 
-
+    #find chunks in mask to get enemy positions
     contours = GrabScreen.findEnemiesFromMask(enemyMask,frame)
-    #cv2.imshow("ppp",contours[0])
-    AgentTest.AttackEnemies(contours[1],gameWindow)
-    miniMap = GrabScreen.getMapExplored(frame)
-    print(miniMap)
 
-    #cv2.imshow("hi",GrabScreen.findEnemies(frame,enemyList))
-    #cv2.imshow("hi",GrabScreen.findEnemiesWithMask(frame,[snake]))
-    #print(playerData)
+    #get players health from health bar
+    playerHealth = GrabScreen.findPlayerDataFromColors(frame)
+
+    #Get black pixels in map, should convert to percent so less change
+    #miniMap = GrabScreen.getMapExplored(frame)
+    #qprint(miniMap)
+
+    #run agent
+    AgentTest.AttackEnemies(contours[1],gameWindow,playerHealth)
+
+    #show frame with enemies highlighted
+    cv2.imshow("CurrentFrame",contours[0])
+
+
+    #well...this one is obvious right?
     print("FPS: ",1.0 / (time.time() - start_time))
 
     if cv2.waitKey(25) & 0xFF == ord("q"):
