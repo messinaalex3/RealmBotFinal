@@ -114,7 +114,7 @@ def findEnemies(frame,enemyPhotos):
             cv2.rectangle(tempFrame,pt,(pt[0] + w,pt[1] + h), (0,0,255),1)
 
     return tempFrame
-    
+
 def findEnemiesWithMask(frame,enemies):
     tempFrame = frame.copy()
     frameColorChange = cv2.cvtColor(frame,cv2.COLOR_BGRA2GRAY)
@@ -125,7 +125,7 @@ def findEnemiesWithMask(frame,enemies):
         location = numpy.where(result >= .8)
         w, h = enemy[2]
         for pt in zip(*location[::-1]):
-            cv2.rectangle(tempFrame,pt,(pt[0] + w,pt[1] + h), (0,0,255),1)       
+            cv2.rectangle(tempFrame,pt,(pt[0] + w,pt[1] + h), (0,0,255),1)
     return tempFrame
 
 #returns black pixels in map
@@ -133,7 +133,8 @@ def getMapExplored(frame):
     tempFrame = frame.copy()
     cv2.rectangle(tempFrame,(610,32),(805,225),(0,255,0),2)
     cutFrame = tempFrame[32:225,610:805]
-    return numpy.count_nonzero(cutFrame == [0,0,0])
+    return cutFrame
+    #return numpy.count_nonzero(cutFrame == [0,0,0])
 
 def findColorsInFrame(frame,colors):
     tempFrame = 0
@@ -141,14 +142,18 @@ def findColorsInFrame(frame,colors):
         tempFrame += findColorInFrame(frame,color)
     return tempFrame
 
-def findColorInFrame(frame,color):
+def findColorInFrame(frame,color,upperb = None):
     lowerb = numpy.array(color)
-    upperb = numpy.array(color)
+    if upperb == None:
+        upperb = numpy.array(color)
+    else:
+        upperb = numpy.array(upperb)
     return cv2.inRange(frame,lowerb,upperb)
 
-def findEnemiesFromMask(mask,frameToDraw):
+def findEnemiesFromMask(mask,frameToDraw,where = "Screen",doPrint = True):
     tempFrame = frameToDraw.copy()
     contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     cv2.drawContours(tempFrame, contours, -1, (0, 255, 0), 2)
-    print("Enemies on screen: ", len(contours))
+    if doPrint:
+        print("Enemies on ",where,": ", len(contours))
     return [tempFrame,contours]

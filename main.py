@@ -34,8 +34,12 @@ params.filterByArea = True
 params.filterByCircularity = False
 params.filterByConvexity = False
 detector = cv2.SimpleBlobDetector_create(params)
+
+
 while True:
     start_time = time.time()
+
+    playerPos = [0,0]
 
     #Get window
     frame = GrabScreen.captureScreen(gameWindow)
@@ -46,18 +50,31 @@ while True:
     #find enemies based on color and create a mask
     enemyMask = GrabScreen.findColorsInFrame(gameFrame,Utils.enemyColorList)
 
-    #find chunks in mask to get enemy positions
+    #find chunks in mask to get enemy positionsrrrrrrrrrrr
     contours = GrabScreen.findEnemiesFromMask(enemyMask,frame)
-
+    enemiesOnScreen = contours[1]
     #get players health from health bar
     playerHealth = GrabScreen.findPlayerDataFromColors(frame)
 
     #Get black pixels in map, should convert to percent so less change
-    #miniMap = GrabScreen.getMapExplored(frame)
+    miniMap = GrabScreen.getMapExplored(frame)
+    mapMask = GrabScreen.findColorInFrame(miniMap,[0,0,200],[0,0,255])
+    mapFound = GrabScreen.findEnemiesFromMask(mapMask,mapMask,"Map")
+    enemiesOnMap = mapFound[1]
+    #cv2.imshow("map",mapMask)
+    playerMapMask = GrabScreen.findColorInFrame(miniMap,numpy.array(Utils.whiteMapColor),[255,255,255])
+    playerMapFound = GrabScreen.findEnemiesFromMask(playerMapMask,playerMapMask,doPrint= False)
+    if len(playerMapFound[1]) > 0:
+        playerPos = playerMapFound[1][0][0]
+    print("Player pos: ",playerPos[0])
+
+    #cv2.imshow("playerMap",playerMapMask)
     #qprint(miniMap)
 
+    state = [enemiesOnScreen,playerHealth,playerPos,enemiesOnMap]
+
     #run agent
-    AgentTest.AttackEnemies(contours[1],gameWindow,playerHealth)
+    AgentTest.AttackEnemies(state,gameWindow)
 
     #show frame with enemies highlighted
     cv2.imshow("CurrentFrame",contours[0])

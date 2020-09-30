@@ -12,6 +12,8 @@ enemyColorList = [
     [00, 219, 18] , # healthbar
     [15,16,56]
     ]
+redDotMapColor = [2,13,229]
+whiteMapColor = [255,255,255]
 def getPlayerStatsFromBar(barFrame,fillColor):
     nonStatColorPixels = 0
     fillColor = numpy.array(fillColor)
