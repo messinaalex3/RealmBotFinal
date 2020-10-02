@@ -131,8 +131,8 @@ def findEnemiesWithMask(frame,enemies):
 #returns black pixels in map
 def getMapExplored(frame):
     tempFrame = frame.copy()
-    cv2.rectangle(tempFrame,(610,32),(805,225),(0,255,0),2)
-    cutFrame = tempFrame[32:225,610:805]
+    cv2.rectangle(tempFrame,(607,32),(807,235),(0,255,0),2)
+    cutFrame = tempFrame[32:235,607:807]
     return cutFrame
     #return numpy.count_nonzero(cutFrame == [0,0,0])
 

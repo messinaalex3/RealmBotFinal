@@ -18,12 +18,15 @@ y = (width // 2) + random.randint(0,50)
 
 new_circle = cv2.circle(circle_img,(x,y),10,1,thickness=-1)
 
+cv2.imshow('World',world)
+cv2.waitKey(25)
+
 while x < height and y < width:
 
     masked_data = cv2.bitwise_and(img, img, mask=new_circle)
     cv2.imshow("World1 Exploration", masked_data)
 
-    if cv2.waitKey(50) & 0xFF == ord("q"):
+    if cv2.waitKey(20) & 0xFF == ord("q"):
         cv2.destroyAllWindows()
         break
 
@@ -37,5 +40,5 @@ while x < height and y < width:
 
 cv2.waitKey(0)
 
-cv2.imshow('World',world)
-cv2.waitKey(0)
+# cv2.imshow('World',world)
+# cv2.waitKey(0)
