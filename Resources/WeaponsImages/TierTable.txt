@@ -1,0 +1,4 @@
+EnergyStaff.png 0
+FirebrandStaff.png 1
+CometStaff.png 2
+SerpentineStaff.png 3
