@@ -38,7 +38,7 @@ params.filterByConvexity = False
 detector = cv2.SimpleBlobDetector_create(params)
 
 g_nearest_enemy=None
-g_playerPos = [0,0]
+g_playerPos = [[0,0]]
 
 def hold_char(hold_time,char):
     pyautogui.keyDown(char)
@@ -144,7 +144,7 @@ t2.start()
 while True:
     start_time = time.time()
 
-    playerPos = [0,0]
+    playerPos = [[0,0]]
 
     #Get window
     frame = GrabScreen.captureScreen(gameWindow)
