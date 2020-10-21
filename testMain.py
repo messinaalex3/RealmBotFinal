@@ -69,23 +69,13 @@ def matchTieredItem(frame,item,offset,window):
 def sorter(input):
     return input[0]
 
-while True:
-    start_time = time.time()
-
-    playerPos = [0,0]
-
-    #Get window
-    frame = GrabScreen.captureScreen(gameWindow)
-    #Convert window to 3-channel RGB without Alpha
-    frame = cv2.cvtColor(frame,cv2.COLOR_RGBA2RGB)
+def loot(frame):
     itemPickupWindow = cutWindowItemPickup(frame)
     playerItemWindow = cutWindowPlayerItems(frame)
-    foundItems = matchTieredItem(itemPickupWindow,staffImage,Utils.lootPos,gameWindow)
-    playerItems = matchTieredItem(playerItemWindow,staffImage,Utils.playerItemsPos,gameWindow)
+    foundItems = matchTieredItem(itemPickupWindow, staffImage, Utils.lootPos, gameWindow)
+    playerItems = matchTieredItem(playerItemWindow, staffImage, Utils.playerItemsPos, gameWindow)
     print("Player item tier =", playerItems)
 
-    # if not len(foundItems) == 0:
-    #     pyautogui.moveTo(foundItems[0][1])
     wepPosX = Utils.playerWeaponPos[0]
     wepPosY = Utils.playerWeaponPos[1]
     wepPosX += gameWindow[0]
@@ -97,20 +87,15 @@ while True:
             maxTierItem = foundItems[0]
             if maxTierItem[0] > playerItems[0][0]:
                 pyautogui.moveTo(maxTierItem[1])
-                pyautogui.dragTo(playerItems[0][1][0],playerItems[0][1][1],.25,pyautogui.easeInQuad)
-
+                pyautogui.dragTo(playerItems[0][1][0], playerItems[0][1][1], .25, pyautogui.easeInQuad)
 
     print("Loot item tier = ", foundItems)
 
-    # if not len(playerItems) == 0:
-    #     pyautogui.moveTo(playerItems[0][1])
-    #cv2.rectangle(matchedItems,(610,325),(805,390),(0,255,255),2)
-    #cv2.imshow("gameFrame",matchedItems)
 
+    #Get window
+frame = GrabScreen.captureScreen(gameWindow)
+    #Convert window to 3-channel RGB without Alpha
+frame = cv2.cvtColor(frame,cv2.COLOR_RGBA2RGB)
+loot(frame)
 
-
-
-    if cv2.waitKey(25) & 0xFF == ord("q"):
-            cv2.destroyAllWindows()
-            break
 
