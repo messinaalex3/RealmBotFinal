@@ -52,7 +52,9 @@ def captureScreen(screen):
     temp = numpy.asarray(sct.grab(screen))
     return numpy.asarray(sct.grab(screen))
 def findWindow(name):
-    window = win32gui.GetWindowRect(win32gui.FindWindow(None,name))
+    hWnd = win32gui.FindWindow(None,name)
+    window = win32gui.GetWindowRect(hWnd)
+    win32gui.SetForegroundWindow(hWnd)
     return window
 
 def convertToGray(enemyList):

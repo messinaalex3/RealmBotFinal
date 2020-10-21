@@ -155,7 +155,7 @@ while True:
     #find enemies based on color and create a mask
     enemyMask = GrabScreen.findColorsInFrame(gameFrame,Utils.enemyColorList)
 
-    #find chunks in mask to get enemy positionsrrrrrrrrrrr
+    #find chunks in mask to get enemy positions
     contours = GrabScreen.findEnemiesFromMask(enemyMask,frame)
     enemiesOnScreen = contours[1]
     #get players health from health bar
