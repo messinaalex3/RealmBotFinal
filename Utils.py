@@ -1,5 +1,6 @@
 import cv2
 import numpy as numpy
+import pyautogui
 
 def cutGameFrame(frame):
     tempFrame = frame.copy()
@@ -25,8 +26,30 @@ def getPlayerStatsFromBar(barFrame,fillColor):
     healthPercent = (len(barFrame) - nonStatColorPixels) / len(barFrame)
     return healthPercent * 100
 
+def moveMouseToPosition(pos,gameWindow):
+    newPosX = pos[0]
+    newPosY = pos[1]
+    newPosX += gameWindow[0]
+    newPosY += gameWindow[1]
+    pyautogui.moveTo(newPosX,newPosY)
 
+def dragMouseToPosition(pos,gameWindow):
+    newPosX = pos[0]
+    newPosY = pos[1]
+    newPosX += gameWindow[0]
+    newPosY += gameWindow[1]
+    pyautogui.dragTo(newPosX,newPosY,button='left')
 
+weaponColorToTierList = [
+    [[181,181,181],0],
+    [[53,74,177],1],
+    [[136,98,98],2],
+    [[101,212,32],3]
+]
+
+playerItemsPos = [610,325]
+lootPos = [610,525]
+playerWeaponPos = [635,345]
 """
     [107,221,247], #enemies with swords issues with arrows, gotta change this.
     [39,206,164],  #snakes, also all elves
