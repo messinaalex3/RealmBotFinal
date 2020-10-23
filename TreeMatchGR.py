@@ -13,19 +13,20 @@ import sys
 import random
 
 
-frame = cv2.imread("Resources\\TestImages\\GrassArrow.png")
+frame = cv2.imread("Resources\\TestImages\\SandBagsBullet.png")
 frame = cv2.cvtColor(frame,cv2.COLOR_RGBA2RGB)
 
 # for i in range(0,10):                             # Pixel location top left of box
 #     for j in range(0, 10):
 #         frame[289+i,491+j] = [255, 255, 255]
 
+print(frame[289,491])
 
 
 outline_mask = cv2.inRange(frame, (1,1,1), (30,30,30))      # Issue with words above character (outlined)
 tree_mask = cv2.inRange(frame, (0,10,30), (3,30,60))
 arrow_mask = cv2.inRange(frame, (34,100,164), (34,100,164))
-edges = cv2.Canny(frame, 50, 450)
+edges = cv2.Canny(frame, 50, 100)
 
 while (True):
 

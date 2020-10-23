@@ -15,7 +15,7 @@ import random
 
 
 pyautogui.FAILSAFE = True
-enemyList = os.listdir("Resources\\")
+enemyList = os.listdir("Resources\\Enemies\\")
 enemyList = GrabScreen.enemyListToFileList(enemyList)
 print(enemyList)
 enemyList = GrabScreen.openEnemyTemplates(enemyList)

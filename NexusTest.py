@@ -190,7 +190,8 @@ while True:
 
     cv2.imshow("Frame",game_frame)
     cv2.imshow('Corner1',corner_UR)
-    #cv2.imshow("Frame2", cutFrame)
+    cv2.imshow("Frame3", frame)
+    cv2.imshow("Frame2", mode_frame)
 
     if cv2.waitKey(25) & 0xFF == ord("q"):
         cv2.destroyAllWindows()

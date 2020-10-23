@@ -13,7 +13,7 @@ enemyList = ['Bandit Enemy','Bandit Leader','Pirate','Piratess','Poison Scorpion
 def enemyListToFileList(enemyList):
     newList = []
     for enemy in enemyList:
-        tempEnemy = "Resources\\" + enemy
+        tempEnemy = "Resources\\Enemies\\" + enemy
         newList.append(tempEnemy)
     return newList
 
@@ -49,8 +49,8 @@ def findPlayerDataFromColors(frame):
 
 def captureScreen(screen):
     sct = mss.mss()
-    temp = numpy.asarray(sct.grab(screen))
-    return numpy.asarray(sct.grab(screen))
+    #temp = numpy.array(sct.grab(screen))
+    return numpy.array(sct.grab(screen))
 def findWindow(name):
     hWnd = win32gui.FindWindow(None,name)
     window = win32gui.GetWindowRect(hWnd)
