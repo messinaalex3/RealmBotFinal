@@ -11,25 +11,7 @@ import time
 
 
 staffImage = cv2.imread("Resources\\WeaponsImages\\SerpentineStaff.png")
-
-file = open("Resources\\WeaponsImages\\TierTable.txt")
-weaponTable = []
-for line in file:
-    tableItem = line.split()
-    weaponTable.append(tableItem)
-file.close()
-for item in weaponTable:
-    temp = "Resources\\WeaponsImages\\" + item[0]
-    print(temp)
-    item[0] = cv2.imread(temp, cv2.IMREAD_UNCHANGED)
-    #item[0] = cv2.cvtColor(tempItem,cv2.COLOR_BGRA2GRAY)
-
-
 pyautogui.FAILSAFE = True
-enemyList = os.listdir("Resources\\WeaponsImages")
-enemyList = GrabScreen.enemyListToFileList(enemyList)
-print(enemyList)
-enemyList = GrabScreen.openEnemyTemplates(enemyList)
 gameWindow = GrabScreen.findWindow("RotMGExalt")
 
 def cutWindowItemPickup(frame):
@@ -63,7 +45,7 @@ def matchTieredItem(frame,item,offset,window):
             weaponColor = numpy.array(color[0])
             found = cv2.inRange(weaponFrame, weaponColor, weaponColor)
             if numpy.any(found):
-                print("We have found a tier ", color[1])
+                # print("We have found a tier ", color[1])
                 tiersFound.append([color[1],[pt[0] + w/2 + windowOffset[0],pt[1] + h/2 + windowOffset[1]]])
     cv2.imshow("hellooo",tempFrame)
     return tiersFound
@@ -95,26 +77,29 @@ def loot(frame):
 
 
     #Get window
-# frame = GrabScreen.captureScreen(gameWindow)
-#     #Convert window to 3-channel RGB without Alpha
-# frame = cv2.cvtColor(frame,cv2.COLOR_RGBA2RGB)
-#loot(frame)
+frame = GrabScreen.captureScreen(gameWindow)
+    #Convert window to 3-channel RGB without Alpha
+frame = cv2.cvtColor(frame,cv2.COLOR_RGBA2RGB)
+loot(frame)
 #staffImage = GrabScreen.frameToEdge(staffImage)
-while (True):
-    frame = GrabScreen.captureScreen(gameWindow)
-    # Convert window to 3-channel RGB without Alpha
-    frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
-    lootFrame = cutWindowItemPickup(frame)
-    playerFrame = cutWindowPlayerItems(frame)
-    #playerFrame = GrabScreen.frameToEdge(playerFrame)
-
-    cv2.imshow("Loot",lootFrame)
-    cv2.imshow("PlayerLoot",playerFrame)
-    cv2.imshow("Staff",staffImage)
-    matchTieredItem(playerFrame,staffImage,Utils.playerItemsPos,gameWindow)
-
-    if cv2.waitKey(25) & 0xFF == ord("q"):
-        cv2.destroyAllWindows()
-        break
+# while (True):
+#     frame = GrabScreen.captureScreen(gameWindow)
+#     # Convert window to 3-channel RGB without Alpha
+#     frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
+#     lootFrame = cutWindowItemPickup(frame)
+#     playerFrame = cutWindowPlayerItems(frame)
+#     #playerFrame = GrabScreen.frameToEdge(playerFrame)
+#
+#     cv2.imshow("Loot",lootFrame)
+#     cv2.imshow("PlayerLoot",playerFrame)
+#     cv2.imshow("Staff",staffImage)
+#     playerItems = matchTieredItem(playerFrame,staffImage,Utils.playerItemsPos,gameWindow)
+#     foundItems = matchTieredItem(lootFrame,staffImage,Utils.lootPos,gameWindow)
+#     print("player",playerItems)
+#     print("loot",foundItems)
+#
+#     if cv2.waitKey(25) & 0xFF == ord("q"):
+#         cv2.destroyAllWindows()
+#         break
 
 
