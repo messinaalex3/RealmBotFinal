@@ -1,23 +1,17 @@
-import GrabScreen
-import DisplayScreen
-import AgentTest
-import Utils
 import cv2
-from matplotlib import pyplot as plt
 import numpy
-import os
 import pyautogui
-import time
+
+import GrabScreen
+import Utils
 import Looting
-
-
-
-
 
 pyautogui.FAILSAFE = True
 gameWindow = GrabScreen.findWindow("RotMGExalt")
-frame = cv2.imread("Resources\\TestImages\\SandBagsBullet.png")
-
+frame = GrabScreen.captureScreen(gameWindow)
+    #Convert window to 3-channel RGB without Alpha
+frame = cv2.cvtColor(frame,cv2.COLOR_RGBA2RGB)
+Looting.doLooting(frame,gameWindow)
 def cutWindowItemPickup(frame):
     tempFrame = frame.copy()
     temp = tempFrame[525:630,610:805]
