@@ -1,22 +1,8 @@
 import GrabScreen
-import DisplayScreen
-import AgentTest
 import Utils
 import cv2
-from matplotlib import pyplot as plt
 import numpy
-import os
 import pyautogui
-import time
-import Looting
-
-
-
-
-
-pyautogui.FAILSAFE = True
-gameWindow = GrabScreen.findWindow("RotMGExalt")
-frame = cv2.imread("Resources\\TestImages\\SandBagsBullet.png")
 
 def cutWindowItemPickup(frame):
     tempFrame = frame.copy()
@@ -32,8 +18,6 @@ def cutWindowPlayerItems(frame):
 
 def matchTieredItem(frame,item,offset,window,tierList,defaultPos):
     tempFrame = frame.copy()
-    # frame = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
-    # rgbEnemy = cv2.cvtColor(item, cv2.COLOR_RGBA2GRAY)
     edgeFrame = GrabScreen.frameToEdge(tempFrame)
     edgeEnemy = GrabScreen.frameToEdge(item)
     result = cv2.matchTemplate(edgeFrame, edgeEnemy, cv2.TM_CCOEFF_NORMED)
@@ -68,8 +52,8 @@ def loot(frame,image,tierList,defaultPos,window):
 
     wepPosX = Utils.playerWeaponPos[0]
     wepPosY = Utils.playerWeaponPos[1]
-    wepPosX += gameWindow[0]
-    wepPosY += gameWindow[1]
+    wepPosX += window[0]
+    wepPosY += window[1]
 
     if not len(foundItems) == 0:
         if not len(playerItems) == 0:
@@ -81,10 +65,6 @@ def loot(frame,image,tierList,defaultPos,window):
                 pyautogui.dragTo(playerItems[0][1][0], playerItems[0][1][1], .35, pyautogui.easeInQuad)
     print("Player item tier =", playerItems)
     print("Loot item tier = ", foundItems)
-    #Get window
-# frame = GrabScreen.captureScreen(gameWindow)
-#     #Convert window to 3-channel RGB without Alpha
-# frame = cv2.cvtColor(frame,cv2.COLOR_RGBA2RGB)
 
 def doLooting(frame,window):
     tempFrame = frame.copy()
@@ -94,33 +74,3 @@ def doLooting(frame,window):
     robeImage = cv2.imread("Resources\\WeaponsImages\\T1Robe.png")
     loot(frame,staffImage,Utils.weaponColorToTierList,Utils.playerWeaponPos,window)
     loot(frame,robeImage,Utils.robeColorToTierList,Utils.playerArmorPos,window)
-
-
-
-#staffImage = GrabScreen.frameToEdge(staffImage)
-# while (True):
-#     cv2.rectangle(frame,(610,325),(805,390),(0,255,255),2)
-#     cv2.rectangle(frame, (735, 345), (736, 346), (0, 255, 255), 2)
-#     #temp = tempFrame[325:390,610:805]
-#     cv2.imshow("hithere",frame)
-#
-#     # frame = GrabScreen.captureScreen(gameWindow)
-#     # # Convert window to 3-channel RGB without Alpha
-#     # frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
-#     # lootFrame = cutWindowItemPickup(frame)
-#     # playerFrame = cutWindowPlayerItems(frame)
-#     # #playerFrame = GrabScreen.frameToEdge(playerFrame)
-#     #
-#      #cv2.imshow("Loot",lootFrame)
-#     # cv2.imshow("PlayerLoot",playerFrame)
-#     # cv2.imshow("Staff",staffImage)
-#     # playerItems = matchTieredItem(playerFrame,staffImage,Utils.playerItemsPos,gameWindow)
-#     # foundItems = matchTieredItem(lootFrame,staffImage,Utils.lootPos,gameWindow)
-#     # print("player",playerItems)
-#     # print("loot",foundItems)
-#
-#     if cv2.waitKey(25) & 0xFF == ord("q"):
-#         cv2.destroyAllWindows()
-#         break
-
-
