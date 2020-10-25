@@ -8,6 +8,7 @@ import Looting
 
 pyautogui.FAILSAFE = True
 gameWindow = GrabScreen.findWindow("RotMGExalt")
+frame = cv2.imread("Resources\\TestImages\\TestFrame.png")
 frame = GrabScreen.captureScreen(gameWindow)
     #Convert window to 3-channel RGB without Alpha
 frame = cv2.cvtColor(frame,cv2.COLOR_RGBA2RGB)

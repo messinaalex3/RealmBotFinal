@@ -72,9 +72,7 @@ def loot(frame, image, tierList, defaultPos, window):
 
 def doLooting(frame, window):
     tempFrame = frame.copy()
-    cv2.imshow("uhm", tempFrame)
-    pyautogui.sleep(5)
     staffImage = cv2.imread("Resources\\WeaponsImages\\SerpentineStaff.png")
     robeImage = cv2.imread("Resources\\WeaponsImages\\T1Robe.png")
-    loot(frame, staffImage, Utils.weaponColorToTierList, Utils.playerWeaponPos, window)
-    loot(frame, robeImage, Utils.robeColorToTierList, Utils.playerArmorPos, window)
+    loot(tempFrame, staffImage, Utils.weaponColorToTierList, Utils.playerWeaponPos, window)
+    loot(tempFrame, robeImage, Utils.robeColorToTierList, Utils.playerArmorPos, window)
