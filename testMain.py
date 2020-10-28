@@ -16,6 +16,8 @@ Looting.doLooting(frame,gameWindow)
 
 #Using Gregs method for color mean to check if were on a bag
 #If we are run our looting method
+#if we stop movement and call this on finding the right mean we should also set a timer to only stop movement
+#once every second so we dont stop twice on the same bag
 while True:
     frame = GrabScreen.captureScreen(gameWindow)
     frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
@@ -24,7 +26,7 @@ while True:
     meanFrame = meanFrame[533:630,613:798]
     cv2.imshow("Hello",meanFrame)
     mean = sum(cv2.mean(meanFrame)) / 3
-    print(mean)
+    #print(mean)
     if mean > 70:
         print("bag!!")
         Looting.doLooting(frame,gameWindow)

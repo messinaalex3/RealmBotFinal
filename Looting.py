@@ -22,7 +22,6 @@ def matchTieredItem(frame, item, offset, window, tierList, defaultPos):
     tempFrame = frame.copy()
     edgeFrame = GrabScreen.frameToEdge(tempFrame)
     edgeEnemy = GrabScreen.frameToEdge(item)
-    cv2.imshow("edge",edgeFrame)
     result = cv2.matchTemplate(edgeFrame, edgeEnemy, cv2.TM_CCOEFF_NORMED)
     location = numpy.where(result >= .5)
     w, h = edgeEnemy.shape[::-1]
@@ -31,7 +30,6 @@ def matchTieredItem(frame, item, offset, window, tierList, defaultPos):
     if not defaultPos == [0, 0]:
         tiersFound.append([-1, [defaultPos[0] + window[0], defaultPos[1] + window[1]]])
     for pt in zip(*location[::-1]):
-        print("found something")
         cv2.rectangle(tempFrame, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 1)
         weaponFrame = tempFrame.copy()
         weaponFrame = weaponFrame[pt[1]:(pt[1] + h), pt[0]:(pt[0] + w)]
@@ -41,7 +39,6 @@ def matchTieredItem(frame, item, offset, window, tierList, defaultPos):
             if numpy.any(found):
                 # print("We have found a tier ", color[1])
                 tiersFound.append([color[1], [pt[0] + w / 2 + windowOffset[0], pt[1] + h / 2 + windowOffset[1]]])
-    cv2.imshow("hellooo", tempFrame)
     return tiersFound
 
 
@@ -52,8 +49,9 @@ def sorter(input):
 def loot(frame, image, tierList, defaultPos, window):
     itemPickupWindow = cutWindowItemPickup(frame)
     playerItemWindow = cutWindowPlayerItems(frame)
-    foundItems = matchTieredItem(itemPickupWindow, image, Utils.lootPos, window, tierList, [0, 0])
     playerItems = matchTieredItem(playerItemWindow, image, Utils.playerItemsPos, window, tierList, defaultPos)
+    foundItems = matchTieredItem(itemPickupWindow, image, Utils.lootPos, window, tierList, [0, 0])
+
 
     wepPosX = Utils.playerWeaponPos[0]
     wepPosY = Utils.playerWeaponPos[1]
@@ -66,8 +64,9 @@ def loot(frame, image, tierList, defaultPos, window):
             playerItems.sort(reverse=True, key=sorter)
             maxTierItem = foundItems[0]
             if maxTierItem[0] > playerItems[0][0]:
-                pyautogui.moveTo(maxTierItem[1])
-                pyautogui.dragTo(playerItems[0][1][0], playerItems[0][1][1], .35, pyautogui.easeInQuad)
+                print("I should be moving right now :)")
+                #pyautogui.moveTo(maxTierItem[1])
+                #pyautogui.dragTo(playerItems[0][1][0], playerItems[0][1][1], .35, pyautogui.easeInQuad)
     print("Player item tier =", playerItems)
     print("Loot item tier = ", foundItems)
 
