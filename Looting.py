@@ -22,14 +22,16 @@ def matchTieredItem(frame, item, offset, window, tierList, defaultPos):
     tempFrame = frame.copy()
     edgeFrame = GrabScreen.frameToEdge(tempFrame)
     edgeEnemy = GrabScreen.frameToEdge(item)
+    cv2.imshow("edge",edgeFrame)
     result = cv2.matchTemplate(edgeFrame, edgeEnemy, cv2.TM_CCOEFF_NORMED)
-    location = numpy.where(result >= .7)
+    location = numpy.where(result >= .5)
     w, h = edgeEnemy.shape[::-1]
     windowOffset = [window[0] + offset[0], window[1] + offset[1]]
     tiersFound = []
     if not defaultPos == [0, 0]:
         tiersFound.append([-1, [defaultPos[0] + window[0], defaultPos[1] + window[1]]])
     for pt in zip(*location[::-1]):
+        print("found something")
         cv2.rectangle(tempFrame, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 1)
         weaponFrame = tempFrame.copy()
         weaponFrame = weaponFrame[pt[1]:(pt[1] + h), pt[0]:(pt[0] + w)]

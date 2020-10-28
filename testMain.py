@@ -13,6 +13,27 @@ frame = GrabScreen.captureScreen(gameWindow)
     #Convert window to 3-channel RGB without Alpha
 frame = cv2.cvtColor(frame,cv2.COLOR_RGBA2RGB)
 Looting.doLooting(frame,gameWindow)
+
+#Using Gregs method for color mean to check if were on a bag
+#If we are run our looting method
+while True:
+    frame = GrabScreen.captureScreen(gameWindow)
+    frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
+    #cv2.rectangle(frame, (613, 533), (798, 630), (0, 255, 0), 1)
+    meanFrame = frame.copy()
+    meanFrame = meanFrame[533:630,613:798]
+    cv2.imshow("Hello",meanFrame)
+    mean = sum(cv2.mean(meanFrame)) / 3
+    print(mean)
+    if mean > 70:
+        print("bag!!")
+        Looting.doLooting(frame,gameWindow)
+
+    if cv2.waitKey(25) & 0xFF == ord("q"):
+        cv2.destroyAllWindows()
+        break
+
+
 def cutWindowItemPickup(frame):
     tempFrame = frame.copy()
     temp = tempFrame[525:630,610:805]
