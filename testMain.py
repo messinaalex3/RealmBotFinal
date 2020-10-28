@@ -5,6 +5,7 @@ import pyautogui
 import GrabScreen
 import Utils
 import Looting
+import AgentTest
 
 pyautogui.FAILSAFE = True
 gameWindow = GrabScreen.findWindow("RotMGExalt")
@@ -21,16 +22,8 @@ Looting.doLooting(frame,gameWindow)
 while True:
     frame = GrabScreen.captureScreen(gameWindow)
     frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
-    #cv2.rectangle(frame, (613, 533), (798, 630), (0, 255, 0), 1)
-    meanFrame = frame.copy()
-    meanFrame = meanFrame[533:630,613:798]
-    cv2.imshow("Hello",meanFrame)
-    mean = sum(cv2.mean(meanFrame)) / 3
-    #print(mean)
-    if mean > 70:
-        print("bag!!")
-        Looting.doLooting(frame,gameWindow)
 
+    AgentTest.checkIfOnBag(frame,gameWindow)
     if cv2.waitKey(25) & 0xFF == ord("q"):
         cv2.destroyAllWindows()
         break

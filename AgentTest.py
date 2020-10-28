@@ -1,5 +1,7 @@
 import pyautogui
 import random
+import cv2
+import Looting
 
 def AttackEnemies(state,window):
     enemies = state[0]
@@ -31,3 +33,12 @@ def findClosestEnemy(enemyMap,playerPos):
                 closestPos = enemy
 
     return closestPos
+
+#this checks
+def checkIfOnBag(frame,window):
+    meanFrame = frame.copy()
+    meanFrame = meanFrame[533:630,613:798]
+    mean = sum(cv2.mean(meanFrame)) / 3
+    if mean > 70:
+        print("bag!!")
+        Looting.doLooting(frame,window)

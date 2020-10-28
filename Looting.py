@@ -64,9 +64,8 @@ def loot(frame, image, tierList, defaultPos, window):
             playerItems.sort(reverse=True, key=sorter)
             maxTierItem = foundItems[0]
             if maxTierItem[0] > playerItems[0][0]:
-                print("I should be moving right now :)")
-                #pyautogui.moveTo(maxTierItem[1])
-                #pyautogui.dragTo(playerItems[0][1][0], playerItems[0][1][1], .35, pyautogui.easeInQuad)
+                pyautogui.moveTo(maxTierItem[1])
+                pyautogui.dragTo(playerItems[0][1][0], playerItems[0][1][1], .35, pyautogui.easeInQuad)
     print("Player item tier =", playerItems)
     print("Loot item tier = ", foundItems)
 
