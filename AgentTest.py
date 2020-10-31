@@ -16,8 +16,6 @@ def AttackEnemies(state,window):
         pointX = point[0][0]
         pointY = point[0][1]
         pyautogui.moveTo(pointX + windowX,pointY + windowY)
-    if health < 25:
-        pyautogui.press("r")
     print(findClosestEnemy(enemyMap,playerPos))
 
 def findClosestEnemy(enemyMap,playerPos):
@@ -34,7 +32,6 @@ def findClosestEnemy(enemyMap,playerPos):
 
     return closestPos
 
-#this checks
 def checkIfOnBag(frame,window):
     meanFrame = frame.copy()
     meanFrame = meanFrame[533:630,613:798]
@@ -42,3 +39,18 @@ def checkIfOnBag(frame,window):
     if mean > 70:
         print("bag!!")
         Looting.doLooting(frame,window)
+
+def monitorHealth(state):
+    health = state[1]
+    if health < 25:
+        pyautogui.press("r")
+
+def Aim(enemies,window):
+    if not len(enemies) == 0:
+        enemyList = enemies[0]
+        point = random.choice(enemyList)
+        windowX = window[0]
+        windowY = window[1]
+        pointX = point[0][0]
+        pointY = point[0][1]
+        pyautogui.moveTo(pointX + windowX,pointY + windowY)

@@ -8,6 +8,7 @@ gameWindow = GrabScreen.findWindow("RotMGExalt")
 time.sleep(1)
 
 
+
 while True:
 
     frame = GrabScreen.captureScreen(gameWindow)
@@ -16,6 +17,8 @@ while True:
 
     mode_frame = frame.copy()[533:550, 613:798]
     loot_frame = frame.copy()[589:619, 761:792]
+    bigger_loot_frame = frame.copy()[533:630,613:798]
+
 
     cv2.rectangle(frame, (613, 533), (798, 550), (0, 255, 0), 1)
 
@@ -23,7 +26,7 @@ while True:
 
     mode_mean = sum(cv2.mean(mode_frame)) / 3
     loot_rect = sum(cv2.mean(loot_frame)) / 3
-
+    big_loot_mean = sum(cv2.mean(bigger_loot_frame)) / 3
     mode = ""
 
     if 56 < mode_mean < 65:
@@ -35,8 +38,14 @@ while True:
     elif mode_mean == 54:
         mode = "Over Portal"
     #   pyautogui.press('space')
-    elif loot_rect == 87:
+    #this is an if instead of if else because of Realm
+    if loot_rect == 87:
         mode = "Loot"
+
+
+    # print("Mode mean:", mode_mean)
+    print("Loot Mean: ",loot_rect)
+    print(mode)
 
     print('Mode: ', mode, end="\r")
 
