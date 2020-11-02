@@ -70,9 +70,11 @@ def loot(frame, image, tierList, defaultPos, window):
     print("Loot item tier = ", foundItems)
 
 
-def doLooting(frame, window):
+def doLooting(frame,staffImage,robeImage,potionImage, window):
     tempFrame = frame.copy()
-    staffImage = cv2.imread("Resources\\WeaponsImages\\SerpentineStaff.png")
-    robeImage = cv2.imread("Resources\\WeaponsImages\\T1Robe.png")
+    # staffImage = cv2.imread("Resources\\WeaponsImages\\SerpentineStaff.png")
+    # robeImage = cv2.imread("Resources\\WeaponsImages\\T1Robe.png")
+    # potionImage = cv2.imread("Resources\\WeaponsImages\\Potion.png")
     loot(tempFrame, staffImage, Utils.weaponColorToTierList, Utils.playerWeaponPos, window)
     loot(tempFrame, robeImage, Utils.robeColorToTierList, Utils.playerArmorPos, window)
+    loot(tempFrame,potionImage,Utils.healthPotionRed,Utils.potionLocation,window)

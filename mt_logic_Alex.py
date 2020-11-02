@@ -6,6 +6,7 @@ import cv2
 import GrabScreen
 import Movement
 import AgentTest
+import Looting
 
 class GameState:
     mode = None
@@ -19,6 +20,9 @@ class GameState:
     gameWindow = GrabScreen.findWindow("RotMGExalt")
     playerPos = [[100,98]]
     closestEnemy = None
+    staffImage = cv2.imread("Resources\\WeaponsImages\\SerpentineStaff.png")
+    robeImage = cv2.imread("Resources\\WeaponsImages\\T1Robe.png")
+    potionImage = cv2.imread("Resources\\WeaponsImages\\Potion.png")
 
     def getMode(self):
         while(True):
@@ -74,11 +78,14 @@ class GameState:
             self.mapEnemies = GetData.getEnemiesMap(self.frame)
             self.closestEnemy = AgentTest.findClosestEnemy(self.mapEnemies,self.playerPos)
             AgentTest.Aim(self.screenEnemies,self.gameWindow)
+            #im wondering if this should be a thread since we dont want to die if were checking enemies on screen
+            AgentTest.monitorHealth(self.playerHealth)
+            self.playerPos = GetData.getPlayerPos(self.frame)
         print("realm return")
 
     def loot(self):
         print("Do Loot Stuff...")
-        time.sleep(.1)
+        Looting.doLooting(self.frame,self.staffImage,self.robeImage,self.potionImage,self.gameWindow)
         print("Loot return")
 
     def portal(self):
@@ -103,7 +110,7 @@ class GameState:
     def moveLR(self):
         count = 0
         while(self.mode=="Realm"):
-            Movement.motionUD(self.closestEnemy, self.playerPos[0])
+            Movement.motionLR(self.closestEnemy, self.playerPos[0])
         print("MoveLR Realm return")
 
 

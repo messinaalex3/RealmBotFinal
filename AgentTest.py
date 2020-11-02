@@ -40,8 +40,7 @@ def checkIfOnBag(frame,window):
         print("bag!!")
         Looting.doLooting(frame,window)
 
-def monitorHealth(state):
-    health = state[1]
+def monitorHealth(health):
     if health < 25:
         pyautogui.press("r")
 

@@ -63,10 +63,23 @@ robeColorToTierList = [
     [[194,194,194],8]
 ]
 
+healthPotionRed = [
+    [[30,30,168],100]
+]
+
 playerItemsPos = [610,325]
 lootPos = [610,525]
 playerWeaponPos = [635,345]
 playerArmorPos = [735,345]
+potionLocation = [650,500]
+
+avoidOnMap = [
+    [29,74,24],
+    [139,74,43]
+]
+
+treeMapColor = [29,74,24]
+darkWaterColor = [139,74,43]
 """
     [107,221,247], #enemies with swords issues with arrows, gotta change this.
     [39,206,164],  #snakes, also all elves

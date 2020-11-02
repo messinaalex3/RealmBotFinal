@@ -13,7 +13,7 @@ frame = cv2.imread("Resources\\TestImages\\TestFrame.png")
 frame = GrabScreen.captureScreen(gameWindow)
     #Convert window to 3-channel RGB without Alpha
 frame = cv2.cvtColor(frame,cv2.COLOR_RGBA2RGB)
-Looting.doLooting(frame,gameWindow)
+#Looting.doLooting(frame,gameWindow)
 
 #Using Gregs method for color mean to check if were on a bag
 #If we are run our looting method
@@ -22,7 +22,13 @@ Looting.doLooting(frame,gameWindow)
 while True:
     frame = GrabScreen.captureScreen(gameWindow)
     frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
-
+    miniMap = GrabScreen.getMapExplored(frame)
+    mapMask = GrabScreen.findColorsInFrame(miniMap,Utils.avoidOnMap)
+   #mapMask = GrabScreen.findColorInFrame(miniMap,Utils.treeMapColor,Utils.treeMapColor)
+    mapFound = GrabScreen.findEnemiesFromMask(mapMask,mapMask,"Map")
+    enemiesOnMap = mapFound[1]
+    cv2.imshow("hi there!",mapMask)
+    print(enemiesOnMap)
     AgentTest.checkIfOnBag(frame,gameWindow)
     if cv2.waitKey(25) & 0xFF == ord("q"):
         cv2.destroyAllWindows()

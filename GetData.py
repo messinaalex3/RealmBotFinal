@@ -1,6 +1,7 @@
 import GrabScreen
 import Utils
 import cv2
+import numpy
 
 
 def getEnemiesScreen(frame):
@@ -44,4 +45,11 @@ def getMode(frame):
         mode = "Loot"
     return mode
 
-
+def getPlayerPos(frame):
+    playerPos = [[100,98]]
+    miniMap = GrabScreen.getMapExplored(frame)
+    playerMapMask = GrabScreen.findColorInFrame(miniMap,numpy.array(Utils.whiteMapColor),[255,255,255])
+    playerMapFound = GrabScreen.findEnemiesFromMask(playerMapMask,playerMapMask,doPrint= False)
+    if len(playerMapFound[1]) > 0:
+        playerPos = playerMapFound[1][0][0]
+    return playerPos
