@@ -2,12 +2,35 @@ import threading
 import time
 import random
 
+class Movement:
+    def __init__(self, gamestate):
+        self.gameState = gamestate
+
+    def moveUD(self):
+        count = 0
+        while(self.gameState.mode=="Realm"):
+            print("MoveUD realm stuff: ",count)
+            count += 1
+            time.sleep(.1)
+        print("MoveUD Realm return")
+
+    def moveLR(self):
+        count = 0
+        while(self.gameState.mode=="Realm"):
+            print("MoveLR realm stuff: ",count)
+            count += 1
+            time.sleep(.1)
+        print("MoveLR Realm return")
+
+
 class GameState:
-    mode = None
-    lastMode = None
-    frame = None
-    modeArray = ["Nexus","Loot","Nexus","Over Portal","Transition","Realm","Over Portal","Realm","Loot","Realm","Transition"]
-    array_i = 0
+    def __init__(self):
+        self.mode = None
+        self.lastMode = None
+        self.frame = None
+        self.modeArray = ["Nexus","Loot","Nexus","Over Portal","Transition","Realm","Over Portal","Realm","Loot","Realm","Transition"]
+        self.array_i = 0
+        self.mvt = Movement(self)
 
     def getMode(self):
         while(True):
@@ -32,8 +55,8 @@ class GameState:
                     self.nexus()
                 elif mode =="Realm":
                     t1 = threading.Thread(target=self.realm)
-                    t2 = threading.Thread(target=self.moveLR)
-                    t3 = threading.Thread(target=self.moveUD)
+                    t2 = threading.Thread(target=self.mvt.moveLR)
+                    t3 = threading.Thread(target=self.mvt.moveUD)
                     t1.start()
                     t2.start()
                     t3.start()
@@ -86,21 +109,6 @@ class GameState:
             time.sleep(.1)
         print("Transition return")
 
-    def moveUD(self):
-        count = 0
-        while(self.mode=="Realm"):
-            print("MoveUD realm stuff: ",count)
-            count += 1
-            time.sleep(.1)
-        print("MoveUD Realm return")
-
-    def moveLR(self):
-        count = 0
-        while(self.mode=="Realm"):
-            print("MoveLR realm stuff: ",count)
-            count += 1
-            time.sleep(.1)
-        print("MoveLR Realm return")
 
 
 
