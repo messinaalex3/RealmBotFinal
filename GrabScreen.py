@@ -152,7 +152,7 @@ def findColorInFrame(frame,color,upperb = None):
         upperb = numpy.array(upperb)
     return cv2.inRange(frame,lowerb,upperb)
 
-def findEnemiesFromMask(mask,frameToDraw,where = "Screen",doPrint = True):
+def findEnemiesFromMask(mask,frameToDraw,where = "Screen",doPrint = False):
     tempFrame = frameToDraw.copy()
     contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     cv2.drawContours(tempFrame, contours, -1, (0, 255, 0), 2)

@@ -7,22 +7,24 @@ import GrabScreen
 import Movement
 import AgentTest
 import Looting
+import Nexus
 
 class GameState:
-    mode = None
-    lastMode = None
-    frame = None
-    modeArray = ["Nexus","Loot","Nexus","Over Portal","Transition","Realm","Over Portal","Realm","Loot","Realm","Transition"]
-    array_i = 0
-    screenEnemies = None
-    mapEnemies = None
-    playerHealth = 100
-    gameWindow = GrabScreen.findWindow("RotMGExalt")
-    playerPos = [[100,98]]
-    closestEnemy = None
-    staffImage = cv2.imread("Resources\\WeaponsImages\\SerpentineStaff.png")
-    robeImage = cv2.imread("Resources\\WeaponsImages\\T1Robe.png")
-    potionImage = cv2.imread("Resources\\WeaponsImages\\Potion.png")
+    def __init__(self):
+        self.mode = None
+        self.lastMode = None
+        self.frame = None
+        self.modeArray = ["Nexus","Loot","Nexus","Over Portal","Transition","Realm","Over Portal","Realm","Loot","Realm","Transition"]
+        self.array_i = 0
+        self.screenEnemies = None
+        self.mapEnemies = None
+        self.playerHealth = 100
+        self.gameWindow = GrabScreen.findWindow("RotMGExalt")
+        self.playerPos = [[100,98]]
+        self.closestEnemy = None
+        self.staffImage = cv2.imread("Resources\\WeaponsImages\\SerpentineStaff.png")
+        self.robeImage = cv2.imread("Resources\\WeaponsImages\\T1Robe.png")
+        self.potionImage = cv2.imread("Resources\\WeaponsImages\\Potion.png")
 
     def getMode(self):
         while(True):
@@ -68,7 +70,7 @@ class GameState:
 
     def nexus(self):
         print("Do Nexus Stuff...")
-        time.sleep(.1)
+        Nexus.doNexus()
         print("Nexus return")
 
     def realm(self):
@@ -105,6 +107,7 @@ class GameState:
         count = 0
         while(self.mode=="Realm"):
             Movement.motionUD(self.closestEnemy, self.playerPos[0])
+            print("Closest Enemy: ",self.closestEnemy)
         print("MoveUD Realm return")
 
     def moveLR(self):
@@ -112,8 +115,6 @@ class GameState:
         while(self.mode=="Realm"):
             Movement.motionLR(self.closestEnemy, self.playerPos[0])
         print("MoveLR Realm return")
-
-
 
 
 
@@ -126,8 +127,11 @@ t2 = threading.Thread(target=gs.getMode)
 t2.start()
 t3 = threading.Thread(target=gs.modeListener)
 t3.start()
+t1.join()
+t2.join()
+t3.join()
 
-
+print("exit")
 
 
 
