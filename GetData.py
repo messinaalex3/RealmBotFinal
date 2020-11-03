@@ -43,6 +43,10 @@ def getMode(frame):
     # this is an if instead of if else because of Realm
     if loot_rect == 87:
         mode = "Loot"
+
+    cv2.imshow("ModeFrame",mode_frame)
+    cv2.waitKey(1)
+
     return mode
 
 def getPlayerPos(frame):
