@@ -3,6 +3,7 @@ import Utils
 import cv2
 import numpy
 import pyautogui
+import time
 
 
 def cutWindowItemPickup(frame):
@@ -78,3 +79,6 @@ def doLooting(frame,staffImage,robeImage,potionImage, window):
     loot(tempFrame, staffImage, Utils.weaponColorToTierList, Utils.playerWeaponPos, window)
     loot(tempFrame, robeImage, Utils.robeColorToTierList, Utils.playerArmorPos, window)
     loot(tempFrame,potionImage,Utils.healthPotionRed,Utils.potionLocation,window)
+    pyautogui.keyDown('w')
+    time.sleep(.1)
+    pyautogui.keyUp('w')

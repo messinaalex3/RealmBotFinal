@@ -25,6 +25,7 @@ class GameState:
         self.staffImage = cv2.imread("Resources\\WeaponsImages\\SerpentineStaff.png")
         self.robeImage = cv2.imread("Resources\\WeaponsImages\\T1Robe.png")
         self.potionImage = cv2.imread("Resources\\WeaponsImages\\Potion.png")
+        self.mvt = Movement.Movement(self)
 
     def getMode(self):
         while(True):
@@ -45,14 +46,15 @@ class GameState:
                     self.nexus()
                 elif mode =="Realm":
                     t1 = threading.Thread(target=self.realm)
-                    t2 = threading.Thread(target=self.moveLR)
-                    t3 = threading.Thread(target=self.moveUD)
+                    t2 = threading.Thread(target=self.mvt.move,args=('LR',))
+                    t3 = threading.Thread(target=self.mvt.move,args=('UD',))
                     t1.start()
                     t2.start()
                     t3.start()
                     t1.join()
                     t2.join()
                     t3.join()
+                    self.mvt.modeChange = False
                     print("Joined Threads")
                 elif mode =="Loot":
                     self.loot()
@@ -76,6 +78,7 @@ class GameState:
     def realm(self):
         count = 0
         while(self.mode=="Realm"):
+            #print("Running Realm")
             self.screenEnemies = GetData.getEnemiesScreen(self.frame)
             self.mapEnemies = GetData.getEnemiesMap(self.frame)
             self.closestEnemy = AgentTest.findClosestEnemy(self.mapEnemies,self.playerPos)
@@ -103,18 +106,18 @@ class GameState:
             time.sleep(.1)
         print("Transition return")
 
-    def moveUD(self):
-        count = 0
-        while(self.mode=="Realm"):
-            Movement.motionUD(self.closestEnemy, self.playerPos[0])
-            print("Closest Enemy: ",self.closestEnemy)
-        print("MoveUD Realm return")
-
-    def moveLR(self):
-        count = 0
-        while(self.mode=="Realm"):
-            Movement.motionLR(self.closestEnemy, self.playerPos[0])
-        print("MoveLR Realm return")
+    # def moveUD(self):
+    #     count = 0
+    #     while(self.mode=="Realm"):
+    #         Movement.motionUD(self.closestEnemy, self.playerPos[0])
+    #         print("Closest Enemy: ",self.closestEnemy)
+    #     print("MoveUD Realm return")
+    #
+    # def moveLR(self):
+    #     count = 0
+    #     while(self.mode=="Realm"):
+    #         Movement.motionLR(self.closestEnemy, self.playerPos[0])
+    #     print("MoveLR Realm return")
 
 
 

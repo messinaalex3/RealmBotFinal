@@ -47,7 +47,7 @@ def doNexus():
             pyautogui.keyDown('a')
             pressedA = True
             #print("Press A")
-        elif center_diff < 4 and  pressedA:
+        elif center_diff < 4 and pressedA:
             pyautogui.keyUp('a')
             pressedA = False
             #print("Release A")
@@ -247,3 +247,8 @@ def doNexus():
         if cv2.waitKey(25) & 0xFF == ord("q"):
             cv2.destroyAllWindows()
             break
+
+    pyautogui.keyUp('w')
+    pyautogui.keyUp('a')
+    pyautogui.keyUp('s')
+    pyautogui.keyUp('d')
