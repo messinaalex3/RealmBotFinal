@@ -22,14 +22,16 @@ frame = cv2.cvtColor(frame,cv2.COLOR_RGBA2RGB)
 while True:
     frame = GrabScreen.captureScreen(gameWindow)
     frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
-    miniMap = GrabScreen.getMapExplored(frame)
-    mapMask = GrabScreen.findColorsInFrame(miniMap,Utils.avoidOnMap)
-   #mapMask = GrabScreen.findColorInFrame(miniMap,Utils.treeMapColor,Utils.treeMapColor)
-    mapFound = GrabScreen.findEnemiesFromMask(mapMask,mapMask,"Map")
-    enemiesOnMap = mapFound[1]
-    cv2.imshow("hi there!",mapMask)
-    print(enemiesOnMap)
-    AgentTest.checkIfOnBag(frame,gameWindow)
+    cv2.rectangle(frame, (319, 310), (330, 321), (255, 0, 0), 2)
+    cv2.imshow("hiiii",frame)
+   #  miniMap = GrabScreen.getMapExplored(frame)
+   #  mapMask = GrabScreen.findColorsInFrame(miniMap,Utils.avoidOnMap)
+   # #mapMask = GrabScreen.findColorInFrame(miniMap,Utils.treeMapColor,Utils.treeMapColor)
+   #  mapFound = GrabScreen.findEnemiesFromMask(mapMask,mapMask,"Map")
+   #  enemiesOnMap = mapFound[1]
+   #  cv2.imshow("hi there!",mapMask)
+   #  print(enemiesOnMap)
+   #  AgentTest.checkIfOnBag(frame,gameWindow)
     if cv2.waitKey(25) & 0xFF == ord("q"):
         cv2.destroyAllWindows()
         break

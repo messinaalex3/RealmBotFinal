@@ -44,12 +44,29 @@ def monitorHealth(health):
     if health < 25:
         pyautogui.press("r")
 
-def Aim(enemies,window):
+def Aim(enemies,window,frame):
     if not len(enemies) == 0:
-        enemyList = enemies[0]
-        point = random.choice(enemyList)
+        playerPos = [319,310]
+        enemyLocations = []
+        for enemy in enemies:
+            location  = enemy[0][0]
+            enemyLocations.append([location,abs(playerPos[0] - location[0]) + abs(playerPos[1] - location[1])])
+        enemyLocations.sort(key=sorter)
+        closestEnemy = enemyLocations[0][0]
+        print(closestEnemy)
         windowX = window[0]
         windowY = window[1]
-        pointX = point[0][0]
-        pointY = point[0][1]
-        pyautogui.moveTo(pointX + windowX,pointY + windowY)
+        pyautogui.moveTo(closestEnemy[0] + windowX,closestEnemy[1] + windowY)
+
+
+        # enemyList = enemies[0]
+        # print(enemyLocations)
+        # point = random.choice(enemyList)
+        # windowX = window[0]
+        # windowY = window[1]
+        # pointX = point[0][0]
+        # pointY = point[0][1]
+        #pyautogui.moveTo(pointX + windowX,pointY + windowY)
+
+def sorter(input):
+    return input[1]
