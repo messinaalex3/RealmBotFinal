@@ -71,8 +71,6 @@ class Agent:
 
     def runAgent(self):
         GrabScreen.findWindow("RotMGExalt")
-        self.gameState.playerPos[0] = [[0,0]]
-        self.gameState.closestEnemyPos[0] = [[0,0]]
         while True:
             while self.gameState.mode[0] == "Nexus":
                 print("hello sir, i reside in the nexus.")
