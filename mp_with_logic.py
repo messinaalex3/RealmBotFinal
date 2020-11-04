@@ -26,7 +26,7 @@ class GameState:
 
     def read_state(self):
         for i in range(0, 100000):
-            cv2.imshow("Frame_Read", self.frame[0])
+            #cv2.imshow("Frame_Read", self.frame[0])
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 cv2.destroyAllWindows()
                 break
@@ -34,7 +34,7 @@ class GameState:
 
     def read_state_2(self):
         for i in range(0, 1000):
-            cv2.imshow("Frame_Read_2", self.frame[0])
+            #cv2.imshow("Frame_Read_2", self.frame[0])
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 cv2.destroyAllWindows()
                 break
@@ -54,7 +54,7 @@ class Agent:
 
     def printMode(self):
         for i in range(0, 100000):
-            cv2.imshow("Frame_Read_3", self.gameState.frame[0])
+            #cv2.imshow("Frame_Read_3", self.gameState.frame[0])
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 cv2.destroyAllWindows()
                 break
@@ -64,12 +64,13 @@ class Agent:
         return
 
     def runAgent(self):
+        GrabScreen.findWindow("RotMGExalt")
         while True:
             while self.gameState.mode[0] == "Nexus":
                 print("hello sir, i reside in the nexus.")
                 screenEnemies = GetData.getEnemiesScreen(self.gameState.frame[0])
                 AgentTest.Aim(screenEnemies,self.gameState.gameWindow[0],self.gameState.frame[0])
-                #Nexus.doNexus()
+                Nexus.doNexus()
             while self.gameState.mode[0] == "Realm":
                 print("ahh good day fine sir, you may find me in the realm.")
                 screenEnemies = GetData.getEnemiesScreen(self.gameState.frame[0])
