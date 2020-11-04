@@ -6,80 +6,106 @@ import AgentTest
 
 
 
-
 def hold_char(hold_time,char):
     pyautogui.keyDown(char)
     time.sleep(hold_time//1000)
     pyautogui.keyUp(char)
 
+def getCenterOnBlue(gameWindow):
+    frame = GrabScreen.captureScreen(gameWindow)
+    frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
+
+    miniMap = GrabScreen.getMapExplored(frame)
+    mapMask = GrabScreen.findColorInFrame(miniMap, [200, 0, 0], [255, 0, 0])
+    mapFound = GrabScreen.findEnemiesFromMask(mapMask, mapMask, "Map", doPrint=False)
+
+    max_pos = -float('inf')
+
+    for points in mapFound[1]:
+        # print(points[0][0])
+        if points[0][0][1] > 60:
+            if points[0][0][0] > max_pos:
+                max_pos = points[0][0][0]
+
+    center_diff = 112 - max_pos
+
+    #cv2.imshow("map", mapMask)
+
+    #cv2.waitKey(1)
+
+    return center_diff
+
+def getHorizDiff(gameWindow):
+    frame = GrabScreen.captureScreen(gameWindow)
+    frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
+
+    miniMap = GrabScreen.getMapExplored(frame)[0:130,0:200]
+    mapMask = GrabScreen.findColorInFrame(miniMap, [150, 0, 0], [255,30, 30])
+    mapFound = GrabScreen.findEnemiesFromMask(mapMask, mapMask, "Map", doPrint=False)
+
+    nearest_portal = AgentTest.findClosestEnemy(mapFound[1], [[100, 98]])
+
+    h_diff = 100 - nearest_portal[0]
+
+    #cv2.imshow("map3", mapMask)
+
+    #cv2.waitKey(1)
+
+    return h_diff
+
+
 def doNexus():
     pyautogui.FAILSAFE = True
     gameWindow = GrabScreen.findWindow("RotMGExalt")
-    time.sleep(1)
 
     pressedA = False
     pressedD = False
     pressedW = False
+    portalFound = False
+
+    #pyautogui.moveTo(gameWindow[2]-20,gameWindow[1]+45)
+    #pyautogui.moveTo(gameWindow[0]+100, gameWindow[1] + 100)
+    for i in range(0,5):
+        pyautogui.scroll(1)
+        #win32api.mouse_event(MOUSEEVENTF_WHEEL, gameWindow[0]+100, gameWindow[1]+100, 1, 0)
+        time.sleep(.05)
 
     #FIRST
     while (True):
-        frame = GrabScreen.captureScreen(gameWindow)
-        frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
 
-        miniMap = GrabScreen.getMapExplored(frame)
-        mapMask = GrabScreen.findColorInFrame(miniMap, [200, 0, 0], [255, 0, 0])
-        mapFound = GrabScreen.findEnemiesFromMask(mapMask, mapMask, "Map",doPrint=False)
-
-        max_pos = -float('inf')
-
-        for points in mapFound[1]:
-            #print(points[0][0])
-            if points[0][0][1] > 60:
-                if points[0][0][0] > max_pos:
-                    max_pos = points[0][0][0]
-
-        center_diff = 112-max_pos
+        center_diff = getCenterOnBlue(gameWindow)
 
         #print("Distance to center: ", center_diff)     # 112 is 94 (pos right) + 130 (pos left) / 2 from testing
 
 
-        if  center_diff > 3 and not pressedA:
+        if  center_diff >= 1 and not pressedA:
             pyautogui.keyDown('a')
             pressedA = True
             #print("Press A")
-        elif center_diff < 4 and pressedA:
+        if center_diff < 4 and pressedA:
             pyautogui.keyUp('a')
             pressedA = False
             #print("Release A")
-        elif center_diff < -3 and not pressedD:
+        if center_diff <= -1 and not pressedD:
             pyautogui.keyDown('d')
             #print("Press D")
             pressedD = True
-        elif center_diff > -4 and pressedD:
+        if center_diff > -4 and pressedD:
             pyautogui.keyUp('d')
             pressedD = False
             #print("Release D")
 
-        if -3 <= center_diff <= 3 and not pressedW:
-            break
+        center_diff = getCenterOnBlue(gameWindow)
 
-
-
-        cv2.imshow("map", mapMask)
-
-        if cv2.waitKey(25) & 0xFF == ord("q"):
-            cv2.destroyAllWindows()
+        if -1 <= center_diff <= 1:
             break
 
 
     pyautogui.keyDown('w')
     pressedW = True
-    print("Press W")
+    # print("Press W")
 
-    time.sleep(2.8)
-
-    pyautogui.keyUp('w')
-    pressedW = False
+    time.sleep(3)
 
     #SECOND
     while (True):
@@ -105,58 +131,17 @@ def doNexus():
         #print("Distance to top: ", top_diff)     # 112 is 94 (pos right) + 130 (pos left) / 2 from testing
 
 
-        if  top_diff > 2 and not pressedW:
-            pyautogui.keyDown('w')
-            pressedW = True
-            #print("Press W")
-        elif top_diff < 2 and pressedW:
+        # if  top_diff > 2 and not pressedW:
+        #     pyautogui.keyDown('w')
+        #     pressedW = True
+        #     #print("Press W")
+        if -2 <= top_diff <= 2 and pressedW:
             pyautogui.keyUp('w')
             pressedW = False
+            break
             #print("Release W")
 
-        if top_diff <= 3 and not pressedW:
-            break
-
-        cv2.imshow("map", mapMask)
-
-        if cv2.waitKey(25) & 0xFF == ord("q"):
-            cv2.destroyAllWindows()
-            break
-
-    pressedA = False
-    pressedD = False
-
-    #THIRD
-    while (True):
-        frame = GrabScreen.captureScreen(gameWindow)
-        frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
-
-        miniMap = GrabScreen.getMapExplored(frame)
-        mapMask = GrabScreen.findColorInFrame(miniMap, [200, 0, 0], [255, 0, 0])
-        mapFound = GrabScreen.findEnemiesFromMask(mapMask, mapMask, "Map",doPrint=False)
-
-        nearest_portal = AgentTest.findClosestEnemy(mapFound[1], [[100,98]])
-
-        h_diff = 100 - nearest_portal[0]
-
-        #print("Nearest H Portal: ", h_diff)     # 112 is 94 (pos right) + 130 (pos left) / 2 from testing
-
-        if  h_diff > 3 and not pressedA:
-            pyautogui.keyDown('a')
-            pressedA = True
-            #print("Press A")
-        elif h_diff < 4 and  pressedA:
-            pyautogui.keyUp('a')
-            pressedA = False
-            #print("Release A")
-        elif h_diff < -3 and not pressedD:
-            pyautogui.keyDown('d')
-            #print("Press D")
-            pressedD = True
-        elif h_diff > -4 and pressedD:
-            pyautogui.keyUp('d')
-            pressedD = False
-            #print("Release D")
+        #if -2 <= top_diff and not pressedW:
 
         mode_frame = frame.copy()[597:600, 640:778]
 
@@ -174,17 +159,61 @@ def doNexus():
             time.sleep(.1)
             pyautogui.press('space')
             #print("run")
+            return
+
+
+        #cv2.imshow("map", mapMask)
+
+        # if cv2.waitKey(25) & 0xFF == ord("q"):
+        #     cv2.destroyAllWindows()
+        #     break
+
+    pressedA = False
+    pressedD = False
+
+    #THIRD
+    while (True):
+
+        h_diff = getHorizDiff(gameWindow)
+
+        #print("Nearest H Portal: ", h_diff)     # 112 is 94 (pos right) + 130 (pos left) / 2 from testing
+
+        if  h_diff > 4 and not pressedA:
+            pyautogui.keyDown('a')
+            pressedA = True
+            #print("Press A")
+        if h_diff < 6 and  pressedA:
+            pyautogui.keyUp('a')
+            pressedA = False
+            break
+            #print("Release A")
+        if h_diff < 1 and not pressedD:
+            pyautogui.keyDown('d')
+            #print("Press D")
+            pressedD = True
+        if h_diff > -2 and pressedD:
+            pyautogui.keyUp('d')
+            pressedD = False
+            #print("Release D")
             break
 
+        mode_frame = frame.copy()[597:600, 640:778]
 
-        if -3 <= h_diff <= 3:
-           break
+        mode_mean = sum(cv2.mean(mode_frame)) / 3
 
-        cv2.imshow("map", mode_frame)
+        #print(mode_mean)
 
-        if cv2.waitKey(25) & 0xFF == ord("q"):
-            cv2.destroyAllWindows()
-            break
+        if 140 <= mode_mean <= 170:
+            if pressedA:
+                pyautogui.keyUp('a')
+                pressedA=False
+            if pressedD:
+                pyautogui.keyUp('d')
+                pressedD=False
+            time.sleep(.1)
+            pyautogui.press('space')
+            #print("run")
+            return
 
     pressedW = False
     pressedS = False
@@ -239,16 +268,18 @@ def doNexus():
             time.sleep(.1)
             pyautogui.press('space')
             #print("run")
-            break
+            return
 
-        cv2.imshow("map", miniMap)
-        cv2.imshow("mode",mode_frame)
+        # cv2.imshow("map", miniMap)
+        # cv2.imshow("mode",mode_frame)
 
-        if cv2.waitKey(25) & 0xFF == ord("q"):
-            cv2.destroyAllWindows()
-            break
+        # if cv2.waitKey(25) & 0xFF == ord("q"):
+        #     cv2.destroyAllWindows()
+        #     break
 
-    pyautogui.keyUp('w')
-    pyautogui.keyUp('a')
-    pyautogui.keyUp('s')
-    pyautogui.keyUp('d')
+#     pyautogui.keyUp('w')
+#     pyautogui.keyUp('a')
+#     pyautogui.keyUp('s')
+#     pyautogui.keyUp('d')
+#
+# doNexus()
