@@ -51,7 +51,15 @@ class Agent:
         self.gameState = gamestate
 
     def printMode(self):
-        print("Agent Mode:", gameState.mode[0])
+        for i in range(0, 1000):
+            cv2.imshow("Frame_Read_3", self.gameState.frame[0])
+            if cv2.waitKey(1) & 0xFF == ord("q"):
+                cv2.destroyAllWindows()
+                break
+
+        print("Agent Mode:", self.gameState.mode[0])
+
+        return
 
 
 if __name__ == '__main__':
@@ -68,15 +76,15 @@ if __name__ == '__main__':
         processes = []
 
         processes.append(multiprocessing.Process(name='append_state', target=gameState.getMainFrame))
-        processes.append(multiprocessing.Process(name='read_state', target=gameState.read_state))
-        #processes.append(multiprocessing.Process(name='read_state_2', target=gameState.read_state_2))
         processes.append(multiprocessing.Process(name='get_mode', target=gameState.getMode))
+        processes.append(multiprocessing.Process(name='read_state', target=gameState.read_state))
+        processes.append(multiprocessing.Process(name='read_state_3', target=agent.printMode))
 
         for proc in processes:
             proc.start()
 
-        time.sleep(3)
-        agent.printMode()
+        # time.sleep(3)
+        # agent.printMode()
 
         for proc in processes:
             proc.join()
