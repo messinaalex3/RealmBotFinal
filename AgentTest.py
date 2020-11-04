@@ -53,7 +53,6 @@ def Aim(enemies,window,frame):
             enemyLocations.append([location,abs(playerPos[0] - location[0]) + abs(playerPos[1] - location[1])])
         enemyLocations.sort(key=sorter)
         closestEnemy = enemyLocations[0][0]
-        print(closestEnemy)
         windowX = window[0]
         windowY = window[1]
         pyautogui.moveTo(closestEnemy[0] + windowX,closestEnemy[1] + windowY)

@@ -1,5 +1,6 @@
 import multiprocessing
 import random
+import sys
 import time
 import numpy as np
 import GrabScreen
@@ -7,17 +8,22 @@ import cv2
 import GetData
 import AgentTest
 import Nexus
+import pyautogui
 
 class GameState:
-    def __init__(self, gameWindow,frame,mode):
+    def __init__(self, gameWindow,frame,mode,playerPos,closestEnemyPos):
         self.gameWindow = gameWindow            # LIST, use [0] to access
         self.frame = frame                      # LIST, use [0] to access
         self.mode = mode                        # LIST, use [0] to access
+        self.playerPos = playerPos
+        self.closestEnemyPos = closestEnemyPos
         self.initGS()
 
     def initGS(self):
         gameWindow = GrabScreen.findWindow("RotMGExalt")   #RotMGExalt #RealmBotFinal
         self.gameWindow[0] = gameWindow
+        self.playerPos[0] = [0,0]
+        self.closestEnemyPos[0] = [0,0]
 
     def getMode(self):
         while True:
@@ -65,6 +71,8 @@ class Agent:
 
     def runAgent(self):
         GrabScreen.findWindow("RotMGExalt")
+        self.gameState.playerPos[0] = [[0,0]]
+        self.gameState.closestEnemyPos[0] = [[0,0]]
         while True:
             while self.gameState.mode[0] == "Nexus":
                 print("hello sir, i reside in the nexus.")
@@ -76,19 +84,113 @@ class Agent:
                 screenEnemies = GetData.getEnemiesScreen(self.gameState.frame[0])
                 AgentTest.Aim(screenEnemies,self.gameState.gameWindow[0],self.gameState.frame[0])
                 mapEnemies = GetData.getEnemiesMap(self.gameState.frame[0])
-                playerPos = GetData.getPlayerPos(self.gameState.frame[0])
-                closestEnemy = AgentTest.findClosestEnemy(mapEnemies,playerPos)
-                # self.screenEnemies = GetData.getEnemiesScreen(self.frame)
-                # self.mapEnemies = GetData.getEnemiesMap(self.frame)
-                # self.closestEnemy = AgentTest.findClosestEnemy(self.mapEnemies, self.playerPos)
-                # AgentTest.Aim(self.screenEnemies, self.gameWindow)
-                # # im wondering if this should be a thread since we dont want to die if were checking enemies on screen
-                # AgentTest.monitorHealth(self.playerHealth)
-                # self.playerPos = GetData.getPlayerPos(self.frame)
+                self.gameState.playerPos[0] = GetData.getPlayerPos(self.gameState.frame[0])[0]
+                print("cloest enemy",self.gameState.playerPos[0])
+                self.gameState.closestEnemyPos[0] = AgentTest.findClosestEnemy(mapEnemies,[self.gameState.playerPos[0]])
+                self.gameState.playerPos[0] = self.gameState.playerPos[0]
+                health = GetData.getPlayerData(self.gameState.frame[0])
+                AgentTest.monitorHealth(health)
             while self.gameState.mode[0] == "Transition":
                 print("To be honest...im not sure where i am, im blind")
             while self.gameState.mode[0] == "Loot":
                 print("pardon me sir, im counting my cheddar")
+
+    def hold_char(self,hold_time, char):
+        pyautogui.keyDown(char)
+        time.sleep(hold_time // 1000)
+        pyautogui.keyUp(char)
+
+    def motionUD(self):
+        while True:
+
+            motion_keys = ['w', 's']
+            print(self.gameState.mode[0])
+            while self.gameState.mode[0] == "Realm":
+                print("LOOK HERE", self.gameState.closestEnemyPos)
+                print("inside",self.gameState.mode[0])
+                # time.sleep(.1)
+                sys.stdout.write("\rNearest Enemy: {}".format(self.gameState.closestEnemyPos[0]))
+                sys.stdout.write("   Player Loc: {}".format(self.gameState.playerPos[0][0]))
+
+
+                distance = abs(self.gameState.closestEnemyPos[0][0] - self.gameState.playerPos[0][0]) + abs(self.gameState.closestEnemyPos[0][1] - self.gameState.playerPos[0][1])
+                sys.stdout.write("\rNearest Enemy Distance: {}".format(distance))
+
+                key = ''
+                random.seed(time.time())
+
+                if distance > 30:
+                    if self.gameState.closestEnemyPos[0][1] > self.gameState.playerPos[0][1]:
+                        key = 's'
+                        print('  tracking press:', key)
+                        self.hold_char(random.randint(1000, 2000), key)
+                    if self.gameState.closestEnemyPos[0][1] <= self.gameState.playerPos[0][1]:
+                        key = 'w'
+                        print('  tracking press:', key)
+                        self.hold_char(random.randint(1000, 2000), key)
+
+
+                elif distance < 1:
+                    if self.gameState.closestEnemyPos[0][1] > self.gameState.playerPos[0][1]:
+                        key = 'w'
+                        print('  retreat press:', key)
+                        self.hold_char(random.randint(1000, 3000), key)
+                    if self.gameState.closestEnemyPos[0][1] <= self.gameState.playerPos[0][1]:
+                        key = 's'
+                        print('  retreat press:', key)
+                        self.hold_char(random.randint(1000, 3000), key)
+
+                else:
+
+                    key = motion_keys[random.randint(0, 1)]
+                    print(' random press:', key)
+                    self.hold_char(random.randint(100, 2000), key)
+
+            sys.stdout.flush()
+
+    def motionLR(self):
+        while True:
+            motion_keys = ['a', 'd']
+
+            while self.gameState.mode[0] == "Realm":
+                # time.sleep(.1)
+                sys.stdout.write("\rNearest Enemy: {}".format(self.gameState.closestEnemyPos[0]))
+                # sys.stdout.write("   Player Loc: {}".format(self.gameState.playerPos[0]))
+
+
+                distance = abs(self.gameState.closestEnemyPos[0][0] - self.gameState.playerPos[0][0]) + abs(self.gameState.closestEnemyPos[0][1] - self.gameState.playerPos[0][1])
+                # sys.stdout.write("\rNearest Enemy Distance: {}".format(distance))
+
+                key = ''
+                random.seed(time.time())
+
+                if distance > 30:
+                    if self.gameState.closestEnemyPos[0][0] > self.gameState.playerPos[0][0]:
+                        key = 'd'
+                        # print('  tracking press:', key)
+                        self.hold_char(random.randint(1000, 2000), key)
+                    if self.gameState.closestEnemyPos[0][0] <= self.gameState.playerPos[0][0]:
+                        key = 'a'
+                        # print('  tracking press:', key)
+                        self.hold_char(random.randint(1000, 2000), key)
+
+                elif distance < 1:
+                    if self.gameState.closestEnemyPos[0][0] > self.gameState.playerPos[0][0]:
+                        key = 'a'
+                        # print('  retreat press:', key)
+                        self.hold_char(random.randint(1000, 3000), key)
+                    if self.gameState.closestEnemyPos[0][0] <= self.gameState.playerPos[0][0]:
+                        key = 'd'
+                        # print('  retreat press:', key)
+                        self.hold_char(random.randint(1000, 3000), key)
+
+                else:
+
+                    key = motion_keys[random.randint(0, 1)]
+                    # print(' random press:', key)
+                    self.hold_char(random.randint(100, 2000), key)
+
+            sys.stdout.flush()
 
 
 if __name__ == '__main__':
@@ -97,8 +199,10 @@ if __name__ == '__main__':
         window = mgr.list(range(1))
         frame = mgr.list(range(1))
         mode = mgr.list(range(1))
+        playerPos = mgr.list(range(1))
+        closestEnemyPos = mgr.list(range(1))
 
-        gameState = GameState(window,frame,mode)
+        gameState = GameState(window,frame,mode,playerPos,closestEnemyPos)
 
         agent = Agent(gameState)
 
@@ -109,6 +213,8 @@ if __name__ == '__main__':
         processes.append(multiprocessing.Process(name='read_state', target=gameState.read_state))
         #processes.append(multiprocessing.Process(name='read_state_3', target=agent.printMode))
         processes.append(multiprocessing.Process(name='run_agent', target=agent.runAgent))
+        processes.append(multiprocessing.Process(name='agent_movementUD', target=agent.motionUD))
+        processes.append(multiprocessing.Process(name='agent_movementLR', target=agent.motionLR))
 
         for proc in processes:
             proc.start()
