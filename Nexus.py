@@ -159,6 +159,7 @@ def doNexus():
             time.sleep(.1)
             pyautogui.press('space')
             #print("run")
+            time.sleep(1)
             return
 
 
@@ -213,6 +214,7 @@ def doNexus():
             time.sleep(.1)
             pyautogui.press('space')
             #print("run")
+            time.sleep(1)
             return
 
     pressedW = False
@@ -247,7 +249,7 @@ def doNexus():
             pyautogui.keyDown('s')
             #print("Press S")
             pressedS = True
-        if (v_diff > -2 or v_diff==97) and pressedS:
+        if (v_diff > 0 or v_diff==97) and pressedS:
             pyautogui.keyUp('s')
             pressedS = False
             #print("Release S")
@@ -268,6 +270,7 @@ def doNexus():
             time.sleep(.1)
             pyautogui.press('space')
             #print("run")
+            time.sleep(1)
             return
 
         # cv2.imshow("map", miniMap)
