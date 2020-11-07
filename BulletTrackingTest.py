@@ -161,7 +161,7 @@ while(True):
                     found = True
                     break
 
-        if not found and area > 100:
+        if not found and area > 50:
             ec2.append(e_contour)
 
     enemy_contours = ec2
