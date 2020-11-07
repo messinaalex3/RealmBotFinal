@@ -4,6 +4,20 @@ import numpy as np
 import GrabScreen
 import Utils
 
+# # T0
+# ourBulletColors = [
+# [181, 181, 181],
+# [255, 255, 255]
+# ]
+
+
+# T1
+ourBulletColors = [
+[0, 0, 255],
+[0, 212, 255]
+]
+
+
 bulletColors = [
 [134, 171, 43],
 [238, 255, 196],
@@ -90,20 +104,13 @@ bulletColors = [
 
 gameWindow = GrabScreen.findWindow("RotMGExalt")
 
-while(True):
-
-    frame = GrabScreen.captureScreen(gameWindow)
-    frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
-    frame = Utils.cutGameFrame(frame)
-
-    start_time = time.time()
-
+def BulletContours(frame,colors):
     # Create blank image for concatenating masks
     x, y, c = frame.shape
     result = np.zeros((x, y), dtype="uint8")
 
     # Add mask for each color
-    for color in bulletColors:
+    for color in colors:
         mask = cv2.inRange(frame, (color[0], color[1], color[2]), (color[0], color[1], color[2]))
         result = cv2.add(result, mask)
 
@@ -114,13 +121,57 @@ while(True):
     # Get contours of masks
     contours, hierarchy = cv2.findContours(result, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
 
+    return contours
+
+def getCenterContour(contour):
+    M = cv2.moments(contour)
+    if M['m00'] > 0:
+        x = int(M['m10'] / M['m00'])
+        y = int(M['m01'] / M['m00'])
+    else:
+        return (-1,-1)
+
+    return (x,y)
+
+while(True):
+
+    frame = GrabScreen.captureScreen(gameWindow)
+    frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
+    frame = Utils.cutGameFrame(frame)
+
+    start_time = time.time()
+
+    # Get Contours for our bullets and all bullets
+    enemy_contours = BulletContours(frame,bulletColors)
+    our_contours = BulletContours(frame,ourBulletColors)
+
+
+    # Remove bullets that match ours based on area and center of contour
+    # Have to append to second list because you can't remove a ndarray object from a list. Why? I don't know
+    ec2 = []
+
+    for e_contour in enemy_contours:
+        area = cv2.contourArea(e_contour)
+        found = False
+        if 220 < area:
+            for contour in our_contours:
+                enemyCenter = getCenterContour(e_contour)
+                ourCenter = getCenterContour(contour)
+                if enemyCenter == ourCenter:
+                    found = True
+                    break
+
+        if not found and area > 100:
+            ec2.append(e_contour)
+
+    enemy_contours = ec2
+
     # Get bounding boxes of contours and draw them
-    for c in contours:
-        #area = cv2.contourArea(c)
+    for c in enemy_contours:
         rect = cv2.minAreaRect(c)
         box = cv2.boxPoints(rect)
         box = np.int0(box)
-        cv2.drawContours(frame, [box], 0, (0, 0, 255), 1)
+        cv2.drawContours(frame, [box], 0, (0, 255, 0), 2)
 
     # To test amount of time required to process... .08sec for 81 colors, .03sec for 36 on my machine
     print(time.time() - start_time)
@@ -131,3 +182,6 @@ while(True):
     if cv2.waitKey(1) & 0xFF == ord("q"):
         cv2.destroyAllWindows()
         break
+
+
+
