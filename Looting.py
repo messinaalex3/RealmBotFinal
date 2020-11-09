@@ -82,3 +82,15 @@ def doLooting(frame,staffImage,robeImage,potionImage, window):
     pyautogui.keyDown('w')
     time.sleep(.1)
     pyautogui.keyUp('w')
+
+def doLootingNoImage(frame,window):
+    tempFrame = frame.copy()
+    staffImage = cv2.imread("Resources\\WeaponsImages\\SerpentineStaff.png")
+    robeImage = cv2.imread("Resources\\WeaponsImages\\T1Robe.png")
+    potionImage = cv2.imread("Resources\\WeaponsImages\\Potion.png")
+    loot(tempFrame, staffImage, Utils.weaponColorToTierList, Utils.playerWeaponPos, window)
+    loot(tempFrame, robeImage, Utils.robeColorToTierList, Utils.playerArmorPos, window)
+    loot(tempFrame,potionImage,Utils.healthPotionRed,Utils.potionLocation,window)
+    pyautogui.keyDown('w')
+    time.sleep(.1)
+    pyautogui.keyUp('w')
