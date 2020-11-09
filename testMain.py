@@ -3,6 +3,7 @@ import numpy
 import pyautogui
 
 import GrabScreen
+import GetData
 import Utils
 import Looting
 import AgentTest
@@ -14,16 +15,42 @@ frame = GrabScreen.captureScreen(gameWindow)
     #Convert window to 3-channel RGB without Alpha
 frame = cv2.cvtColor(frame,cv2.COLOR_RGBA2RGB)
 #Looting.doLooting(frame,gameWindow)
-
+potion = cv2.imread("Resources\\WeaponsImages\\Loot Bag.png")
+potion = cv2.cvtColor(potion,cv2.COLOR_BGRA2GRAY)
+potion = GrabScreen.frameToEdge(potion)
 #Using Gregs method for color mean to check if were on a bag
 #If we are run our looting method
 #if we stop movement and call this on finding the right mean we should also set a timer to only stop movement
 #once every second so we dont stop twice on the same bag
+playerPos = [310,350]
 while True:
+
     frame = GrabScreen.captureScreen(gameWindow)
     frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
-    cv2.rectangle(frame, (319, 310), (330, 321), (255, 0, 0), 2)
+    # cv2.rectangle(frame, (319, 310), (330, 321), (255, 0, 0), 2)
+    cutFrame = Utils.cutGameFrame(frame)
+    # frame = cv2.cvtColor(frame,cv2.COLOR_RGB2GRAY)
+    edgeFrame = GrabScreen.frameToEdge(cutFrame)
+    mode = GetData.getMode(frame)
+    print(mode)
+    cv2.rectangle(frame,(310,310),(350,311),(0,255,255),2)
+
+    cv2.imshow("hiiiiii",potion)
+    lootLoc = [0,0]
+    result = cv2.matchTemplate(edgeFrame, potion, cv2.TM_CCOEFF_NORMED)
+    location = numpy.where(result >= .4)
+    w, h = potion.shape[::-1]
+    for pt in zip(*location[::-1]):
+        cv2.rectangle(edgeFrame, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 1)
+        print(pt)
+        lootLoc[0] = pt[0]
+        lootLoc[1] = pt[1]
     cv2.imshow("hiiii",frame)
+
+    movementDir = [0,0]
+    movementDir[0] = playerPos[0] - lootLoc[0]
+    movementDir[1] = playerPos[1] - lootLoc[1]
+    print(movementDir)
    #  miniMap = GrabScreen.getMapExplored(frame)
    #  mapMask = GrabScreen.findColorsInFrame(miniMap,Utils.avoidOnMap)
    # #mapMask = GrabScreen.findColorInFrame(miniMap,Utils.treeMapColor,Utils.treeMapColor)

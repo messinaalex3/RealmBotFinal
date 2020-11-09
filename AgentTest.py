@@ -41,8 +41,10 @@ def checkIfOnBag(frame,window):
         Looting.doLooting(frame,window)
 
 def monitorHealth(health):
-    if health < 25:
+    if health < 45:
         pyautogui.press("r")
+    elif health < 50:
+        pyautogui.press("f")
 
 def Aim(enemies,window,frame):
     if not len(enemies) == 0:

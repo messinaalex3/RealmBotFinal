@@ -9,6 +9,7 @@ import GetData
 import AgentTest
 import Nexus
 import pyautogui
+import Looting
 
 class GameState:
     def __init__(self, gameWindow,frame,mode,playerPos,closestEnemyPos):
@@ -86,12 +87,31 @@ class Agent:
                 print("cloest enemy",self.gameState.playerPos[0])
                 self.gameState.closestEnemyPos[0] = AgentTest.findClosestEnemy(mapEnemies,[self.gameState.playerPos[0]])
                 self.gameState.playerPos[0] = self.gameState.playerPos[0]
-                health = GetData.getPlayerData(self.gameState.frame[0])
-                AgentTest.monitorHealth(health)
             while self.gameState.mode[0] == "Transition":
                 print("To be honest...im not sure where i am, im blind")
             while self.gameState.mode[0] == "Loot":
                 print("pardon me sir, im counting my cheddar")
+                pyautogui.keyUp("w")
+                pyautogui.keyUp("s")
+                pyautogui.keyUp("a")
+                pyautogui.keyUp("d")
+                Looting.doLootingNoImage(self.gameState.frame[0],self.gameState.gameWindow[0])
+
+    def AgentLooting(self):
+        while True:
+            while self.gameState.mode[0] == "Loot":
+                print("pardon me sir, im counting my cheddar")
+                pyautogui.keyUp("w")
+                pyautogui.keyUp("s")
+                pyautogui.keyUp("a")
+                pyautogui.keyUp("d")
+                Looting.doLootingNoImage(self.gameState.frame[0],self.gameState.gameWindow[0])
+
+    def monitorHealth(self):
+        while True:
+            while self.gameState.mode[0] == "Realm" or self.gameState.mode[0] == "Loot":
+                health = GetData.getPlayerData(self.gameState.frame[0])
+                AgentTest.monitorHealth(health)
 
     def hold_char(self,hold_time, char):
         pyautogui.keyDown(char)
@@ -211,6 +231,8 @@ if __name__ == '__main__':
         processes.append(multiprocessing.Process(name='read_state', target=gameState.read_state))
         #processes.append(multiprocessing.Process(name='read_state_3', target=agent.printMode))
         processes.append(multiprocessing.Process(name='run_agent', target=agent.runAgent))
+        processes.append(multiprocessing.Process(name='monitor_health', target=agent.monitorHealth))
+        # processes.append(multiprocessing.Process(name='agent_looting', target=agent.AgentLooting))
         processes.append(multiprocessing.Process(name='agent_movementUD', target=agent.motionUD))
         processes.append(multiprocessing.Process(name='agent_movementLR', target=agent.motionLR))
 
