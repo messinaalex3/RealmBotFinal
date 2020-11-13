@@ -206,6 +206,20 @@ while(True):
     cv2.rectangle(frame, (agent_center_x-100, agent_center_y-100), (agent_center_x+100, agent_center_y+100), (0, 255, 0), 1)
     cv2.rectangle(frame, (agent_center_x-150, agent_center_y-150), (agent_center_x+150, agent_center_y+150), (0, 255, 0), 1)
 
+    #adding 8-way directional zones
+    #top row
+    cv2.rectangle(frame,(agent_center_x-100,agent_center_y - 100),(agent_center_x - 34,agent_center_y - 34),(0,0,255),1)
+    cv2.rectangle(frame,(agent_center_x - 34, agent_center_y - 100),(agent_center_x + 34, agent_center_y - 34),(0, 0, 255), 1)
+    cv2.rectangle(frame, (agent_center_x +34, agent_center_y - 100), (agent_center_x + 100, agent_center_y - 34),(0, 0, 255), 1)
+
+    #middle row
+    cv2.rectangle(frame, (agent_center_x - 100, agent_center_y - 34), (agent_center_x -34, agent_center_y + 34),(0, 0, 255), 1)
+    cv2.rectangle(frame, (agent_center_x + 34, agent_center_y - 34), (agent_center_x + 100, agent_center_y + 34),(0, 0, 255), 1)
+
+    #bottom row
+    cv2.rectangle(frame, (agent_center_x - 100, agent_center_y +34), (agent_center_x - 34, agent_center_y + 100),(0, 0, 255), 1)
+    cv2.rectangle(frame, (agent_center_x - 34, agent_center_y + 34), (agent_center_x + 34, agent_center_y + 100),(0, 0, 255), 1)
+    cv2.rectangle(frame, (agent_center_x + 34, agent_center_y + 34), (agent_center_x + 100, agent_center_y + 100),(0, 0, 255), 1)
     #cv2.drawMarker(frame,(agent_center_x,agent_center_y),(255,255,255),cv2.MARKER_TILTED_CROSS,20,2)
 
     # Show frame
