@@ -3,6 +3,7 @@ import time
 import numpy as np
 import GrabScreen
 import Utils
+import pyautogui
 
 # # T0
 # ourBulletColors = [
@@ -133,6 +134,90 @@ def getCenterContour(contour):
 
     return (x,y)
 
+def sortBySecondElement(item):
+    return item[1]
+
+def getEightWayZones(enemy_contours):
+    ec2 = []
+    bulletCenters = []
+    directions = [[0,"wa"],[1,"a"],[2,"sa"],[3,"w"],[4,"s"],[5,"wd"],[6,"d"],[7,"sd"]]
+    dirZones = [0] * 8
+    for e_contour in enemy_contours:
+        area = cv2.contourArea(e_contour)
+        enemyCenter = getCenterContour(e_contour)
+        found = False
+        if 220 < area:
+            for contour in our_contours:
+                ourCenter = getCenterContour(contour)
+                if enemyCenter == ourCenter:
+                    found = True
+                    break
+
+        if not found and area > 50:
+            x_dist_1 = enemyCenter[0] - agent_center_x
+            y_dist_1 = enemyCenter[1] - agent_center_y
+
+            x_dist = x_dist_1
+            y_dist = y_dist_1
+
+            # if -80 <= y_dist_1 <= 0 and x_dist <= 30:  # To ignore red writing when we are hit by a bullet
+            #     # print(y_dist_1)
+            #     pass
+            # elif x_dist <= 30 and y_dist <= 30:
+            #     pass
+            #Left Col
+            if x_dist >= -150 and x_dist <= -50:
+                print("leftsiiiideee")
+                if y_dist >= -150 and y_dist <= -50:
+                    ec2.append((e_contour, 1))
+                elif y_dist >= -50 and y_dist <= 50:
+                    ec2.append((e_contour,2))
+                elif y_dist >= 50 and y_dist <= 150:
+                    ec2.append((e_contour, 3))
+            #Center Col
+            elif x_dist >= -50 and x_dist <= 50:
+                if y_dist >= -150 and y_dist <= -50:
+                    ec2.append((e_contour,4))
+                elif y_dist >= 50 and y_dist <= 150:
+                    ec2.append((e_contour,5))
+            #Right Col
+            elif x_dist >= 50 and x_dist <= 150:
+                if y_dist >= -150 and y_dist <= -50:
+                    ec2.append((e_contour, 6))
+                elif y_dist >= -50 and y_dist <= 50:
+                    ec2.append((e_contour,7))
+                elif y_dist >= 50 and y_dist <= 150:
+                    ec2.append((e_contour, 8))
+
+
+            bulletCenters.append(enemyCenter)
+
+    enemy_contours = ec2
+    for c,zone in enemy_contours:
+        rect = cv2.minAreaRect(c)
+        box = cv2.boxPoints(rect)
+        box = np.int0(box)
+        if zone == 1:
+            cv2.drawContours(frame, [box], 0, (0, 0, 255), 2)
+        elif zone == 2:
+            cv2.drawContours(frame, [box], 0, (0, 255, 255), 2)
+        elif zone == 3:
+            cv2.drawContours(frame, [box], 0, (0, 255, 0), 2)
+        dirZones[zone - 1] += 1
+
+
+
+    safeMovement = dirZones.index(min(dirZones))
+    worseMovement = dirZones.index(max(dirZones))
+
+    print(directions[worseMovement])
+
+
+
+
+
+
+
 while(True):
 
     frame = GrabScreen.captureScreen(gameWindow)
@@ -151,55 +236,57 @@ while(True):
 
     # Remove bullets that match ours based on area and center of contour
     # Have to append to second list because you can't remove a ndarray object from a list. Why? I don't know
-    ec2 = []
-    bulletCenters = []
+    # ec2 = []
+    # bulletCenters = []
+    #
+    # for e_contour in enemy_contours:
+    #     area = cv2.contourArea(e_contour)
+    #     enemyCenter = getCenterContour(e_contour)
+    #     found = False
+    #     if 220 < area:
+    #         for contour in our_contours:
+    #             ourCenter = getCenterContour(contour)
+    #             if enemyCenter == ourCenter:
+    #                 found = True
+    #                 break
+    #
+    #     if not found and area > 50:
+    #         x_dist_1 = enemyCenter[0] - agent_center_x
+    #         y_dist_1 = enemyCenter[1] - agent_center_y
+    #
+    #         x_dist = abs(x_dist_1)
+    #         y_dist = abs(y_dist_1)
+    #
+    #         if -80 <= y_dist_1 <= 0 and x_dist <= 30:       # To ignore red writing when we are hit by a bullet
+    #             #print(y_dist_1)
+    #             pass
+    #         elif x_dist <= 30 and y_dist <= 30:
+    #             pass
+    #         elif x_dist <= 100 and y_dist <= 100:
+    #             ec2.append((e_contour,1))
+    #         elif x_dist <= 150 and y_dist <= 150:
+    #             ec2.append((e_contour,2))
+    #         else:
+    #             ec2.append((e_contour, 3))
+    #
+    #         bulletCenters.append(enemyCenter)
+    #
+    # enemy_contours = ec2
+    #
+    # # Get bounding boxes of contours and draw them
+    # for c,zone in enemy_contours:
+    #     rect = cv2.minAreaRect(c)
+    #     box = cv2.boxPoints(rect)
+    #     box = np.int0(box)
+    #     if zone == 1:
+    #         cv2.drawContours(frame, [box], 0, (0, 0, 255), 2)
+    #     elif zone == 2:
+    #         cv2.drawContours(frame, [box], 0, (0, 255, 255), 2)
+    #     elif zone == 3:
+    #         cv2.drawContours(frame, [box], 0, (0, 255, 0), 2)
 
-    for e_contour in enemy_contours:
-        area = cv2.contourArea(e_contour)
-        enemyCenter = getCenterContour(e_contour)
-        found = False
-        if 220 < area:
-            for contour in our_contours:
-                ourCenter = getCenterContour(contour)
-                if enemyCenter == ourCenter:
-                    found = True
-                    break
 
-        if not found and area > 50:
-            x_dist_1 = enemyCenter[0] - agent_center_x
-            y_dist_1 = enemyCenter[1] - agent_center_y
-
-            x_dist = abs(x_dist_1)
-            y_dist = abs(y_dist_1)
-
-            if -80 <= y_dist_1 <= 0 and x_dist <= 30:       # To ignore red writing when we are hit by a bullet
-                #print(y_dist_1)
-                pass
-            elif x_dist <= 30 and y_dist <= 30:
-                pass
-            elif x_dist <= 100 and y_dist <= 100:
-                ec2.append((e_contour,1))
-            elif x_dist <= 150 and y_dist <= 150:
-                ec2.append((e_contour,2))
-            else:
-                ec2.append((e_contour, 3))
-
-            bulletCenters.append(enemyCenter)
-
-    enemy_contours = ec2
-
-    # Get bounding boxes of contours and draw them
-    for c,zone in enemy_contours:
-        rect = cv2.minAreaRect(c)
-        box = cv2.boxPoints(rect)
-        box = np.int0(box)
-        if zone == 1:
-            cv2.drawContours(frame, [box], 0, (0, 0, 255), 2)
-        elif zone == 2:
-            cv2.drawContours(frame, [box], 0, (0, 255, 255), 2)
-        elif zone == 3:
-            cv2.drawContours(frame, [box], 0, (0, 255, 0), 2)
-
+    getEightWayZones(enemy_contours)
     # To test amount of time required to process... .08sec for 81 colors, .03sec for 36 on my machine
     print(time.time() - start_time)
 
@@ -208,18 +295,18 @@ while(True):
 
     #adding 8-way directional zones
     #top row
-    cv2.rectangle(frame,(agent_center_x-100,agent_center_y - 100),(agent_center_x - 34,agent_center_y - 34),(0,0,255),1)
-    cv2.rectangle(frame,(agent_center_x - 34, agent_center_y - 100),(agent_center_x + 34, agent_center_y - 34),(0, 0, 255), 1)
-    cv2.rectangle(frame, (agent_center_x +34, agent_center_y - 100), (agent_center_x + 100, agent_center_y - 34),(0, 0, 255), 1)
+    cv2.rectangle(frame,(agent_center_x-150,agent_center_y - 150),(agent_center_x - 50,agent_center_y - 50),(0,0,255),1)
+    cv2.rectangle(frame,(agent_center_x - 50, agent_center_y - 150),(agent_center_x + 50, agent_center_y - 50),(0, 0, 255), 1)
+    cv2.rectangle(frame, (agent_center_x + 50, agent_center_y - 150), (agent_center_x + 150, agent_center_y - 50),(0, 0, 255), 1)
 
     #middle row
-    cv2.rectangle(frame, (agent_center_x - 100, agent_center_y - 34), (agent_center_x -34, agent_center_y + 34),(0, 0, 255), 1)
-    cv2.rectangle(frame, (agent_center_x + 34, agent_center_y - 34), (agent_center_x + 100, agent_center_y + 34),(0, 0, 255), 1)
+    cv2.rectangle(frame, (agent_center_x - 150, agent_center_y - 50), (agent_center_x -50, agent_center_y + 50),(0, 0, 255), 1)
+    cv2.rectangle(frame, (agent_center_x + 50, agent_center_y - 50), (agent_center_x + 150, agent_center_y + 50),(0, 0, 255), 1)
 
     #bottom row
-    cv2.rectangle(frame, (agent_center_x - 100, agent_center_y +34), (agent_center_x - 34, agent_center_y + 100),(0, 0, 255), 1)
-    cv2.rectangle(frame, (agent_center_x - 34, agent_center_y + 34), (agent_center_x + 34, agent_center_y + 100),(0, 0, 255), 1)
-    cv2.rectangle(frame, (agent_center_x + 34, agent_center_y + 34), (agent_center_x + 100, agent_center_y + 100),(0, 0, 255), 1)
+    cv2.rectangle(frame, (agent_center_x - 150, agent_center_y + 50), (agent_center_x - 50, agent_center_y + 150),(0, 0, 255), 1)
+    cv2.rectangle(frame, (agent_center_x - 50, agent_center_y + 50), (agent_center_x + 50, agent_center_y + 150),(0, 0, 255), 1)
+    cv2.rectangle(frame, (agent_center_x + 50, agent_center_y + 50), (agent_center_x + 150, agent_center_y + 150),(0, 0, 255), 1)
     #cv2.drawMarker(frame,(agent_center_x,agent_center_y),(255,255,255),cv2.MARKER_TILTED_CROSS,20,2)
 
     # Show frame
