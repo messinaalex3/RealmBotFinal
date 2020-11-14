@@ -7,6 +7,7 @@ import GetData
 import Utils
 import Looting
 import AgentTest
+import GetData
 
 pyautogui.FAILSAFE = True
 gameWindow = GrabScreen.findWindow("RotMGExalt")
@@ -29,28 +30,33 @@ while True:
     frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
     # cv2.rectangle(frame, (319, 310), (330, 321), (255, 0, 0), 2)
     cutFrame = Utils.cutGameFrame(frame)
+
+    GetData.getEnemiesMap(frame)
+    GetData.getEnemiesScreen(frame)
+
+
     # frame = cv2.cvtColor(frame,cv2.COLOR_RGB2GRAY)
-    edgeFrame = GrabScreen.frameToEdge(cutFrame)
-    mode = GetData.getMode(frame)
-    print(mode)
-    cv2.rectangle(frame,(310,310),(350,311),(0,255,255),2)
-
-    cv2.imshow("hiiiiii",potion)
-    lootLoc = [0,0]
-    result = cv2.matchTemplate(edgeFrame, potion, cv2.TM_CCOEFF_NORMED)
-    location = numpy.where(result >= .4)
-    w, h = potion.shape[::-1]
-    for pt in zip(*location[::-1]):
-        cv2.rectangle(edgeFrame, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 1)
-        print(pt)
-        lootLoc[0] = pt[0]
-        lootLoc[1] = pt[1]
-    cv2.imshow("hiiii",frame)
-
-    movementDir = [0,0]
-    movementDir[0] = playerPos[0] - lootLoc[0]
-    movementDir[1] = playerPos[1] - lootLoc[1]
-    print(movementDir)
+    # edgeFrame = GrabScreen.frameToEdge(cutFrame)
+    # mode = GetData.getMode(frame)
+    # print(mode)
+    # cv2.rectangle(frame,(310,310),(350,311),(0,255,255),2)
+    #
+    # cv2.imshow("hiiiiii",potion)
+    # lootLoc = [0,0]
+    # result = cv2.matchTemplate(edgeFrame, potion, cv2.TM_CCOEFF_NORMED)
+    # location = numpy.where(result >= .4)
+    # w, h = potion.shape[::-1]
+    # for pt in zip(*location[::-1]):
+    #     cv2.rectangle(edgeFrame, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 1)
+    #     print(pt)
+    #     lootLoc[0] = pt[0]
+    #     lootLoc[1] = pt[1]
+    # cv2.imshow("hiiii",frame)
+    #
+    # movementDir = [0,0]
+    # movementDir[0] = playerPos[0] - lootLoc[0]
+    # movementDir[1] = playerPos[1] - lootLoc[1]
+    # print(movementDir)
    #  miniMap = GrabScreen.getMapExplored(frame)
    #  mapMask = GrabScreen.findColorsInFrame(miniMap,Utils.avoidOnMap)
    # #mapMask = GrabScreen.findColorInFrame(miniMap,Utils.treeMapColor,Utils.treeMapColor)

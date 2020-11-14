@@ -3,6 +3,16 @@ import Utils
 import cv2
 import numpy
 
+#remove after video stuff
+def getCenterContour(contour):
+    M = cv2.moments(contour)
+    if M['m00'] > 0:
+        x = int(M['m10'] / M['m00'])
+        y = int(M['m01'] / M['m00'])
+    else:
+        return (-1,-1)
+
+    return (x,y - 15)
 
 def getEnemiesScreen(frame):
     # Cut the frame to only include game windows for enemy tracking
@@ -10,8 +20,12 @@ def getEnemiesScreen(frame):
     # find enemies based on color and create a mask
     enemyMask = GrabScreen.findColorsInFrame(gameFrame, Utils.enemyColorList)
     #find chunks in mask to get enemy positions
-    contours = GrabScreen.findEnemiesFromMask(enemyMask,frame)
+    contours = GrabScreen.findEnemiesFromMask(enemyMask,gameFrame)
+    for contour in contours[1]:
+        point = getCenterContour(contour)
+        cv2.drawMarker(contours[0],point,(0,0,255),cv2.MARKER_TILTED_CROSS,20,2)
     enemiesOnScreen = contours[1]
+    cv2.imshow("Enemies", contours[0])
     return enemiesOnScreen
 
 def getEnemiesMap(frame):
@@ -20,6 +34,7 @@ def getEnemiesMap(frame):
     mapMask = GrabScreen.findColorInFrame(miniMap,[0,0,200],[0,0,255])
     mapFound = GrabScreen.findEnemiesFromMask(mapMask,mapMask,"Map")
     enemiesOnMap = mapFound[1]
+    cv2.imshow("MapMask",mapMask)
     return enemiesOnMap
 
 def getPlayerData(frame):
