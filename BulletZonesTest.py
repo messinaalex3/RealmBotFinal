@@ -141,6 +141,7 @@ def getEightWayZones(enemy_contours):
     ec2 = []
     bulletCenters = []
     directions = [[0,"wa"],[1,"a"],[2,"sa"],[3,"w"],[4,"s"],[5,"wd"],[6,"d"],[7,"sd"]]
+    dirOpposite = ["sd",    "d",    "wd",      "s",     "w",    "sa",    "a",    "wa"]
     dirZones = [0] * 8
     for e_contour in enemy_contours:
         area = cv2.contourArea(e_contour)
@@ -160,9 +161,9 @@ def getEightWayZones(enemy_contours):
             x_dist = x_dist_1
             y_dist = y_dist_1
 
-            # if -80 <= y_dist_1 <= 0 and x_dist <= 30:  # To ignore red writing when we are hit by a bullet
-            #     # print(y_dist_1)
-            #     pass
+            if -80 <= y_dist_1 <= 0 and x_dist <= 30:  # To ignore red writing when we are hit by a bullet
+                # print(y_dist_1)
+                pass
             # elif x_dist <= 30 and y_dist <= 30:
             #     pass
             #Left Col
@@ -203,14 +204,16 @@ def getEightWayZones(enemy_contours):
             cv2.drawContours(frame, [box], 0, (0, 255, 255), 2)
         elif zone == 3:
             cv2.drawContours(frame, [box], 0, (0, 255, 0), 2)
+        else:
+            cv2.drawContours(frame, [box], 0, (0, 255, 0), 2)
         dirZones[zone - 1] += 1
 
 
 
     safeMovement = dirZones.index(min(dirZones))
     worseMovement = dirZones.index(max(dirZones))
-
-    print(directions[worseMovement])
+    time.sleep(.01)
+    print(dirOpposite[worseMovement])
 
 
 
