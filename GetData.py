@@ -12,7 +12,7 @@ def getCenterContour(contour):
     else:
         return (-1,-1)
 
-    return (x,y - 15)
+    return (x+10,y+5)
 
 def getEnemiesScreen(frame):
     # Cut the frame to only include game windows for enemy tracking
@@ -59,8 +59,8 @@ def getMode(frame):
     if loot_rect == 87:
         mode = "Loot"
 
-    cv2.imshow("ModeFrame",mode_frame)
-    cv2.waitKey(1)
+    # cv2.imshow("ModeFrame",mode_frame)
+    # cv2.waitKey(1)
 
     return mode
 
@@ -72,3 +72,22 @@ def getPlayerPos(frame):
     # if len(playerMapFound[1]) > 0:
     #     playerPos = playerMapFound[1][0][0]
     return playerPos
+
+def getEnemiesScreen1(frame):
+    # Cut the frame to only include game windows for enemy tracking
+    gameFrame = Utils.cutGameFrame(frame)
+    # find enemies based on color and create a mask
+    enemyMask = GrabScreen.findColorsInFrame(gameFrame, Utils.enemyColorList)
+    #find chunks in mask to get enemy positions
+    contours = GrabScreen.findEnemiesFromMask(enemyMask,gameFrame)
+    enemyCenters = []
+    for contour in contours[1]:
+        point = getCenterContour(contour)
+        cv2.drawMarker(frame,point,(0,0,255),cv2.MARKER_TILTED_CROSS,20,2)
+        enemyCenters.append(point)
+
+    # cv2.imshow("Enemies", contours[0])
+    # cv2.imshow("Enemies",frame)
+    # cv2.waitKey(1)
+
+    return enemyCenters

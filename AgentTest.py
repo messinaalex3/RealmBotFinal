@@ -71,3 +71,15 @@ def Aim(enemies,window,frame):
 
 def sorter(input):
     return input[1]
+
+def Aim1(enemies,window,frame):
+    if not len(enemies) == 0:
+        playerPos = [297,280]
+        enemyLocations = []
+        for enemy in enemies:
+            enemyLocations.append([enemy,abs(playerPos[0] - enemy[0]) + abs(playerPos[1] - enemy[1])])
+        enemyLocations.sort(key=sorter)
+        closestEnemy = enemyLocations[0][0]
+        windowX = window[0] + 15
+        windowY = window[1] + 15
+        pyautogui.moveTo(closestEnemy[0] + windowX,closestEnemy[1] + windowY)

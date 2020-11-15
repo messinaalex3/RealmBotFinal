@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import random
 
-world = cv2.imread('Worlds\\World1.png',cv2.IMREAD_UNCHANGED)
+world = cv2.imread('..\\Resources\\Worlds\\World1.png',cv2.IMREAD_UNCHANGED)
 height, width, depth = world.shape
 scale_factor = .4
 

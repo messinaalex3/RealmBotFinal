@@ -76,7 +76,6 @@ def drawEnemies(cap):
       frame = GrabScreen.captureScreen(gameWindow)
       cv2.imshow("hi", GrabScreen.findEnemies(frame, enemyList))
 
-
       if cv2.waitKey(25) & 0xFF == ord('q'):
         break
     except:
@@ -89,9 +88,13 @@ def drawEnemies(cap):
   cv2.destroyAllWindows()
 
 
-enemyList = ['Bandit Enemy','Bandit Leader','Pirate','Piratess','Poison Scorpion','Purple Gelatinous Cube',\
+enemyList = ['Bandit Enemy','Bandit Leader','Pirate','Piratess','Poison Scorpion','Purple Gelatinous Cube',
 'Red Gelatinous Cube', 'Scorpion Queen', 'Snake','Green Gelatinous Cube']
 enemyList = GrabScreen.enemyListToFileList(enemyList)
+
+for i in range(0,len(enemyList)):
+  enemyList[i] = "..\\"+enemyList[i]+".png"
+
 enemyList = GrabScreen.openEnemyTemplates(enemyList)
 enemyList = GrabScreen.convertToGray(enemyList)
 #enemyList = GrabScreen.convertToEdge(enemyList)
@@ -99,7 +102,7 @@ enemyList = GrabScreen.convertToGray(enemyList)
 
 # Create a VideoCapture object and read from input file
 # If the input is the camera, pass 0 instead of the video file name
-cap = cv2.VideoCapture("Video/Capture_3.mp4")
+cap = cv2.VideoCapture("Capture_3.mp4")
 
 # Check if camera opened successfully
 if (cap.isOpened()== False):

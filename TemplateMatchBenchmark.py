@@ -16,17 +16,73 @@ enemyList = GrabScreen.convertToGray(enemyList)
 #enemyList = GrabScreen.convertToEdge(enemyList)
 gameWindow = GrabScreen.findWindow("RotMGExalt")
 
+GrabScreencaptureScreen = 0
+GrabScreenfindEnemies = 0
+GrabScreenfindPlayerData = 0
+loopTime = 0
+count = 0
+str_width = 60
+
+trials = 10.0
 
 
-while True:
+def printResults():
+    functions = []
 
+    functions.append(("GrabScreen.captureScreen(gameWindow)", GrabScreencaptureScreen))
+    functions.append(("(TM) GrabScreen.findEnemies(frame,enemyList)", GrabScreenfindEnemies))
+    functions.append(("(OCR Health) GrabScreen.findPlayerData(frame)", GrabScreenfindPlayerData))
+
+    print("\n\nTrials: ", f'{int(trials):,}')
+    print("\n----------Averages----------\n")
+
+    functions.sort(key=lambda x: x[1], reverse=True)
+
+    total_avg_time = 0
+
+    for function in functions:
+        print((function[0] + ":").ljust(str_width, ' '), "{:.10f}".format(function[1] / trials))
+        total_avg_time += function[1] / trials
+
+    print("\nTotal Avg Time:".ljust(str_width + 1, ' '), "{:.10f}".format(total_avg_time))
+    print("Loop Time:".ljust(str_width, ' '), "{:.10f}".format(loopTime / trials))
+
+
+while count < trials:
+
+    start_loop = time.time()
+
+    # Capture Screen
     start_time = time.time()
     frame = GrabScreen.captureScreen(gameWindow)
-    cv2.imshow("Template Match Enemies",GrabScreen.findEnemies(frame,enemyList))
-    print(GrabScreen.findPlayerData(frame))
+    delta = time.time() - start_time
+    print("{0}. GrabScreen.captureScreen(gameWindow):".format(count).ljust(str_width, ' '), delta)
+    GrabScreencaptureScreen += delta
 
-    print(time.time() - start_time)
+    # Find Enemies (Template Match)
+    start_time = time.time()
+    tempFrame = GrabScreen.findEnemies(frame,enemyList)
+    delta = time.time() - start_time
+    print("{0}. (TM) GrabScreen.findEnemies(frame,enemyList):".format(count).ljust(str_width, ' '), delta)
+    GrabScreenfindEnemies += delta
 
-    if cv2.waitKey(25) & 0xFF == ord("q"):
+    # OCR Health
+    start_time = time.time()
+    health = GrabScreen.findPlayerData(frame)
+    delta = time.time() - start_time
+    print("{0}. (OCR Health) GrabScreen.findPlayerData(frame):".format(count).ljust(str_width, ' '), delta)
+    GrabScreenfindPlayerData += delta
+
+    delta_loop = time.time() - start_loop
+
+    loopTime += delta_loop
+
+    count += 1
+
+    cv2.imshow("Template Match Enemies",tempFrame)
+
+    if cv2.waitKey(1) & 0xFF == ord("q"):
         cv2.destroyAllWindows()
         break
+
+printResults()

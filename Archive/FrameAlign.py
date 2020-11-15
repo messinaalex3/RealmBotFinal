@@ -9,7 +9,7 @@ while True:
     # frame = cv2.cvtColor(frame,cv2.COLOR_RGBA2RGB)
     # gameFrame = Utils.cutGameFrame(frame)
 
-    gameFrame = cv2.imread("Resources\\FrameAlign\\CurrentFrame.jpg")
+    gameFrame = cv2.imread("..\\Resources\\FrameAlign\\CurrentFrame.jpg")
 
     # Clipping a portion of the frame for testing (focused on the cone)
     # Had to use copy because the green rectangle OpenCV applied in the main window was being copied over
@@ -34,7 +34,7 @@ while True:
     for i in range (0,50):
 
         # Same procedure as above but moving the rectangle a pixel at a time to check for alignment
-        gameFrame2 = cv2.imread("Resources\\FrameAlign\\NewFrame.jpg")
+        gameFrame2 = cv2.imread("..\\Resources\\FrameAlign\\NewFrame.jpg")
 
         comp2 = gameFrame2.copy()[(s + i):(s + i + 50), 50:110]
 
@@ -75,7 +75,7 @@ while True:
             min_val = pixel_diff
             #print("Min: ", min_val)
 
-        time.sleep(.2)                  # Slowed down to visualize
+        time.sleep(.05)                  # Slowed down to visualize
 
     if cv2.waitKey(25) & 0xFF == ord("q"):
             cv2.destroyAllWindows()
