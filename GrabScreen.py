@@ -109,8 +109,8 @@ def findEnemies(frame,enemyPhotos):
     enemiesFound = 0
     for enemy in enemyPhotos:
         #rgbEnemy = cv2.cvtColor(enemy[0],cv2.COLOR_RGBA2GRAY)
-        result = cv2.matchTemplate(frame,enemy,cv2.TM_CCORR_NORMED)
-        location = numpy.where(result >= .85)
+        result = cv2.matchTemplate(frame,enemy,cv2.TM_CCOEFF_NORMED)
+        location = numpy.where(result >= .8)
         w, h = enemy.shape[::-1]
         for pt in zip(*location[::-1]):
             cv2.rectangle(tempFrame,pt,(pt[0] + w,pt[1] + h), (0,0,255),1)

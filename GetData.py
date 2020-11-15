@@ -21,11 +21,11 @@ def getEnemiesScreen(frame):
     enemyMask = GrabScreen.findColorsInFrame(gameFrame, Utils.enemyColorList)
     #find chunks in mask to get enemy positions
     contours = GrabScreen.findEnemiesFromMask(enemyMask,gameFrame)
-    for contour in contours[1]:
-        point = getCenterContour(contour)
-        cv2.drawMarker(contours[0],point,(0,0,255),cv2.MARKER_TILTED_CROSS,20,2)
+    # for contour in contours[1]:
+    #     point = getCenterContour(contour)
+    #     cv2.drawMarker(frame,point,(0,0,255),cv2.MARKER_TILTED_CROSS,20,2)
     enemiesOnScreen = contours[1]
-    cv2.imshow("Enemies", contours[0])
+    # cv2.imshow("Enemies", contours[0])
     return enemiesOnScreen
 
 def getEnemiesMap(frame):
@@ -34,7 +34,7 @@ def getEnemiesMap(frame):
     mapMask = GrabScreen.findColorInFrame(miniMap,[0,0,200],[0,0,255])
     mapFound = GrabScreen.findEnemiesFromMask(mapMask,mapMask,"Map")
     enemiesOnMap = mapFound[1]
-    cv2.imshow("MapMask",mapMask)
+    # cv2.imshow("MapMask",mapMask)
     return enemiesOnMap
 
 def getPlayerData(frame):
