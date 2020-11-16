@@ -83,7 +83,7 @@ def getEnemiesScreen1(frame):
     enemyCenters = []
     for contour in contours[1]:
         point = getCenterContour(contour)
-        cv2.drawMarker(frame,point,(0,0,255),cv2.MARKER_TILTED_CROSS,20,2)
+        #cv2.drawMarker(frame,point,(0,0,255),cv2.MARKER_TILTED_CROSS,20,2)
         enemyCenters.append(point)
 
     # cv2.imshow("Enemies", contours[0])
