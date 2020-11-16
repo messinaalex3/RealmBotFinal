@@ -191,7 +191,7 @@ class MTBenchmark:
     def mainLoop(self):
         while (self.count < self.trials):
 
-            #print("Trial Loop#:", self.count)
+            print("Trial Loop#:", self.count)
 
             start_loop = time.time()
 
@@ -290,5 +290,5 @@ class MTBenchmark:
 if __name__ == "__main__":
 
     call_mode = "bulletAimThreads"         # "bulletLoopThread" or "bulletAimThreads" or "serialized"
-    bm = MTBenchmark(1000.0, call_mode)
+    bm = MTBenchmark(1500.0, call_mode)
 

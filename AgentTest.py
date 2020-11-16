@@ -44,7 +44,7 @@ def checkIfOnBag(frame,window):
 def monitorHealth(health):
     if health < 45:
         pyautogui.press("r")
-    elif health < 50:
+    elif health < 55:
         pyautogui.press("f")
 
 def Aim(enemies,window,frame):

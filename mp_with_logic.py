@@ -137,32 +137,32 @@ class Agent:
                 key = ''
                 random.seed(time.time())
 
-                if distance > 30:
+                if distance > 35:
                     if self.gameState.closestEnemyPos[0][1] > self.gameState.playerPos[0][1]:
                         key = 's'
                         print('  tracking press:', key)
-                        self.hold_char(random.randint(1000, 2000), key)
+                        self.hold_char(random.randint(1000, 1001), key)
                     if self.gameState.closestEnemyPos[0][1] <= self.gameState.playerPos[0][1]:
                         key = 'w'
                         print('  tracking press:', key)
-                        self.hold_char(random.randint(1000, 2000), key)
+                        self.hold_char(random.randint(1000, 1001), key)
 
 
-                elif distance < 10:
+                elif distance < 15:
                     if self.gameState.closestEnemyPos[0][1] > self.gameState.playerPos[0][1]:
                         key = 'w'
                         print('  retreat press:', key)
-                        self.hold_char(random.randint(1000, 2000), key)
+                        self.hold_char(random.randint(1000, 1001), key)
                     if self.gameState.closestEnemyPos[0][1] <= self.gameState.playerPos[0][1]:
                         key = 's'
                         print('  retreat press:', key)
-                        self.hold_char(random.randint(1000, 2000), key)
+                        self.hold_char(random.randint(1000, 1001), key)
 
                 else:
 
                     key = motion_keys[random.randint(0, 1)]
                     print(' random press:', key)
-                    self.hold_char(random.randint(100, 2000), key)
+                    self.hold_char(random.randint(100, 1000), key)
 
             sys.stdout.flush()
 
@@ -182,31 +182,31 @@ class Agent:
                 key = ''
                 random.seed(time.time())
 
-                if distance > 30:
+                if distance > 35:
                     if self.gameState.closestEnemyPos[0][0] > self.gameState.playerPos[0][0]:
                         key = 'd'
                         # print('  tracking press:', key)
-                        self.hold_char(random.randint(1000, 2000), key)
+                        self.hold_char(random.randint(1000, 1001), key)
                     if self.gameState.closestEnemyPos[0][0] <= self.gameState.playerPos[0][0]:
                         key = 'a'
                         # print('  tracking press:', key)
-                        self.hold_char(random.randint(1000, 2000), key)
+                        self.hold_char(random.randint(1000, 1001), key)
 
-                elif distance < 10:
+                elif distance < 15:
                     if self.gameState.closestEnemyPos[0][0] > self.gameState.playerPos[0][0]:
                         key = 'a'
                         # print('  retreat press:', key)
-                        self.hold_char(random.randint(1000, 2000), key)
+                        self.hold_char(random.randint(1000, 1001), key)
                     if self.gameState.closestEnemyPos[0][0] <= self.gameState.playerPos[0][0]:
                         key = 'd'
                         # print('  retreat press:', key)
-                        self.hold_char(random.randint(1000, 2000), key)
+                        self.hold_char(random.randint(1000, 1001), key)
 
                 else:
 
                     key = motion_keys[random.randint(0, 1)]
                     # print(' random press:', key)
-                    self.hold_char(random.randint(100, 2000), key)
+                    self.hold_char(random.randint(100, 1000), key)
 
             sys.stdout.flush()
 
