@@ -80,8 +80,8 @@ class Agent:
                 Nexus.doNexus()
             while self.gameState.mode[0] == "Realm":
                 print("ahh good day fine sir, you may find me in the realm.")
-                screenEnemies = GetData.getEnemiesScreen(self.gameState.frame[0])
-                AgentTest.Aim(screenEnemies,self.gameState.gameWindow[0],self.gameState.frame[0])
+                screenEnemies = GetData.getEnemiesScreen1(self.gameState.frame[0])
+                AgentTest.Aim1(screenEnemies,self.gameState.gameWindow[0],self.gameState.frame[0])
                 mapEnemies = GetData.getEnemiesMap(self.gameState.frame[0])
                 self.gameState.playerPos[0] = GetData.getPlayerPos(self.gameState.frame[0])[0]
                 print("cloest enemy",self.gameState.playerPos[0])
@@ -148,15 +148,15 @@ class Agent:
                         self.hold_char(random.randint(1000, 2000), key)
 
 
-                elif distance < 1:
+                elif distance < 10:
                     if self.gameState.closestEnemyPos[0][1] > self.gameState.playerPos[0][1]:
                         key = 'w'
                         print('  retreat press:', key)
-                        self.hold_char(random.randint(1000, 3000), key)
+                        self.hold_char(random.randint(1000, 2000), key)
                     if self.gameState.closestEnemyPos[0][1] <= self.gameState.playerPos[0][1]:
                         key = 's'
                         print('  retreat press:', key)
-                        self.hold_char(random.randint(1000, 3000), key)
+                        self.hold_char(random.randint(1000, 2000), key)
 
                 else:
 
@@ -192,15 +192,15 @@ class Agent:
                         # print('  tracking press:', key)
                         self.hold_char(random.randint(1000, 2000), key)
 
-                elif distance < 1:
+                elif distance < 10:
                     if self.gameState.closestEnemyPos[0][0] > self.gameState.playerPos[0][0]:
                         key = 'a'
                         # print('  retreat press:', key)
-                        self.hold_char(random.randint(1000, 3000), key)
+                        self.hold_char(random.randint(1000, 2000), key)
                     if self.gameState.closestEnemyPos[0][0] <= self.gameState.playerPos[0][0]:
                         key = 'd'
                         # print('  retreat press:', key)
-                        self.hold_char(random.randint(1000, 3000), key)
+                        self.hold_char(random.randint(1000, 2000), key)
 
                 else:
 

@@ -29,10 +29,13 @@ while True:
     frame = GrabScreen.captureScreen(gameWindow)
     frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
     # cv2.rectangle(frame, (319, 310), (330, 321), (255, 0, 0), 2)
-    cutFrame = Utils.cutGameFrame(frame)
-
-    GetData.getEnemiesMap(frame)
-    GetData.getEnemiesScreen(frame)
+    minimap = GrabScreen.getMapExplored(frame)
+    cv2.rectangle(minimap,(100,98),(101,99),(0,0,255),2)
+    cv2.imshow("map",minimap)
+    # cutFrame = Utils.cutGameFrame(frame)
+    #
+    # GetData.getEnemiesMap(frame)
+    # GetData.getEnemiesScreen(frame)
 
 
     # frame = cv2.cvtColor(frame,cv2.COLOR_RGB2GRAY)

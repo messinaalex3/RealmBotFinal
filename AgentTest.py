@@ -20,8 +20,9 @@ def AttackEnemies(state,window):
 
 def findClosestEnemy(enemyMap,playerPos):
     closestPos = [0, 0]
+    playerPos = [100,98]
     if len(playerPos) > 0 and len(enemyMap) > 0:
-        playerPos = playerPos[0]
+        #rplayerPos = playerPos[0]
         closest = 5000
         for enemy in enemyMap:
             enemy = enemy[0][0]
