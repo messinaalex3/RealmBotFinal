@@ -81,6 +81,11 @@ def Aim1(enemies,window,frame):
             enemyLocations.append([enemy,abs(playerPos[0] - enemy[0]) + abs(playerPos[1] - enemy[1])])
         enemyLocations.sort(key=sorter)
         closestEnemy = enemyLocations[0][0]
-        windowX = window[0] + 15
-        windowY = window[1] + 15
-        pyautogui.moveTo(closestEnemy[0] + windowX,closestEnemy[1] + windowY)
+        windowX = window[0] + 10
+        windowY = window[1] + 32
+        pyautogui.moveTo(closestEnemy[0] + windowX, closestEnemy[1] + windowY)
+
+        # pointA = (closestEnemy[0],closestEnemy[1])
+        # cv2.drawMarker(frame, pointA, (0, 0, 255), cv2.MARKER_TILTED_CROSS, 20, 2)
+        # cv2.imshow("Closest Enemy", frame)
+        # cv2.waitKey(1)

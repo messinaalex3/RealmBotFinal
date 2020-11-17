@@ -139,7 +139,7 @@ class MTBenchmark:
             start = time.time()
             if self.gameMode == "Realm":
                 nearest = self.closestEnemy
-            time.sleep(.1)
+            time.sleep(.01)
             delta = time.time() - start
             #print("{0}. MTBenchmark.motionUD():".format(self.count).ljust(self.str_width,' '),delta)
             self.MTBenchmarkmotionUD[0] += delta
@@ -150,7 +150,7 @@ class MTBenchmark:
             start = time.time()
             if self.gameMode == "Realm":
                 nearest = self.closestEnemy
-            time.sleep(.1)
+            time.sleep(.01)
             delta = time.time() - start
             #print("{0}. MTBenchmark.motionLR():".format(self.count).ljust(self.str_width,' '),delta)
             self.MTBenchmarkmotionLR[0] += delta
