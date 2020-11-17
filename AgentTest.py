@@ -2,6 +2,7 @@ import pyautogui
 import random
 import cv2
 import Looting
+import win32api
 
 def AttackEnemies(state,window):
     enemies = state[0]
@@ -83,7 +84,8 @@ def Aim1(enemies,window,frame):
         closestEnemy = enemyLocations[0][0]
         windowX = window[0] + 10
         windowY = window[1] + 32
-        pyautogui.moveTo(closestEnemy[0] + windowX, closestEnemy[1] + windowY)
+        #pyautogui.moveTo(closestEnemy[0] + windowX, closestEnemy[1] + windowY)
+        win32api.SetCursorPos((closestEnemy[0] + windowX, closestEnemy[1] + windowY))
 
         # pointA = (closestEnemy[0],closestEnemy[1])
         # cv2.drawMarker(frame, pointA, (0, 0, 255), cv2.MARKER_TILTED_CROSS, 20, 2)
