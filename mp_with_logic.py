@@ -12,12 +12,14 @@ import pyautogui
 import Looting
 
 class GameState:
-    def __init__(self, gameWindow,frame,mode,playerPos,closestEnemyPos):
+    def __init__(self, gameWindow,frame,mode,playerPos,closestEnemyPos,retreatDistance,moveTowardDistance):
         self.gameWindow = gameWindow            # LIST, use [0] to access
         self.frame = frame                      # LIST, use [0] to access
         self.mode = mode                        # LIST, use [0] to access
         self.playerPos = playerPos
         self.closestEnemyPos = closestEnemyPos
+        self.retreatDistance = retreatDistance
+        self.moveTowardDistance = moveTowardDistance
         self.initGS()
 
     def initGS(self):
@@ -25,6 +27,8 @@ class GameState:
         self.gameWindow[0] = gameWindow
         self.playerPos[0] = [0,0]
         self.closestEnemyPos[0] = [0,0]
+        self.retreatDistance[0] = 15
+        self.moveTowardDistance[0] = 30
 
     def getMode(self):
         while True:
@@ -83,9 +87,16 @@ class Agent:
                 screenEnemies = GetData.getEnemiesScreen1(self.gameState.frame[0])
                 AgentTest.Aim1(screenEnemies,self.gameState.gameWindow[0],self.gameState.frame[0])
                 mapEnemies = GetData.getEnemiesMap(self.gameState.frame[0])
+                screenBags = GetData.findLootBags(self.gameState.frame[0])
                 self.gameState.playerPos[0] = GetData.getPlayerPos(self.gameState.frame[0])[0]
-                print("cloest enemy",self.gameState.playerPos[0])
                 self.gameState.closestEnemyPos[0] = AgentTest.findClosestEnemy(mapEnemies,[self.gameState.playerPos[0]])
+                if len(screenBags) > 0 and len(screenEnemies) == 0 and random.randint(0,10) > 5:
+                    self.gameState.closestEnemyPos[0] = screenBags[0]
+                    self.gameState.retreatDistance[0] = 0
+                    self.gameState.moveTowardDistance[0] = 10
+                else:
+                    self.gameState.retreatDistance[0] = 15
+                    self.gameState.moveTowardDistance[0] = 30
                 self.gameState.playerPos[0] = self.gameState.playerPos[0]
             while self.gameState.mode[0] == "Transition":
                 print("To be honest...im not sure where i am, im blind")
@@ -137,7 +148,7 @@ class Agent:
                 key = ''
                 random.seed(time.time())
 
-                if distance > 35:
+                if distance > self.gameState.moveTowardDistance[0]:
                     if self.gameState.closestEnemyPos[0][1] > self.gameState.playerPos[0][1]:
                         key = 's'
                         print('  tracking press:', key)
@@ -148,7 +159,7 @@ class Agent:
                         self.hold_char(random.randint(1000, 1001), key)
 
 
-                elif distance < 15:
+                elif distance < self.gameState.retreatDistance[0]:
                     if self.gameState.closestEnemyPos[0][1] > self.gameState.playerPos[0][1]:
                         key = 'w'
                         print('  retreat press:', key)
@@ -182,7 +193,7 @@ class Agent:
                 key = ''
                 random.seed(time.time())
 
-                if distance > 35:
+                if distance > self.gameState.moveTowardDistance[0]:
                     if self.gameState.closestEnemyPos[0][0] > self.gameState.playerPos[0][0]:
                         key = 'd'
                         # print('  tracking press:', key)
@@ -192,7 +203,7 @@ class Agent:
                         # print('  tracking press:', key)
                         self.hold_char(random.randint(1000, 1001), key)
 
-                elif distance < 15:
+                elif distance < self.gameState.retreatDistance[0]:
                     if self.gameState.closestEnemyPos[0][0] > self.gameState.playerPos[0][0]:
                         key = 'a'
                         # print('  retreat press:', key)
@@ -219,8 +230,10 @@ if __name__ == '__main__':
         mode = mgr.list(range(1))
         playerPos = mgr.list(range(1))
         closestEnemyPos = mgr.list(range(1))
+        retreatDistance = mgr.list(range(1))
+        moveTowardDistance = mgr.list(range(1))
 
-        gameState = GameState(window,frame,mode,playerPos,closestEnemyPos)
+        gameState = GameState(window,frame,mode,playerPos,closestEnemyPos,retreatDistance,moveTowardDistance)
 
         agent = Agent(gameState)
 

@@ -91,3 +91,17 @@ def getEnemiesScreen1(frame):
     # cv2.waitKey(1)
 
     return enemyCenters
+
+def findLootBags(frame):
+    cutFrame = Utils.cutGameFrame(frame)
+    mask = GrabScreen.findColorsInFrame(cutFrame,[Utils.brownBag,Utils.pinkBag])
+    contours = GrabScreen.findEnemiesFromMask(mask,cutFrame)
+    mapPoints = []
+    for contour in contours[1]:
+        center = getCenterContour(contour)
+        diff = ((307 - center[0]),(313 - center[1]))
+        mapConversionDiff = (diff[0]/12,diff[1]/12)
+        mapDrawPoint = (round(100 - mapConversionDiff[0]),round(98 - mapConversionDiff[1]))
+        mapPoints.append(mapDrawPoint)
+        print(mapDrawPoint)
+    return mapPoints

@@ -24,15 +24,50 @@ potion = GrabScreen.frameToEdge(potion)
 #if we stop movement and call this on finding the right mean we should also set a timer to only stop movement
 #once every second so we dont stop twice on the same bag
 playerPos = [310,350]
+brownBag = [148,189,229]
+pinkBag = [237,00,237]
+
+def getCenterContour(contour):
+    M = cv2.moments(contour)
+    if M['m00'] > 0:
+        x = int(M['m10'] / M['m00'])
+        y = int(M['m01'] / M['m00'])
+    else:
+        return (-1,-1)
+
+    return (x,y)
+
 while True:
 
     frame = GrabScreen.captureScreen(gameWindow)
     frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
+    cutFrame = Utils.cutGameFrame(frame)
     # cv2.rectangle(frame, (319, 310), (330, 321), (255, 0, 0), 2)
     minimap = GrabScreen.getMapExplored(frame)
-    cv2.rectangle(minimap,(100,98),(101,99),(0,0,255),2)
-    cv2.imshow("map",minimap)
-    # cutFrame = Utils.cutGameFrame(frame)
+    cv2.rectangle(minimap,(75,73),(125,123),(0,0,255),2)
+    mask = GrabScreen.findColorsInFrame(cutFrame,[brownBag,pinkBag])
+    contours = GrabScreen.findEnemiesFromMask(mask,cutFrame)
+
+    enemiesScreen = GetData.getEnemiesScreen1(frame)
+    enemiesMap = GetData.getEnemiesMap(frame)
+    closestEnemyMap = AgentTest.findClosestEnemy(enemiesMap,GetData.getPlayerPos(frame))
+    for contour in contours[1]:
+        center = getCenterContour(contour)
+        betterCenter = (center[0]/10,center[1]/10)
+        diff = ((307 - center[0]),(313 - center[1]))
+        mapConversionDiff = (diff[0]/12,diff[1]/12)
+        print(mapConversionDiff)
+        mapDrawPoint = (round(100 - mapConversionDiff[0]),round(98 - mapConversionDiff[1]))
+        print(mapDrawPoint)
+        # cv2.rectangle(minimap,center,(center[0] + 1,center[1] + 1),(0,0,255),2)
+        cv2.rectangle(minimap, (mapDrawPoint[0],mapDrawPoint[1]), (mapDrawPoint[0] + 1, mapDrawPoint[1] + 1), (0, 0, 255), 2)
+
+
+    print("screen",enemiesScreen)
+    print("map",closestEnemyMap)
+    cv2.imshow("test",contours[0])
+    cv2.imshow("minimap",minimap)
+
     #
     # GetData.getEnemiesMap(frame)
     # GetData.getEnemiesScreen(frame)

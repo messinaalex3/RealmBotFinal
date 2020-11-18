@@ -80,6 +80,9 @@ avoidOnMap = [
 
 treeMapColor = [29,74,24]
 darkWaterColor = [139,74,43]
+
+brownBag = [148,189,229]
+pinkBag = [237,00,237]
 """
     [107,221,247], #enemies with swords issues with arrows, gotta change this.
     [39,206,164],  #snakes, also all elves
