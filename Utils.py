@@ -71,7 +71,7 @@ playerItemsPos = [610,325]
 lootPos = [610,525]
 playerWeaponPos = [635,345]
 playerArmorPos = [735,345]
-potionLocation = [650,500]
+potionLocation = [650,480]
 
 avoidOnMap = [
     [29,74,24],

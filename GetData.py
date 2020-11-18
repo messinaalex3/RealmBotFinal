@@ -105,3 +105,11 @@ def findLootBags(frame):
         mapPoints.append(mapDrawPoint)
         print(mapDrawPoint)
     return mapPoints
+
+def outOfPotions(frame):
+    mode_frame = frame.copy()[505:523, 663:675]
+    mode_mean = sum(cv2.mean(mode_frame)) / 3
+    if mode_mean > 57 and mode_mean < 59:
+        return True
+    else:
+        return False

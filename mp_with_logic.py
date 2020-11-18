@@ -90,10 +90,10 @@ class Agent:
                 screenBags = GetData.findLootBags(self.gameState.frame[0])
                 self.gameState.playerPos[0] = GetData.getPlayerPos(self.gameState.frame[0])[0]
                 self.gameState.closestEnemyPos[0] = AgentTest.findClosestEnemy(mapEnemies,[self.gameState.playerPos[0]])
-                if len(screenBags) > 0 and len(screenEnemies) == 0 and random.randint(0,10) > 5:
+                if len(screenBags) > 0 and len(screenEnemies) <= 5 and random.randint(0,10) > 4:
                     self.gameState.closestEnemyPos[0] = screenBags[0]
                     self.gameState.retreatDistance[0] = 0
-                    self.gameState.moveTowardDistance[0] = 10
+                    self.gameState.moveTowardDistance[0] = 20
                 else:
                     self.gameState.retreatDistance[0] = 15
                     self.gameState.moveTowardDistance[0] = 30
@@ -122,7 +122,8 @@ class Agent:
         while True:
             while self.gameState.mode[0] == "Realm" or self.gameState.mode[0] == "Loot":
                 health = GetData.getPlayerData(self.gameState.frame[0])
-                AgentTest.monitorHealth(health)
+                outOfPotions = GetData.outOfPotions(self.gameState.frame[0])
+                AgentTest.monitorHealth(health,outOfPotions)
 
     def hold_char(self,hold_time, char):
         pyautogui.keyDown(char)

@@ -41,32 +41,41 @@ while True:
 
     frame = GrabScreen.captureScreen(gameWindow)
     frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
-    cutFrame = Utils.cutGameFrame(frame)
-    # cv2.rectangle(frame, (319, 310), (330, 321), (255, 0, 0), 2)
-    minimap = GrabScreen.getMapExplored(frame)
-    cv2.rectangle(minimap,(75,73),(125,123),(0,0,255),2)
-    mask = GrabScreen.findColorsInFrame(cutFrame,[brownBag,pinkBag])
-    contours = GrabScreen.findEnemiesFromMask(mask,cutFrame)
+    [610,545]
+    cv2.rectangle(frame,(663,505),(675,523),(0,0,255),2)
+    mode_frame = frame.copy()[505:523, 663:675]
 
-    enemiesScreen = GetData.getEnemiesScreen1(frame)
-    enemiesMap = GetData.getEnemiesMap(frame)
-    closestEnemyMap = AgentTest.findClosestEnemy(enemiesMap,GetData.getPlayerPos(frame))
-    for contour in contours[1]:
-        center = getCenterContour(contour)
-        betterCenter = (center[0]/10,center[1]/10)
-        diff = ((307 - center[0]),(313 - center[1]))
-        mapConversionDiff = (diff[0]/12,diff[1]/12)
-        print(mapConversionDiff)
-        mapDrawPoint = (round(100 - mapConversionDiff[0]),round(98 - mapConversionDiff[1]))
-        print(mapDrawPoint)
-        # cv2.rectangle(minimap,center,(center[0] + 1,center[1] + 1),(0,0,255),2)
-        cv2.rectangle(minimap, (mapDrawPoint[0],mapDrawPoint[1]), (mapDrawPoint[0] + 1, mapDrawPoint[1] + 1), (0, 0, 255), 2)
+    mode_mean = sum(cv2.mean(mode_frame)) / 3
+    cv2.imshow("potions",mode_frame)
+    print(mode_mean)
 
 
-    print("screen",enemiesScreen)
-    print("map",closestEnemyMap)
-    cv2.imshow("test",contours[0])
-    cv2.imshow("minimap",minimap)
+    # cutFrame = Utils.cutGameFrame(frame)
+    # # cv2.rectangle(frame, (319, 310), (330, 321), (255, 0, 0), 2)
+    # minimap = GrabScreen.getMapExplored(frame)
+    # cv2.rectangle(minimap,(75,73),(125,123),(0,0,255),2)
+    # mask = GrabScreen.findColorsInFrame(cutFrame,[brownBag,pinkBag])
+    # contours = GrabScreen.findEnemiesFromMask(mask,cutFrame)
+    #
+    # enemiesScreen = GetData.getEnemiesScreen1(frame)
+    # enemiesMap = GetData.getEnemiesMap(frame)
+    # closestEnemyMap = AgentTest.findClosestEnemy(enemiesMap,GetData.getPlayerPos(frame))
+    # for contour in contours[1]:
+    #     center = getCenterContour(contour)
+    #     betterCenter = (center[0]/10,center[1]/10)
+    #     diff = ((307 - center[0]),(313 - center[1]))
+    #     mapConversionDiff = (diff[0]/12,diff[1]/12)
+    #     print(mapConversionDiff)
+    #     mapDrawPoint = (round(100 - mapConversionDiff[0]),round(98 - mapConversionDiff[1]))
+    #     print(mapDrawPoint)
+    #     # cv2.rectangle(minimap,center,(center[0] + 1,center[1] + 1),(0,0,255),2)
+    #     cv2.rectangle(minimap, (mapDrawPoint[0],mapDrawPoint[1]), (mapDrawPoint[0] + 1, mapDrawPoint[1] + 1), (0, 0, 255), 2)
+    #
+    #
+    # print("screen",enemiesScreen)
+    # print("map",closestEnemyMap)
+    # cv2.imshow("test",contours[0])
+    # cv2.imshow("minimap",minimap)
 
     #
     # GetData.getEnemiesMap(frame)
