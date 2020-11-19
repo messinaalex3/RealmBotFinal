@@ -96,7 +96,7 @@ class Agent:
                     self.gameState.moveTowardDistance[0] = 20
                 else:
                     self.gameState.retreatDistance[0] = 15
-                    self.gameState.moveTowardDistance[0] = 30
+                    self.gameState.moveTowardDistance[0] = 35
                 self.gameState.playerPos[0] = self.gameState.playerPos[0]
             while self.gameState.mode[0] == "Transition":
                 print("To be honest...im not sure where i am, im blind")

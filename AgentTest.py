@@ -49,7 +49,7 @@ def monitorHealth(health,outOfPotions):
         elif health < 65:
             pyautogui.press("f")
     else:
-        if health < 55:
+        if health < 65:
             pyautogui.press("r")
 
 def Aim(enemies,window,frame):
