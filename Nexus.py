@@ -101,11 +101,14 @@ def doNexus():
             break
 
 
+    pyautogui.keyUp('a')
+    pyautogui.keyUp('s')
+    pyautogui.keyUp('d')
     pyautogui.keyDown('w')
     pressedW = True
     # print("Press W")
 
-    time.sleep(3)
+    time.sleep(2.7)
 
     #SECOND
     while (True):
@@ -113,7 +116,7 @@ def doNexus():
         frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
 
         miniMap = GrabScreen.getMapExplored(frame)
-        mapMask = GrabScreen.findColorInFrame(miniMap, [18, 0, 125], [28, 18, 145])  # red
+        mapMask = GrabScreen.findColorInFrame(miniMap, [192, 115, 77], [202, 125, 87]) # <-blue # [18, 0, 125], [28, 18, 145])  # <-red
         mapFound = GrabScreen.findEnemiesFromMask(mapMask, mapMask, "Map", doPrint=False)
 
         min_diff = float('inf')
@@ -235,13 +238,14 @@ def doNexus():
 
         v_diff = 97 - nearest_portal[1]
 
-        #print("Nearest V Portal: ", v_diff)     # 112 is 94 (pos right) + 130 (pos left) / 2 from testing
+        # print("Nearest V Portal: ", v_diff)     # 112 is 94 (pos right) + 130 (pos left) / 2 from testing
 
         if  v_diff >= -5 and not pressedW:
             pyautogui.keyDown('w')
             pressedW = True
             #print("Press W")
         if v_diff < 3 and pressedW:
+            time.sleep(.05)
             pyautogui.keyUp('w')
             pressedW= False
             #print("Release W")
@@ -285,4 +289,10 @@ def doNexus():
 #     pyautogui.keyUp('s')
 #     pyautogui.keyUp('d')
 #
-# doNexus()
+
+# For testing
+# while True:
+#     doNexus()
+#     time.sleep(5)
+#     pyautogui.press('r')
+#     time.sleep(5)
