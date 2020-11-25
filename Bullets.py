@@ -2,7 +2,7 @@ import cv2
 import time
 import numpy as np
 
-# # T0
+# T0
 # ourBulletColors = [
 # [181, 181, 181],
 # [255, 255, 255]
@@ -100,6 +100,12 @@ bulletColors = [
 [179, 236, 246]
 ]
 
+Zones = [[87,86],[87,98],[87,110],[100,86],[100,110],[112,86],[112,98],[112,110]]
+
+
+
+directions = [[0,"wa"],[1,"a"],[2,"sa"],[3,"w"],[4,"s"],[5,"wd"],[6,"d"],[7,"sd"]]
+
 #gameWindow = GrabScreen.findWindow("RotMGExalt")
 
 def BulletContours(frame,colors):
@@ -143,7 +149,7 @@ def getEightWayZones(frame):
 
     #ec2 = []
     bulletCenters = []
-    directions = [[0,"wa"],[1,"a"],[2,"sa"],[3,"w"],[4,"s"],[5,"wd"],[6,"d"],[7,"sd"]]
+    # directions = [[0,"wa"],[1,"a"],[2,"sa"],[3,"w"],[4,"s"],[5,"wd"],[6,"d"],[7,"sd"]]
     dirOpposite = ["sd",    "d",    "wd",      "s",     "w",    "sa",    "a",    "wa"]
     dirZones = [0] * 8
     for e_contour in enemy_contours:

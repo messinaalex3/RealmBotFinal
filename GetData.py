@@ -2,6 +2,7 @@ import GrabScreen
 import Utils
 import cv2
 import numpy
+import Bullets
 
 #remove after video stuff
 def getCenterContour(contour):
@@ -113,3 +114,8 @@ def outOfPotions(frame):
         return True
     else:
         return False
+
+def getSafeMovement(frame):
+    cutFrame = Utils.cutGameFrame(frame)
+    safe = Bullets.Zones[Bullets.getEightWayZones(cutFrame)]
+    return safe
