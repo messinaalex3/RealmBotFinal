@@ -6,6 +6,7 @@ import GetData
 import AgentTest
 import Bullets
 import threading
+import Zones2 as Zones
 
 class MTBenchmark:
     def __init__(self,trials,mode):
@@ -97,7 +98,7 @@ class MTBenchmark:
         # Monitor Health
         start = time.time()
         if self.gameMode == "Realm":
-            AgentTest.monitorHealth(health)
+            AgentTest.monitorHealth(health,True)
         delta = time.time()-start
         #print("{0}. AgentTest.monitorHealth(health):".format(self.count).ljust(self.str_width,' '),delta)
         self.AgentTestmonitorHealth[0] += delta
@@ -106,9 +107,10 @@ class MTBenchmark:
     def bulletFunction(self):
         # Get Bullets
         start = time.time()
-        safestMove = Bullets.getEightWayZones(self.gameFrame)
+        #safestMove = Bullets.getEightWayZones(self.gameFrame)
+        stats = Zones.getZoneStats(self.gameFrame)
         delta = time.time()-start
-        #print("{0}. Bullet.getEightWayZones(frame):".format(self.count).ljust(self.str_width,' '),delta)
+        #print("{0}. Bullets.getEightWayZones(frame):".format(self.count).ljust(self.str_width,' '),delta)
         self.BulletgetEightWayZones[0] += delta
         self.BulletgetEightWayZones[1] += 1
 
@@ -116,10 +118,12 @@ class MTBenchmark:
         while(self.count < self.trials):
             # Get Bullets
             start = time.time()
-            safestMove = Bullets.getEightWayZones(self.gameFrame)
+            #safestMove = Bullets.getEightWayZones(self.gameFrame)
+            stats = Zones.getZoneStats(self.gameFrame)
+            #print(stats,end='\r')
             time.sleep(.000000001)
             delta = time.time()-start
-            #print("{0}. Bullet.getEightWayZones(frame):".format(self.count).ljust(self.str_width,' '),delta)
+            #print("{0}. Bullets.getEightWayZones(frame):".format(self.count).ljust(self.str_width,' '),delta)
             self.BulletgetEightWayZones[0] += delta
             self.BulletgetEightWayZones[1] += 1
 
@@ -139,7 +143,7 @@ class MTBenchmark:
             start = time.time()
             if self.gameMode == "Realm":
                 nearest = self.closestEnemy
-            time.sleep(.01)
+            time.sleep(.001)
             delta = time.time() - start
             #print("{0}. MTBenchmark.motionUD():".format(self.count).ljust(self.str_width,' '),delta)
             self.MTBenchmarkmotionUD[0] += delta
@@ -150,7 +154,7 @@ class MTBenchmark:
             start = time.time()
             if self.gameMode == "Realm":
                 nearest = self.closestEnemy
-            time.sleep(.01)
+            time.sleep(.001)
             delta = time.time() - start
             #print("{0}. MTBenchmark.motionLR():".format(self.count).ljust(self.str_width,' '),delta)
             self.MTBenchmarkmotionLR[0] += delta
@@ -170,7 +174,7 @@ class MTBenchmark:
         functions.append(("AgentTest.findClosestEnemy(mapEnemies,playerPos)", self.AgentTestfindClosestEnemy))
         functions.append(("(Health) GetData.getPlayerData(frame)", self.GetDatagetPlayerData))
         functions.append(("AgentTest.monitorHealth(health)", self.AgentTestmonitorHealth))
-        functions.append(("Bullet.getEightWayZones(frame)", self.BulletgetEightWayZones))
+        functions.append(("Zones.getZoneStats(gameFrame)", self.BulletgetEightWayZones))
         functions.append(("MTBenchmark.motionUD()", self.MTBenchmarkmotionUD))
         functions.append(("MTBenchmark.motionLR()", self.MTBenchmarkmotionLR))
 
@@ -191,7 +195,7 @@ class MTBenchmark:
     def mainLoop(self):
         while (self.count < self.trials):
 
-            print("Trial Loop#:", self.count)
+            print("Trial Loop#:", self.count,end='\r')
 
             start_loop = time.time()
 
@@ -288,7 +292,10 @@ class MTBenchmark:
 
 
 if __name__ == "__main__":
+    trials = 1000.0
+
+    print("Total Trials: ",trials)
 
     call_mode = "bulletAimThreads"         # "bulletLoopThread" or "bulletAimThreads" or "serialized"
-    bm = MTBenchmark(1500.0, call_mode)
+    bm = MTBenchmark(trials, call_mode)
 

@@ -1,20 +1,23 @@
 import cv2
 import time
 import numpy as np
+import Utils
 
-# T0
-# ourBulletColors = [
-# [181, 181, 181],
-# [255, 255, 255]
-# ]
-
-
-# T1
-ourBulletColors = [
-[0, 0, 255],
-[0, 212, 255]
-]
-
+ourBulletColors = {
+    'T0': [[181,181,181],[255,255,255]],
+    'T1': [[0, 0, 255],[0, 212, 255]],
+    'T2': [[181, 181, 181],[255, 255, 255]],
+    'T3': [[64, 166, 0],[114, 240, 36]],
+    'T4': [[0, 212, 255],[179, 236, 246]],
+    'T5': [[66, 66, 255],[177, 177, 255]],
+    'T6': [[177, 13, 113],[255, 136, 208]],
+    'T7': [[0, 0, 255],[0, 212, 255]],
+    'T8': [[255, 111, 90],[248, 175, 162]],
+    'T9': [[181, 181, 181],[255, 255, 255]],
+    'T10': [[177, 13, 113],[255, 136, 208]],
+    'T11': [[134, 171, 43],[238, 255, 196]],
+    'T12': [[0, 0, 255],[0, 212, 255]]
+}
 
 bulletColors = [
 [134, 171, 43],
@@ -142,7 +145,12 @@ def sortBySecondElement(item):
 
 def getEightWayZones(frame):
     enemy_contours = BulletContours(frame,bulletColors)
-    our_contours = BulletContours(frame,ourBulletColors)
+    our_contours = BulletContours(frame,ourBulletColors['T3'])
+
+    bag_contours = BulletContours(frame,[Utils.brownBag])
+    bagCenters = []
+    for bag in bag_contours:
+        bagCenters.append(getCenterContour(bag))
 
     agent_center_x = frame.shape[0]//2
     agent_center_y = (frame.shape[1]//2)-15
@@ -156,6 +164,11 @@ def getEightWayZones(frame):
         area = cv2.contourArea(e_contour)
         enemyCenter = getCenterContour(e_contour)
         found = False
+
+        for bag in bagCenters:
+            if abs(bag[0] - enemyCenter[0]) == 7 and abs(bag[1] - enemyCenter[1]) == 4:
+                found = True
+
         if 220 < area:
             for contour in our_contours:
                 ourCenter = getCenterContour(contour)
@@ -276,3 +289,44 @@ def getEightWayZones(frame):
     # cv2.waitKey(1)
 
     return safeMovement
+
+def getBulletCenters(frame):
+    enemy_contours = BulletContours(frame, bulletColors)
+    our_contours = BulletContours(frame, ourBulletColors['T0'])
+
+    bag_contours = BulletContours(frame,[Utils.brownBag])
+    bagCenters = []
+    for bag in bag_contours:
+        bagCenters.append(getCenterContour(bag))
+
+    agent_center_x = frame.shape[0] // 2
+    agent_center_y = (frame.shape[1] // 2) - 15
+
+    bulletCenters = []
+
+    for e_contour in enemy_contours:
+        area = cv2.contourArea(e_contour)
+        enemyCenter = getCenterContour(e_contour)
+        found = False
+
+        for bag in bagCenters:
+            if abs(bag[0] - enemyCenter[0]) == 7 and abs(bag[1] - enemyCenter[1]) == 4:
+                found = True
+
+        if 150 < area:
+            for contour in our_contours:
+                ourCenter = getCenterContour(contour)
+                if enemyCenter == ourCenter:
+                    found = True
+                    break
+
+        if not found and area > 50:
+            x_dist = enemyCenter[0] - agent_center_x
+            y_dist = enemyCenter[1] - agent_center_y
+
+            if -80 <= y_dist <= 0 and x_dist <= 30:  # To ignore red writing when we are hit by a bullet
+                pass
+            else:
+                bulletCenters.append(enemyCenter)
+
+    return bulletCenters

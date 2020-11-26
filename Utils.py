@@ -4,7 +4,7 @@ import pyautogui
 
 def cutGameFrame(frame):
     tempFrame = frame.copy()
-    cv2.rectangle(tempFrame,(10,30),(600,625),(0,255,0),2)
+    # cv2.rectangle(tempFrame,(10,30),(600,625),(0,255,0),2)
     cutFrame = tempFrame[30:625,10:600]
     return cutFrame
 

@@ -139,6 +139,14 @@ while(True):
     frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
     frame = Utils.cutGameFrame(frame)
 
+    # scale_percent = 50  # percent of original size
+    # width = int(frame.shape[1] * scale_percent / 100)
+    # height = int(frame.shape[0] * scale_percent / 100)
+    # dim = (width, height)
+    # # resize image
+    # frame = cv2.resize(frame, dim, interpolation=cv2.INTER_NEAREST)
+
+
     start_time = time.time()
 
     # Get Contours for our bullets and all bullets

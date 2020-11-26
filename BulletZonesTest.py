@@ -4,6 +4,7 @@ import numpy as np
 import GrabScreen
 import Utils
 import pyautogui
+import DataMonitorProto as DataMon
 
 # # T0
 # ourBulletColors = [
@@ -103,7 +104,9 @@ bulletColors = [
 [179, 236, 246]
 ]
 
-gameWindow = GrabScreen.findWindow("RotMGExalt")
+dataMonitor = DataMon.DataMonitor()
+
+
 
 def BulletContours(frame,colors):
     # Create blank image for concatenating masks
@@ -137,7 +140,7 @@ def getCenterContour(contour):
 def sortBySecondElement(item):
     return item[1]
 
-def getEightWayZones(enemy_contours):
+def getEightWayZones(enemy_contours,our_contours):
     ec2 = []
     bulletCenters = []
     directions = [[0,"wa"],[1,"a"],[2,"sa"],[3,"w"],[4,"s"],[5,"wd"],[6,"d"],[7,"sd"]]
@@ -168,7 +171,7 @@ def getEightWayZones(enemy_contours):
             #     pass
             #Left Col
             if x_dist >= -150 and x_dist <= -50:
-                print("leftsiiiideee")
+                #print("leftsiiiideee")
                 if y_dist >= -150 and y_dist <= -50:
                     ec2.append((e_contour, 1))
                 elif y_dist >= -50 and y_dist <= 50:
@@ -198,22 +201,24 @@ def getEightWayZones(enemy_contours):
         rect = cv2.minAreaRect(c)
         box = cv2.boxPoints(rect)
         box = np.int0(box)
-        if zone == 1:
+        if zone in [1,3,6,8]:
             cv2.drawContours(frame, [box], 0, (0, 0, 255), 2)
-        elif zone == 2:
+        elif zone in [4,5]:
             cv2.drawContours(frame, [box], 0, (0, 255, 255), 2)
-        elif zone == 3:
+        elif zone in [2,7]:
             cv2.drawContours(frame, [box], 0, (0, 255, 0), 2)
         else:
             cv2.drawContours(frame, [box], 0, (0, 255, 0), 2)
         dirZones[zone - 1] += 1
 
+    #print("Zones: ",dirZones,end='\r')
 
+    dataMonitor.showDirZones(dirZones,"DirZones")
 
     safeMovement = dirZones.index(min(dirZones))
     worseMovement = dirZones.index(max(dirZones))
-    time.sleep(.01)
-    print(dirOpposite[worseMovement])
+    #time.sleep(.01)
+    #print("Best Movement: ", dirOpposite[worseMovement])
 
 
 
@@ -222,6 +227,8 @@ def getEightWayZones(enemy_contours):
 
 
 while(True):
+
+    gameWindow = GrabScreen.findWindow("RotMGExalt")
 
     frame = GrabScreen.captureScreen(gameWindow)
     frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
@@ -289,12 +296,12 @@ while(True):
     #         cv2.drawContours(frame, [box], 0, (0, 255, 0), 2)
 
 
-    getEightWayZones(enemy_contours)
+    getEightWayZones(enemy_contours,our_contours)
     # To test amount of time required to process... .08sec for 81 colors, .03sec for 36 on my machine
-    print(time.time() - start_time)
 
-    cv2.rectangle(frame, (agent_center_x-100, agent_center_y-100), (agent_center_x+100, agent_center_y+100), (0, 255, 0), 1)
-    cv2.rectangle(frame, (agent_center_x-150, agent_center_y-150), (agent_center_x+150, agent_center_y+150), (0, 255, 0), 1)
+
+    # cv2.rectangle(frame, (agent_center_x-100, agent_center_y-100), (agent_center_x+100, agent_center_y+100), (0, 255, 0), 1)
+    # cv2.rectangle(frame, (agent_center_x-150, agent_center_y-150), (agent_center_x+150, agent_center_y+150), (0, 255, 0), 1)
 
     #adding 8-way directional zones
     #top row
@@ -311,6 +318,8 @@ while(True):
     cv2.rectangle(frame, (agent_center_x - 50, agent_center_y + 50), (agent_center_x + 50, agent_center_y + 150),(0, 0, 255), 1)
     cv2.rectangle(frame, (agent_center_x + 50, agent_center_y + 50), (agent_center_x + 150, agent_center_y + 150),(0, 0, 255), 1)
     #cv2.drawMarker(frame,(agent_center_x,agent_center_y),(255,255,255),cv2.MARKER_TILTED_CROSS,20,2)
+
+    #print(time.time() - start_time)
 
     # Show frame
     cv2.imshow("Bullet Tracking", frame)

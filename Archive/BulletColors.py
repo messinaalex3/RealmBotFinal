@@ -43,7 +43,7 @@ fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
 for color in colorList:
-    print(color[0]," ",color[1]," ",color[2])
+    print(color[0],";",color[1],";",color[2])
     xs = color[0][0]
     ys = color[0][1]
     zs = color[0][2]

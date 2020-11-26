@@ -91,7 +91,8 @@ def Aim1(enemies,window,frame):
         #pyautogui.moveTo(closestEnemy[0] + windowX, closestEnemy[1] + windowY)
         win32api.SetCursorPos((closestEnemy[0] + windowX, closestEnemy[1] + windowY))
 
+        # frameA = frame.copy()
         # pointA = (closestEnemy[0],closestEnemy[1])
-        # cv2.drawMarker(frame, pointA, (0, 0, 255), cv2.MARKER_TILTED_CROSS, 20, 2)
-        # cv2.imshow("Closest Enemy", frame)
+        # cv2.drawMarker(frameA, pointA, (0, 0, 255), cv2.MARKER_TILTED_CROSS, 20, 2)
+        # cv2.imshow("Closest Enemy", frameA)
         # cv2.waitKey(1)
