@@ -150,7 +150,7 @@ def getEightWayZones(frame):
     #ec2 = []
     bulletCenters = []
     # directions = [[0,"wa"],[1,"a"],[2,"sa"],[3,"w"],[4,"s"],[5,"wd"],[6,"d"],[7,"sd"]]
-    dirOpposite = ["sd",    "d",    "wd",      "s",     "w",    "sa",    "a",    "wa"]
+    dirOpposite = [7,    6,    5,      4,     3,    2,    1,    0]
     dirZones = [0] * 8
     for e_contour in enemy_contours:
         area = cv2.contourArea(e_contour)
@@ -181,31 +181,55 @@ def getEightWayZones(frame):
                 if y_dist >= -150 and y_dist <= -50:
                     #ec2.append((e_contour, 1))
                     dirZones[0] += 1
+                    # dirZones[1] += .5
+                    # # dirZones[2] += 1
+                    # dirZones[3] += .5
+                    # # dirZones[5] += 1
                 elif y_dist >= -50 and y_dist <= 50:
                     #ec2.append((e_contour,2))
                     dirZones[1] += 1
+                    # dirZones[0] += 1
+                    # dirZones[2] += 1
                 elif y_dist >= 50 and y_dist <= 150:
                     #ec2.append((e_contour, 3))
                     dirZones[2] += 1
+                    # # dirZones[0] += 1
+                    # dirZones[1] += .5
+                    # dirZones[4] += .5
+                    # # dirZones[7] += 1
             #Center Col
             elif x_dist >= -50 and x_dist <= 50:
                 if y_dist >= -150 and y_dist <= -50:
                     #ec2.append((e_contour,4))
                     dirZones[3] += 1
+                    # dirZones[0] += 1
+                    # dirZones[5] += 1
                 elif y_dist >= 50 and y_dist <= 150:
                     #ec2.append((e_contour,5))
                     dirZones[4] += 1
+                    # dirZones[2] += 1
+                    # dirZones[7] += 1
             #Right Col
             elif x_dist >= 50 and x_dist <= 150:
                 if y_dist >= -150 and y_dist <= -50:
                     #ec2.append((e_contour, 6))
                     dirZones[5] += 1
+                    # # dirZones[0] += 1
+                    # dirZones[3] += .5
+                    # dirZones[6] += .5
+                    # # dirZones[7] += 1
                 elif y_dist >= -50 and y_dist <= 50:
                     #ec2.append((e_contour,7))
                     dirZones[6] += 1
+                    # dirZones[5] += .5
+                    # dirZones[7] += .5
                 elif y_dist >= 50 and y_dist <= 150:
                     #ec2.append((e_contour, 8))
                     dirZones[7] += 1
+                    # dirZones[6] += .5
+                    # # dirZones[5] += 1
+                    # dirZones[4] += .5
+                    # # dirZones[2] += 1
 
 
             #bulletCenters.append(enemyCenter)
@@ -230,7 +254,7 @@ def getEightWayZones(frame):
     safeMovement = dirZones.index(min(dirZones))
     worseMovement = dirZones.index(max(dirZones))
 
-    #print(dirOpposite[worseMovement])
+    # return dirOpposite[worseMovement]
 
     # #adding 8-way directional zones
     # #top row

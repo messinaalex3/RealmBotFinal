@@ -96,8 +96,7 @@ class Agent:
                     self.gameState.closestEnemyPos[0] = GetData.getSafeMovement(self.gameState.frame[0])
                     self.gameState.retreatDistance[0] = 0
                     self.gameState.moveTowardDistance[0] = 0
-                    print("bulletMovement")
-                elif len(screenBags) > 0 and len(screenEnemies) == 0 and random.randint(0,10) > 4:
+                if len(screenBags) > 0 and len(screenEnemies) == 0 and random.randint(0,10) > 4:
                     self.gameState.closestEnemyPos[0] = screenBags[0]
                     self.gameState.retreatDistance[0] = 0
                     self.gameState.moveTowardDistance[0] = 20
