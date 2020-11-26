@@ -92,7 +92,12 @@ class Agent:
                 #Hey future alex, this is a note from past alex...i know magic right?
                 #This is where you left off, check for screen enemies > 1 and use getData.GetSafeMovement to update closestEnemyPos for movement.
                 self.gameState.closestEnemyPos[0] = AgentTest.findClosestEnemy(mapEnemies,[self.gameState.playerPos[0]])
-                if len(screenBags) > 0 and len(screenEnemies) == 0 and random.randint(0,10) > 4:
+                if len(screenEnemies) >= 1:
+                    self.gameState.closestEnemyPos[0] = GetData.getSafeMovement(self.gameState.frame[0])
+                    self.gameState.retreatDistance[0] = 0
+                    self.gameState.moveTowardDistance[0] = 0
+                    print("bulletMovement")
+                elif len(screenBags) > 0 and len(screenEnemies) == 0 and random.randint(0,10) > 4:
                     self.gameState.closestEnemyPos[0] = screenBags[0]
                     self.gameState.retreatDistance[0] = 0
                     self.gameState.moveTowardDistance[0] = 20
