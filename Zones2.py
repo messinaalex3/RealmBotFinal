@@ -153,9 +153,12 @@ def getZoneStats(gameFrame):
     zoneFrame = gameFrame[(centerPoint[1] - threeHalf - edgeBuffer):(centerPoint[1] + threeHalf + edgeBuffer),
                             (centerPoint[0] - threeHalf - edgeBuffer):(centerPoint[0] + threeHalf + edgeBuffer)]
 
+    obsFrame = gameFrame[(centerPoint[1] - 60):(centerPoint[1] + 60),
+                            (centerPoint[0] - 60):(centerPoint[0] + 60)]
+
     bulletCenters = Bullets.getBulletCenters(zoneFrame)
     enemyCenters = GetData.getEnemiesScreen1(zoneFrame)
-    obsMask = Trees.getObstacleMask(zoneFrame,10)           # 10 - Color range +/- 10 BGR values
+    obsMask = Trees.getObstacleMask(obsFrame,10)           # 10 - Color range +/- 10 BGR values
 
     obstacle_array = getObstacles(obsMask,50)               # 50 - Mean for mask value. 0 black, 255 white
     bulletZoneCount = getZoneCounts(zoneFrame.shape,bulletCenters,size)
@@ -185,9 +188,9 @@ def getZoneStats(gameFrame):
 #
 #     #print(getZoneStats(gameFrame),end='\r')
 #
-#     centerPoint = [297,280]
+#     centerPoint = [297,280] #[400,400]
 #
-#     size = 150
+#     size = 100
 #     edgeBuffer = 10
 #
 #     half = size//2
@@ -196,9 +199,12 @@ def getZoneStats(gameFrame):
 #     zoneFrame = gameFrame[(centerPoint[1] - threeHalf - edgeBuffer):(centerPoint[1] + threeHalf + edgeBuffer),
 #                             (centerPoint[0] - threeHalf - edgeBuffer):(centerPoint[0] + threeHalf + edgeBuffer)]
 #
+#     obsFrame = gameFrame[(centerPoint[1] - 60):(centerPoint[1] + 60),
+#                             (centerPoint[0] - 60):(centerPoint[0] + 60)]
+#
 #     bulletCenters = Bullets.getBulletCenters(zoneFrame)
 #     enemyCenters = GetData.getEnemiesScreen1(zoneFrame)
-#     obsMask = Trees.getObstacleMask(zoneFrame,10)
+#     obsMask = Trees.getObstacleMask(obsFrame,10)
 #     obstacle_array = getObstacles(obsMask,50)
 #     datamon.showDirZones(obstacle_array,"Obstacles")
 #     drawObstacles(zoneFrame,obstacle_array)
