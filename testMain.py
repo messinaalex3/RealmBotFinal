@@ -9,6 +9,7 @@ import Looting
 import AgentTest
 import GetData
 import Bullets
+import Zones2
 
 
 pyautogui.FAILSAFE = True
@@ -54,49 +55,62 @@ Zones = [[87,86],[87,98],[87,110],[100,86],[100,110],[112,86],[112,98],[112,110]
 # Zones.append([447, 430])
 
 while True:
-
+    indexList = [0,1,2,3,4,5,6,7]
     frame = GrabScreen.captureScreen(gameWindow)
     frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2RGB)
     minimap = GrabScreen.getMapExplored(frame)
     frame = Utils.cutGameFrame(frame)
     # minimap_center_x = minimap.shape[0]//2
     # minimap_center_y = (minimap.shape[1]//2)-15
-
-    safeMovement = Bullets.directions[Bullets.getEightWayZones(frame)]
-    print(safeMovement)
-
-
-    cv2.rectangle(frame,(agent_center_x-150,agent_center_y - 150),(agent_center_x - 50,agent_center_y - 50),(0,0,255),1)
-    cv2.rectangle(frame,(agent_center_x - 50, agent_center_y - 150),(agent_center_x + 50, agent_center_y - 50),(0, 0, 255), 1)
-    cv2.rectangle(frame, (agent_center_x + 50, agent_center_y - 150), (agent_center_x + 150, agent_center_y - 50),(0, 0, 255), 1)
-
-    #middle row
-    cv2.rectangle(frame, (agent_center_x - 150, agent_center_y - 50), (agent_center_x -50, agent_center_y + 50),(0, 0, 255), 1)
-    cv2.rectangle(frame, (agent_center_x + 50, agent_center_y - 50), (agent_center_x + 150, agent_center_y + 50),(0, 0, 255), 1)
-
-    #bottom row
-    cv2.rectangle(frame, (agent_center_x - 150, agent_center_y + 50), (agent_center_x - 50, agent_center_y + 150),(0, 0, 255), 1)
-    cv2.rectangle(frame, (agent_center_x - 50, agent_center_y + 50), (agent_center_x + 50, agent_center_y + 150),(0, 0, 255), 1)
-    cv2.rectangle(frame, (agent_center_x + 50, agent_center_y + 50), (agent_center_x + 150, agent_center_y + 150),(0, 0, 255), 1)
+    zoneStats = Zones2.getZoneStats(frame)
+    print(zoneStats)
+    lowestWeight = 10000
+    lowestIndex = 0
+    for i in range(0,8):
+        zone = zoneStats[i]
+        if not zone[0] == True:
+            zoneWeight = zone[1] + zone[2]
+            if zoneWeight < lowestWeight:
+                lowestWeight = zoneWeight
+                lowestIndex = i
+    print(lowestIndex)
 
 
-
-
-    cv2.rectangle(frame,(agent_center_x + 150,agent_center_y + 150),(agent_center_x + 151, agent_center_y + 151),(0,0,255),2)
-    cv2.imshow("Frame",frame)
-
-    mapPoints = []
-    for location in Zones:
-        cv2.circle(minimap, (location[0], location[1]), 2, (255, 0, 255), 2)
-        # center = location
-        # diff = ((298 - center[0]),(280 - center[1]))
-        # mapConversionDiff = (diff[0]/12,diff[1]/12)
-        # mapDrawPoint = (round(100 - mapConversionDiff[0]),round(98 - mapConversionDiff[1]))
-        # mapPoints.append(mapDrawPoint)
-        # cv2.circle(minimap,(mapDrawPoint[0],mapDrawPoint[1]),2,(255,0,255),2)
-        # print(mapDrawPoint)
-
-    cv2.imshow("minimap",minimap)
+    # safeMovement = Bullets.directions[Bullets.getEightWayZones(frame)]
+    # print(safeMovement)
+    #
+    #
+    # cv2.rectangle(frame,(agent_center_x-150,agent_center_y - 150),(agent_center_x - 50,agent_center_y - 50),(0,0,255),1)
+    # cv2.rectangle(frame,(agent_center_x - 50, agent_center_y - 150),(agent_center_x + 50, agent_center_y - 50),(0, 0, 255), 1)
+    # cv2.rectangle(frame, (agent_center_x + 50, agent_center_y - 150), (agent_center_x + 150, agent_center_y - 50),(0, 0, 255), 1)
+    #
+    # #middle row
+    # cv2.rectangle(frame, (agent_center_x - 150, agent_center_y - 50), (agent_center_x -50, agent_center_y + 50),(0, 0, 255), 1)
+    # cv2.rectangle(frame, (agent_center_x + 50, agent_center_y - 50), (agent_center_x + 150, agent_center_y + 50),(0, 0, 255), 1)
+    #
+    # #bottom row
+    # cv2.rectangle(frame, (agent_center_x - 150, agent_center_y + 50), (agent_center_x - 50, agent_center_y + 150),(0, 0, 255), 1)
+    # cv2.rectangle(frame, (agent_center_x - 50, agent_center_y + 50), (agent_center_x + 50, agent_center_y + 150),(0, 0, 255), 1)
+    # cv2.rectangle(frame, (agent_center_x + 50, agent_center_y + 50), (agent_center_x + 150, agent_center_y + 150),(0, 0, 255), 1)
+    #
+    #
+    #
+    #
+    # cv2.rectangle(frame,(agent_center_x + 150,agent_center_y + 150),(agent_center_x + 151, agent_center_y + 151),(0,0,255),2)
+    # cv2.imshow("Frame",frame)
+    #
+    # mapPoints = []
+    # for location in Zones:
+    #     cv2.circle(minimap, (location[0], location[1]), 2, (255, 0, 255), 2)
+    #     # center = location
+    #     # diff = ((298 - center[0]),(280 - center[1]))
+    #     # mapConversionDiff = (diff[0]/12,diff[1]/12)
+    #     # mapDrawPoint = (round(100 - mapConversionDiff[0]),round(98 - mapConversionDiff[1]))
+    #     # mapPoints.append(mapDrawPoint)
+    #     # cv2.circle(minimap,(mapDrawPoint[0],mapDrawPoint[1]),2,(255,0,255),2)
+    #     # print(mapDrawPoint)
+    #
+    # cv2.imshow("minimap",minimap)
 
     # [610,545]
     # cv2.rectangle(frame,(663,505),(675,523),(0,0,255),2)

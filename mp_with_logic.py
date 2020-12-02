@@ -96,13 +96,13 @@ class Agent:
                     self.gameState.closestEnemyPos[0] = GetData.getSafeMovement(self.gameState.frame[0])
                     self.gameState.retreatDistance[0] = 0
                     self.gameState.moveTowardDistance[0] = 0
-                if len(screenBags) > 0 and len(screenEnemies) == 0 and random.randint(0,10) > 4:
+                elif len(screenBags) > 0 and len(screenEnemies) == 0 and random.randint(0,10) > 4:
                     self.gameState.closestEnemyPos[0] = screenBags[0]
                     self.gameState.retreatDistance[0] = 0
                     self.gameState.moveTowardDistance[0] = 20
                 else:
                     self.gameState.retreatDistance[0] = 15
-                    self.gameState.moveTowardDistance[0] = 35
+                    self.gameState.moveTowardDistance[0] = 30
                 self.gameState.playerPos[0] = self.gameState.playerPos[0]
             while self.gameState.mode[0] == "Transition":
                 print("To be honest...im not sure where i am, im blind")
@@ -239,6 +239,9 @@ if __name__ == '__main__':
         closestEnemyPos = mgr.list(range(1))
         retreatDistance = mgr.list(range(1))
         moveTowardDistance = mgr.list(range(1))
+        movementLength = mgr.list(range(1))
+        #in case you forgot what you were doing...shh i didnt read your mind
+        #you were adding a variable to mvoement length(time) for shorter(and twitchier) movements when enemies are on screen
 
         gameState = GameState(window,frame,mode,playerPos,closestEnemyPos,retreatDistance,moveTowardDistance)
 

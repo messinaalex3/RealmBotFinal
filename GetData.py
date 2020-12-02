@@ -3,6 +3,7 @@ import Utils
 import cv2
 import numpy
 import Bullets
+import Zones2
 
 #remove after video stuff
 def getCenterContour(contour):
@@ -117,5 +118,14 @@ def outOfPotions(frame):
 
 def getSafeMovement(frame):
     cutFrame = Utils.cutGameFrame(frame)
-    safe = Bullets.Zones[Bullets.getEightWayZones(cutFrame)]
-    return safe
+    zoneStats = Zones2.getZoneStats(cutFrame)
+    lowestWeight = 10000
+    lowestIndex = 0
+    for i in range(0, 8):
+        zone = zoneStats[i]
+        if not zone[0] == True:
+            zoneWeight = zone[1] + zone[2]
+            if zoneWeight < lowestWeight:
+                lowestWeight = zoneWeight
+                lowestIndex = i
+    return Bullets.Zones[lowestIndex]
