@@ -12,7 +12,7 @@ import pyautogui
 import Looting
 
 class GameState:
-    def __init__(self, gameWindow,frame,mode,playerPos,closestEnemyPos,retreatDistance,moveTowardDistance):
+    def __init__(self, gameWindow,frame,mode,playerPos,closestEnemyPos,retreatDistance,moveTowardDistance,movementLength):
         self.gameWindow = gameWindow            # LIST, use [0] to access
         self.frame = frame                      # LIST, use [0] to access
         self.mode = mode                        # LIST, use [0] to access
@@ -20,6 +20,7 @@ class GameState:
         self.closestEnemyPos = closestEnemyPos
         self.retreatDistance = retreatDistance
         self.moveTowardDistance = moveTowardDistance
+        self.movementLength = movementLength
         self.initGS()
 
     def initGS(self):
@@ -29,6 +30,7 @@ class GameState:
         self.closestEnemyPos[0] = [0,0]
         self.retreatDistance[0] = 15
         self.moveTowardDistance[0] = 30
+        self.movementLength[0] = 1000
 
     def getMode(self):
         while True:
@@ -96,6 +98,7 @@ class Agent:
                     self.gameState.closestEnemyPos[0] = GetData.getSafeMovement(self.gameState.frame[0])
                     self.gameState.retreatDistance[0] = 0
                     self.gameState.moveTowardDistance[0] = 0
+                    self.gameState.movementLength[0] = 1000
                 elif len(screenBags) > 0 and len(screenEnemies) == 0 and random.randint(0,10) > 4:
                     self.gameState.closestEnemyPos[0] = screenBags[0]
                     self.gameState.retreatDistance[0] = 0
@@ -103,6 +106,7 @@ class Agent:
                 else:
                     self.gameState.retreatDistance[0] = 15
                     self.gameState.moveTowardDistance[0] = 30
+                    self.gameState.movementLength[0] = 1000
                 self.gameState.playerPos[0] = self.gameState.playerPos[0]
             while self.gameState.mode[0] == "Transition":
                 print("To be honest...im not sure where i am, im blind")
@@ -148,33 +152,35 @@ class Agent:
                 sys.stdout.write("\rNearest Enemy: {}".format(self.gameState.closestEnemyPos[0]))
                 sys.stdout.write("   Player Loc: {}".format(self.gameState.playerPos[0][0]))
 
-
                 distance = abs(self.gameState.closestEnemyPos[0][0] - self.gameState.playerPos[0][0]) + abs(self.gameState.closestEnemyPos[0][1] - self.gameState.playerPos[0][1])
                 sys.stdout.write("\rNearest Enemy Distance: {}".format(distance))
 
                 key = ''
                 random.seed(time.time())
 
+                movementLength = self.gameState.movementLength[0]
+                closestEnemy = self.gameState.closestEnemyPos[0]
+                playerPos = self.gameState.playerPos[0]
                 if distance > self.gameState.moveTowardDistance[0]:
-                    if self.gameState.closestEnemyPos[0][1] > self.gameState.playerPos[0][1]:
+                    if closestEnemy[1] > playerPos[1]:
                         key = 's'
                         print('  tracking press:', key)
-                        self.hold_char(random.randint(1000, 1001), key)
-                    if self.gameState.closestEnemyPos[0][1] <= self.gameState.playerPos[0][1]:
+                        self.hold_char(random.randint(movementLength, movementLength + 1), key)
+                    if closestEnemy[1] <= playerPos[1]:
                         key = 'w'
                         print('  tracking press:', key)
-                        self.hold_char(random.randint(1000, 1001), key)
+                        self.hold_char(random.randint(movementLength, movementLength + 1), key)
 
 
                 elif distance < self.gameState.retreatDistance[0]:
-                    if self.gameState.closestEnemyPos[0][1] > self.gameState.playerPos[0][1]:
+                    if closestEnemy[1] > playerPos[1]:
                         key = 'w'
                         print('  retreat press:', key)
-                        self.hold_char(random.randint(1000, 1001), key)
-                    if self.gameState.closestEnemyPos[0][1] <= self.gameState.playerPos[0][1]:
+                        self.hold_char(random.randint(movementLength, movementLength + 1), key)
+                    if closestEnemy[1] <= playerPos[1]:
                         key = 's'
                         print('  retreat press:', key)
-                        self.hold_char(random.randint(1000, 1001), key)
+                        self.hold_char(random.randint(movementLength, movementLength + 1), key)
 
                 else:
 
@@ -200,25 +206,28 @@ class Agent:
                 key = ''
                 random.seed(time.time())
 
+                movementLength = self.gameState.movementLength[0]
+                closestEnemy = self.gameState.closestEnemyPos[0]
+                playerPos = self.gameState.playerPos[0]
                 if distance > self.gameState.moveTowardDistance[0]:
-                    if self.gameState.closestEnemyPos[0][0] > self.gameState.playerPos[0][0]:
+                    if closestEnemy[0] > playerPos[0]:
                         key = 'd'
                         # print('  tracking press:', key)
-                        self.hold_char(random.randint(1000, 1001), key)
-                    if self.gameState.closestEnemyPos[0][0] <= self.gameState.playerPos[0][0]:
+                        self.hold_char(random.randint(movementLength, movementLength + 1), key)
+                    if closestEnemy[0] <= playerPos[0]:
                         key = 'a'
                         # print('  tracking press:', key)
-                        self.hold_char(random.randint(1000, 1001), key)
+                        self.hold_char(random.randint(movementLength, movementLength + 1), key)
 
                 elif distance < self.gameState.retreatDistance[0]:
-                    if self.gameState.closestEnemyPos[0][0] > self.gameState.playerPos[0][0]:
+                    if closestEnemy[0] > playerPos[0]:
                         key = 'a'
                         # print('  retreat press:', key)
-                        self.hold_char(random.randint(1000, 1001), key)
-                    if self.gameState.closestEnemyPos[0][0] <= self.gameState.playerPos[0][0]:
+                        self.hold_char(random.randint(movementLength, movementLength + 1), key)
+                    if closestEnemy[0] <= playerPos[0]:
                         key = 'd'
                         # print('  retreat press:', key)
-                        self.hold_char(random.randint(1000, 1001), key)
+                        self.hold_char(random.randint(movementLength, movementLength + 1), key)
 
                 else:
 
@@ -240,10 +249,9 @@ if __name__ == '__main__':
         retreatDistance = mgr.list(range(1))
         moveTowardDistance = mgr.list(range(1))
         movementLength = mgr.list(range(1))
-        #in case you forgot what you were doing...shh i didnt read your mind
-        #you were adding a variable to mvoement length(time) for shorter(and twitchier) movements when enemies are on screen
 
-        gameState = GameState(window,frame,mode,playerPos,closestEnemyPos,retreatDistance,moveTowardDistance)
+
+        gameState = GameState(window,frame,mode,playerPos,closestEnemyPos,retreatDistance,moveTowardDistance,movementLength)
 
         agent = Agent(gameState)
 
