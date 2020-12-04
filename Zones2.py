@@ -120,8 +120,8 @@ def getZoneCounts(frameShape,points,size):
                 dirZones[0] += 1
                 dirZones[1] += .5
                 dirZones[3] += .5
-                dirZones[2] += .25
-                dirZones[5] += .25
+                # dirZones[2] += .25
+                # dirZones[5] += .25
             elif y_dist >= -half and y_dist <= half:
                 dirZones[1] += 1
                 dirZones[0] += .5
@@ -130,8 +130,8 @@ def getZoneCounts(frameShape,points,size):
                 dirZones[2] += 1
                 dirZones[1] += .5
                 dirZones[4] += .5
-                dirZones[0] += .25
-                dirZones[7] += .25
+                # dirZones[0] += .25
+                # dirZones[7] += .25
         # Center Col
         elif x_dist >= -half and x_dist <= half:
             if y_dist >= -threeHalf and y_dist <= -half:
@@ -148,8 +148,8 @@ def getZoneCounts(frameShape,points,size):
                 dirZones[5] += 1
                 dirZones[3] += .5
                 dirZones[6] += .5
-                dirZones[0] += .25
-                dirZones[7] += .25
+                # dirZones[0] += .25
+                # dirZones[7] += .25
             elif y_dist >= -half and y_dist <= half:
                 dirZones[6] += 1
                 dirZones[5] += .5
@@ -158,8 +158,8 @@ def getZoneCounts(frameShape,points,size):
                 dirZones[7] += 1
                 dirZones[6] += .5
                 dirZones[4] += .5
-                dirZones[5] += .25
-                dirZones[2] += .25
+                # dirZones[5] += .25
+                # dirZones[2] += .25
 
 
     return dirZones

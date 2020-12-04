@@ -90,7 +90,6 @@ class Agent:
                 AgentTest.Aim1(screenEnemies,self.gameState.gameWindow[0],self.gameState.frame[0])
                 mapEnemies = GetData.getEnemiesMap(self.gameState.frame[0])
                 screenBags = GetData.findLootBags(self.gameState.frame[0])
-                health = GetData.getPlayerData(self.gameState.frame[0])
                 self.gameState.playerPos[0] = GetData.getPlayerPos(self.gameState.frame[0])[0]
                 #Hey future alex, this is a note from past alex...i know magic right?
                 #This is where you left off, check for screen enemies > 1 and use getData.GetSafeMovement to update closestEnemyPos for movement.
@@ -100,14 +99,14 @@ class Agent:
                     self.gameState.moveTowardDistance[0] = 0
                     self.gameState.movementLength[0] = 1000
                     print("avoid move")
-                elif len(screenBags) > 0 and random.randint(0,10) >= 3:
+                elif len(screenBags) > 0 and random.randint(0,10) > 4:
                     self.gameState.closestEnemyPos[0] = screenBags[0]
                     self.gameState.retreatDistance[0] = 0
                     self.gameState.moveTowardDistance[0] = 20
                 else:
                     self.gameState.closestEnemyPos[0] = AgentTest.findClosestEnemy(mapEnemies,[self.gameState.playerPos[0]])
                     self.gameState.retreatDistance[0] = 15
-                    self.gameState.moveTowardDistance[0] = 30
+                    self.gameState.moveTowardDistance[0] = 16
                     self.gameState.movementLength[0] = 1000
                 self.gameState.playerPos[0] = self.gameState.playerPos[0]
             while self.gameState.mode[0] == "Transition":
