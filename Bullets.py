@@ -292,7 +292,7 @@ def getEightWayZones(frame):
 
 def getBulletCenters(frame):
     enemy_contours = BulletContours(frame, bulletColors)
-    our_contours = BulletContours(frame, ourBulletColors['T5'])
+    our_contours = BulletContours(frame, ourBulletColors['T0'])
 
     bag_contours = BulletContours(frame,[Utils.brownBag])
     bagCenters = []

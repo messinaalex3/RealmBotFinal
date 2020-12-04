@@ -36,7 +36,8 @@ def getEnemiesMap(frame):
     mapMask = GrabScreen.findColorInFrame(miniMap,[0,0,200],[0,0,255])
     mapFound = GrabScreen.findEnemiesFromMask(mapMask,mapMask,"Map")
     enemiesOnMap = mapFound[1]
-    # cv2.imshow("MapMask",mapMask)
+    cv2.imshow("MapMask",mapMask)
+    cv2.waitKey(1)
     return enemiesOnMap
 
 def getPlayerData(frame):
@@ -94,6 +95,25 @@ def getEnemiesScreen1(frame):
 
     return enemyCenters
 
+def debugEnemiesScreen1(frame):
+    # Cut the frame to only include game windows for enemy tracking
+    gameFrame = Utils.cutGameFrame(frame)
+    # find enemies based on color and create a mask
+    enemyMask = GrabScreen.findColorsInFrame(gameFrame, Utils.enemyColorList)
+    #find chunks in mask to get enemy positions
+    contours = GrabScreen.findEnemiesFromMask(enemyMask,gameFrame)
+    enemyCenters = []
+    for contour in contours[1]:
+        point = getCenterContour(contour)
+        cv2.drawMarker(frame,point,(0,0,255),cv2.MARKER_TILTED_CROSS,20,2)
+        enemyCenters.append(point)
+
+    # cv2.imshow("Enemies", contours[0])
+    cv2.imshow("Enemies",frame)
+    cv2.waitKey(1)
+
+    return enemyCenters
+
 def findLootBags(frame):
     cutFrame = Utils.cutGameFrame(frame)
     mask = GrabScreen.findColorsInFrame(cutFrame,[Utils.brownBag,Utils.pinkBag])
@@ -123,9 +143,9 @@ def getSafeMovement(frame):
     lowestIndex = 0
     for i in range(0, 8):
         zone = zoneStats[i]
-        if not zone[0] == True:
-            zoneWeight = zone[1] + zone[2]
-            if zoneWeight < lowestWeight:
-                lowestWeight = zoneWeight
-                lowestIndex = i
+        # if not zone[0] == True:
+        zoneWeight = zone[1] + zone[2]
+        if zoneWeight < lowestWeight:
+            lowestWeight = zoneWeight
+            lowestIndex = i
     return Bullets.Zones[lowestIndex]

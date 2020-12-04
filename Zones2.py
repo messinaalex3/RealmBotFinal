@@ -118,40 +118,49 @@ def getZoneCounts(frameShape,points,size):
         if x_dist >= -threeHalf and x_dist <= -half:
             if y_dist >= -threeHalf and y_dist <= -half:
                 dirZones[0] += 1
-                dirZones[1] += .25
-                dirZones[3] += .25
+                dirZones[1] += .5
+                dirZones[3] += .5
+                dirZones[2] += .25
+                dirZones[5] += .25
             elif y_dist >= -half and y_dist <= half:
                 dirZones[1] += 1
-                dirZones[0] += .25
-                dirZones[2] += .25
+                dirZones[0] += .5
+                dirZones[2] += .5
             elif y_dist >= half and y_dist <= threeHalf:
                 dirZones[2] += 1
-                dirZones[1] += .25
-                dirZones[4] += .25
+                dirZones[1] += .5
+                dirZones[4] += .5
+                dirZones[0] += .25
+                dirZones[7] += .25
         # Center Col
         elif x_dist >= -half and x_dist <= half:
             if y_dist >= -threeHalf and y_dist <= -half:
                 dirZones[3] += 1
-                dirZones[0] += .25
-                dirZones[5] += .25
+                dirZones[0] += .5
+                dirZones[5] += .5
             elif y_dist >= half and y_dist <= threeHalf:
                 dirZones[4] += 1
-                dirZones[2] += .25
-                dirZones[7] += .25
+                dirZones[2] += .5
+                dirZones[7] += .5
         # Right Col
         elif x_dist >= half and x_dist <= threeHalf:
             if y_dist >= -threeHalf and y_dist <= -half:
                 dirZones[5] += 1
-                dirZones[3] += .25
-                dirZones[6] += .25
+                dirZones[3] += .5
+                dirZones[6] += .5
+                dirZones[0] += .25
+                dirZones[7] += .25
             elif y_dist >= -half and y_dist <= half:
                 dirZones[6] += 1
-                dirZones[5] += .25
-                dirZones[7] += .25
+                dirZones[5] += .5
+                dirZones[7] += .5
             elif y_dist >= half and y_dist <= threeHalf:
                 dirZones[7] += 1
-                dirZones[6] += .25
-                dirZones[4] += .25
+                dirZones[6] += .5
+                dirZones[4] += .5
+                dirZones[5] += .25
+                dirZones[2] += .25
+
 
     return dirZones
 
@@ -160,7 +169,7 @@ def getZoneStats(gameFrame):
 
     centerPoint = [297,280]
 
-    size = 150
+    size = 180
     edgeBuffer = 10
 
     half = size//2
@@ -185,12 +194,13 @@ def getZoneStats(gameFrame):
     for i in range(0,8):
         zoneStats.append((obstacle_array[i],bulletZoneCount[i],enemyZoneCount[i]))
 
+
     return zoneStats
 
 
 
 
-# # Zones 2 Test Loop
+# Zones 2 Test Loop
 #
 # datamon = DM.DataMonitor()
 #
@@ -206,7 +216,7 @@ def getZoneStats(gameFrame):
 #
 #     centerPoint = [297,280] #[400,400]
 #
-#     size = 100
+#     size = 180
 #     edgeBuffer = 10
 #
 #     half = size//2
