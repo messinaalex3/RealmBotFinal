@@ -34,10 +34,10 @@ class GameState:
         self.moveTowardDistance[0] = 30
         self.movementLength[0] = 1000
 
-    def getMode(self):
-        while True:
-            self.mode[0] = GetData.getMode(self.frame[0])
-            #print("Mode",self.mode[0])
+    # def getMode(self):
+    #     while True:
+    #
+    #         #print("Mode",self.mode[0])
 
     def getMainFrame(self):
         while True:
@@ -76,15 +76,18 @@ class Agent:
                 #print(len(self.gameState.screenEnemies[0]))
                 if self.gameState.mode[0] == "Realm":
                    AgentTest.Aim1(self.gameState.screenEnemies[0], self.gameState.gameWindow[0], self.gameState.frame[0])
+            time.sleep(.02)
 
     def runAgent(self):
         GrabScreen.findWindow("RotMGExalt")
         while True:
+            self.gameState.mode[0] = GetData.getMode(self.gameState.frame[0])
             while self.gameState.mode[0] == "Nexus":
                 print("hello sir, i reside in the nexus.")
                 # screenEnemies = GetData.getEnemiesScreen(self.gameState.frame[0])
                 # AgentTest.Aim(screenEnemies,self.gameState.gameWindow[0],self.gameState.frame[0])
                 Nexus.doNexus()
+                self.gameState.mode[0] = GetData.getMode(self.gameState.frame[0])
             while self.gameState.mode[0] == "Realm":
                 start_time = time.time()
                 #print("ahh good day fine sir, you may find me in the realm.")
@@ -109,8 +112,10 @@ class Agent:
                     self.gameState.moveTowardDistance[0] = 16
                     self.gameState.movementLength[0] = 1000
                 self.gameState.playerPos[0] = self.gameState.playerPos[0]
+                self.gameState.mode[0] = GetData.getMode(self.gameState.frame[0])
                 print("FPS: ", 1.0 / (time.time() - start_time))
             while self.gameState.mode[0] == "Transition":
+                self.gameState.mode[0] = GetData.getMode(self.gameState.frame[0])
                 print("To be honest...im not sure where i am, im blind")
             while self.gameState.mode[0] == "Loot":
                 print("pardon me sir, im counting my cheddar")
@@ -119,6 +124,7 @@ class Agent:
                 pyautogui.keyUp("a")
                 pyautogui.keyUp("d")
                 Looting.doLootingNoImage(self.gameState.frame[0],self.gameState.gameWindow[0])
+                self.gameState.mode[0] = GetData.getMode(self.gameState.frame[0])
 
     def AgentLooting(self):
         while True:
@@ -136,6 +142,7 @@ class Agent:
                 health = GetData.getPlayerData(self.gameState.frame[0])
                 outOfPotions = GetData.outOfPotions(self.gameState.frame[0])
                 AgentTest.monitorHealth(health,outOfPotions)
+                time.sleep(.02)
 
     def hold_char(self,hold_time, char):
         pyautogui.keyDown(char)
@@ -262,7 +269,7 @@ if __name__ == '__main__':
         processes = []
 
         processes.append(multiprocessing.Process(name='get_frame', target=gameState.getMainFrame))
-        processes.append(multiprocessing.Process(name='get_mode', target=gameState.getMode))
+        #processes.append(multiprocessing.Process(name='get_mode', target=gameState.getMode))
         processes.append(multiprocessing.Process(name='safe_move', target=gameState.safeMovement))
         processes.append(multiprocessing.Process(name='screen_enemies', target=gameState.getScreenEnemies))
 
