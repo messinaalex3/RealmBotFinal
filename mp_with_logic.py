@@ -85,6 +85,7 @@ class Agent:
                 AgentTest.Aim(screenEnemies,self.gameState.gameWindow[0],self.gameState.frame[0])
                 Nexus.doNexus()
             while self.gameState.mode[0] == "Realm":
+                start_time = time.time()
                 print("ahh good day fine sir, you may find me in the realm.")
                 screenEnemies = GetData.debugEnemiesScreen1(self.gameState.frame[0])
                 AgentTest.Aim1(screenEnemies,self.gameState.gameWindow[0],self.gameState.frame[0])
@@ -109,6 +110,7 @@ class Agent:
                     self.gameState.moveTowardDistance[0] = 16
                     self.gameState.movementLength[0] = 1000
                 self.gameState.playerPos[0] = self.gameState.playerPos[0]
+                print("FPS: ", 1.0 / (time.time() - start_time))
             while self.gameState.mode[0] == "Transition":
                 print("To be honest...im not sure where i am, im blind")
             while self.gameState.mode[0] == "Loot":

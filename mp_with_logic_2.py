@@ -53,7 +53,7 @@ class GameState:
     def getScreenEnemies(self):
         while True:
             if self.mode[0] == 'Realm':
-                self.screenEnemies[0] = GetData.debugEnemiesScreen1(self.frame[0])
+                self.screenEnemies[0] = GetData.getEnemiesScreen1(self.frame[0])
 
 class Agent:
     def __init__(self, gamestate):
@@ -97,15 +97,18 @@ class Agent:
                 #Hey future alex, this is a note from past alex...i know magic right?
                 #This is where you left off, check for screen enemies > 1 and use getData.GetSafeMovement to update closestEnemyPos for movement.
                 if len(self.gameState.screenEnemies[0]) >= 1:
-                    self.gameState.closestEnemyPos[0] = self.gameState.safeMove[0]
+                    if len(self.gameState.screenEnemies[0]) < 5 and len(screenBags) >= 1 and random.randint(0,10) > 5:
+                        self.gameState.closestEnemyPos[0] = screenBags[0]
+                    else:
+                        self.gameState.closestEnemyPos[0] = self.gameState.safeMove[0]
+                        self.gameState.retreatDistance[0] = -10
+                        self.gameState.moveTowardDistance[0] = 0
+                        self.gameState.movementLength[0] = 1000
+                        print("avoid move")
+                elif len(screenBags) > 0 and random.randint(0,10) > 5:
+                    self.gameState.closestEnemyPos[0] = screenBags[0]
                     self.gameState.retreatDistance[0] = -10
                     self.gameState.moveTowardDistance[0] = 0
-                    self.gameState.movementLength[0] = 1000
-                    print("avoid move")
-                elif len(screenBags) > 0 and random.randint(0,10) > 4:
-                    self.gameState.closestEnemyPos[0] = screenBags[0]
-                    self.gameState.retreatDistance[0] = 0
-                    self.gameState.moveTowardDistance[0] = 20
                 else:
                     self.gameState.closestEnemyPos[0] = AgentTest.findClosestEnemy(mapEnemies,[self.gameState.playerPos[0]])
                     self.gameState.retreatDistance[0] = 15
@@ -119,6 +122,7 @@ class Agent:
                 print("To be honest...im not sure where i am, im blind")
             while self.gameState.mode[0] == "Loot":
                 print("pardon me sir, im counting my cheddar")
+                self.gameState.closestEnemyPos[0] = [100,98]
                 pyautogui.keyUp("w")
                 pyautogui.keyUp("s")
                 pyautogui.keyUp("a")
@@ -138,7 +142,7 @@ class Agent:
 
     def monitorHealth(self):
         while True:
-            while self.gameState.mode[0] == "Realm" or self.gameState.mode[0] == "Loot":
+            while self.gameState.mode[0] == "Realm" or self.gameState.mode[0] == "Loot" or self.gameState.mode[0] == "Over Portal":
                 health = GetData.getPlayerData(self.gameState.frame[0])
                 outOfPotions = GetData.outOfPotions(self.gameState.frame[0])
                 AgentTest.monitorHealth(health,outOfPotions)
