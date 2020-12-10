@@ -36,8 +36,8 @@ def getEnemiesMap(frame):
     mapMask = GrabScreen.findColorInFrame(miniMap,[0,0,200],[0,0,255])
     mapFound = GrabScreen.findEnemiesFromMask(mapMask,mapMask,"Map")
     enemiesOnMap = mapFound[1]
-    cv2.imshow("MapMask",mapMask)
-    cv2.waitKey(1)
+    # cv2.imshow("MapMask",mapMask)
+    # cv2.waitKey(1)
     return enemiesOnMap
 
 def getPlayerData(frame):
